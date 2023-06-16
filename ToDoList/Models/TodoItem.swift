@@ -95,3 +95,48 @@ extension TodoItem {
         )
     }
 }
+
+//MARK: - Convert TodoItem to/from CSV
+extension TodoItem {
+    var csv: String {
+        let textCsv = text.replacingOccurrences(of: ",", with: "|")
+        let importanceString = importance != .normal ? importance.rawValue : ""
+        let isDoneString = isDone ? "true" : "false"
+        let deadlineString = deadline != nil ? String(deadline?.dateIntValue ?? 0) : ""
+        let createdAtString = String(createdAt.dateIntValue ?? 0)
+        let changesAtString = changesAt != nil ? String(changesAt?.dateIntValue ?? 0) : ""
+        
+        return "\(id),\(textCsv),\(importanceString),\(deadlineString),\(isDoneString),\(createdAtString),\(changesAtString)"
+    }
+    
+    static func parse(csv: String) -> TodoItem? {
+        let strings = csv.components(separatedBy: ",")
+        
+        guard strings.count == 7 else {
+            return nil
+        }
+        
+        let id = strings[0]
+        let text = strings[1].replacingOccurrences(of: "|", with: ",")
+        let importanceString = strings[2].isEmpty ? Importance.normal.rawValue : strings[2]
+        let deadline = strings[3].isEmpty ? nil : Int(strings[3])?.dateValue
+        let changesAt = strings[6].isEmpty ? nil : Int(strings[6])?.dateValue
+        
+        guard let importance = Importance(rawValue: importanceString),
+              let isDone = Bool(strings[4]),
+              let createdAt = Int(strings[5])?.dateValue
+        else {
+            return nil
+        }
+        
+        return TodoItem(
+            id: id,
+            text: text,
+            importance: importance,
+            deadline: deadline,
+            isDone: isDone,
+            createdAt: createdAt,
+            changesAt: changesAt
+        )
+    }
+}
