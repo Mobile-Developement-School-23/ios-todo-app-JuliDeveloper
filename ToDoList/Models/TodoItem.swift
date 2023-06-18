@@ -74,6 +74,7 @@ extension TodoItem {
         guard let json = json as? [String: Any],
               let id = json["id"] as? String,
               let text = json["text"] as? String,
+              let isDone = json["isDone"] as? Bool,
               let createdAt = (json["createdAt"] as? Int)?.dateValue
         else {
             return nil
@@ -81,7 +82,6 @@ extension TodoItem {
         
         let importance = (json["importance"] as? String).flatMap(Importance.init(rawValue:)) ?? .normal
         let deadline = (json["deadline"] as? Int)?.dateValue
-        let isDone = json["isDone"] as? Bool ?? false
         let changesAt = (json["changesAt"] as? Int)?.dateValue
         
         return TodoItem(
