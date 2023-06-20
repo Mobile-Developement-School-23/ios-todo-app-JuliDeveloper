@@ -10,9 +10,12 @@ final class DetailTodoItemViewController: UIViewController {
     
     var todoItem: TodoItem?
     
+    weak var delegate: DetailTodoItemViewControllerDelegate?
+    
     override func loadView() {
         let customView = DetailTodoItemView()
         customView.configureView(delegate: self, todoItem)
+        self.delegate = customView
         view = customView
     }
     
@@ -102,6 +105,7 @@ extension DetailTodoItemViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         navigationItem.rightBarButtonItem?.isEnabled = textView.text.isEmpty ? false : true
+        delegate?.setupStateDeleteButton(from: textView)
     }
 }
 
@@ -116,5 +120,12 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     
     func didUpdateDeadline(_ deadline: Date?) {
         currentDeadline = deadline
+    }
+    
+    func deleteItem() {
+        if todoItem != nil {
+            viewModel.deleteItem(with: todoItem?.id ?? "")
+        }
+        dismiss(animated: true)
     }
 }

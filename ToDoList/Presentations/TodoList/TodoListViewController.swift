@@ -36,12 +36,12 @@ class TodoListViewController: UIViewController {
         }
         
         setupButton()
-        bindViewModel()        
+        bindViewModel()
     }
     
     //MARK: - Helpers
     private func bindViewModel() {
-        print(viewModel.todoItems)
+        print(viewModel.todoItems) // это временная функциональность
     }
     
     private func setupButton() {

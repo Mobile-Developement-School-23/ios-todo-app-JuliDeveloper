@@ -237,7 +237,7 @@ extension DetailTodoItemView {
     }
     
     @objc private func deleteItem() {
-
+        delegate?.deleteItem()
     }
 }
 
@@ -399,5 +399,11 @@ extension DetailTodoItemView {
             titleTextView.text = "Что надо сделать?"
             importanceSegmentedControl.selectedSegmentIndex = 1
         }
+    }
+}
+
+extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
+    func setupStateDeleteButton(from textView: UITextView) {
+        deleteButton.isEnabled = textView.text.isEmpty ? false : true
     }
 }
