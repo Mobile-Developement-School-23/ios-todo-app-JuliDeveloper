@@ -152,10 +152,17 @@ final class DetailTodoItemView: UIView {
     }()
     
     private var isSelectedDeadline = false
+    private var containerViewLeading: NSLayoutConstraint?
+    private var containerViewTrailing: NSLayoutConstraint?
     
     weak var delegate: DetailTodoItemViewDelegate?
     
     //MARK: - Lifecycle
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupConstraintForInterfaceOrientation()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -330,8 +337,6 @@ extension DetailTodoItemView {
             containerView.bottomAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor
             ),
-            containerView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
-            containerView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             
             titleTextView.leadingAnchor.constraint(
                 equalTo: containerView.leadingAnchor
@@ -460,6 +465,42 @@ extension DetailTodoItemView {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+    }
+    
+    private func setupConstraintForInterfaceOrientation() {
+        containerViewLeading?.isActive = false
+        containerViewTrailing?.isActive = false
+        
+        if let interfaceOrientation = UIApplication.shared.connectedScenes
+            .compactMap({$0 as? UIWindowScene})
+            .first?.interfaceOrientation {
+            
+            switch interfaceOrientation {
+            case .portrait, .portraitUpsideDown:
+                containerViewLeading = containerView.leadingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                    constant: 16
+                )
+                containerViewTrailing = containerView.trailingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                    constant: -16
+                )
+            case .landscapeLeft, .landscapeRight:
+                containerViewLeading = containerView.leadingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                    constant: 50
+                )
+                containerViewTrailing = containerView.trailingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                    constant: -50
+                )
+            default:
+                break
+            }
+        }
+        
+        containerViewLeading?.isActive = true
+        containerViewTrailing?.isActive = true
     }
 }
 

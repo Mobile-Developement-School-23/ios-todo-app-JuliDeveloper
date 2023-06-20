@@ -12,13 +12,6 @@ final class DetailTodoItemViewController: UIViewController {
     
     weak var delegate: DetailTodoItemViewControllerDelegate?
     
-    override func loadView() {
-        let customView = DetailTodoItemView()
-        customView.configureView(delegate: self, todoItem)
-        self.delegate = customView
-        view = customView
-    }
-    
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -28,9 +21,21 @@ final class DetailTodoItemViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        let customView = DetailTodoItemView()
+        customView.configureView(delegate: self, todoItem)
+        self.delegate = customView
+        view = customView
+    }
+    
     override func viewDidLoad() {
         configureNavBar()
         checkItem()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        view.setNeedsUpdateConstraints()
     }
     
     private func configureNavBar() {
