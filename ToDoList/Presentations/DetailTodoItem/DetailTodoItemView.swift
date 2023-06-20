@@ -156,7 +156,7 @@ final class DetailTodoItemView: UIView {
     weak var delegate: DetailTodoItemViewDelegate?
     
     //MARK: - Method configure view
-    func configureView(delegate: DetailTodoItemViewController) {
+    func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?) {
         backgroundColor = .tdBackPrimaryColor
         
         titleTextView.delegate = delegate
@@ -166,6 +166,8 @@ final class DetailTodoItemView: UIView {
         
         scrollView.contentSize = containerView.bounds.size
         secondSeparatorView.isHidden = true
+        
+        checkItem(item)
     }
 }
 
@@ -366,6 +368,35 @@ extension DetailTodoItemView {
             datePicker.date = nextDay
             selectDateButton.setTitle(nextDay.dateForLabel, for: .normal)
             delegate?.didUpdateDeadline(nextDay)
+        }
+    }
+    
+    private func checkItem(_ item: TodoItem?) {
+        if item != nil {
+            titleTextView.text = item?.text
+            titleTextView.textColor = .tdLabelPrimaryColor
+            
+            switch item?.importance {
+            case .important: importanceSegmentedControl.selectedSegmentIndex = 2
+            case .unimportant: importanceSegmentedControl.selectedSegmentIndex = 0
+            default: importanceSegmentedControl.selectedSegmentIndex = 1
+            }
+            
+            if item?.deadline != nil {
+                switchControl.isOn = true
+                selectDateButton.setTitle(
+                    item?.deadline?.dateForLabel,
+                    for: .normal
+                )
+                selectDateButton.isHidden = false
+                selectDateButton.alpha = 1
+                datePicker.date = item?.deadline ?? Date()
+            }
+            
+            deleteButton.isEnabled = true
+        } else {
+            titleTextView.text = "Что надо сделать?"
+            importanceSegmentedControl.selectedSegmentIndex = 1
         }
     }
 }

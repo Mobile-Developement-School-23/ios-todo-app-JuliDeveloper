@@ -77,3 +77,17 @@ extension DetailTodoItemViewController: UITextViewDelegate {
         navigationItem.rightBarButtonItem?.isEnabled = textView.text.isEmpty ? false : true
     }
 }
+
+extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
+    func didUpdateText(_ text: String) {
+        currentText = text
+    }
+    
+    func didUpdateImportance(_ importance: Importance) {
+        currentImportance = importance
+    }
+    
+    func didUpdateDeadline(_ deadline: Date?) {
+        currentDeadline = deadline
+    }
+}
