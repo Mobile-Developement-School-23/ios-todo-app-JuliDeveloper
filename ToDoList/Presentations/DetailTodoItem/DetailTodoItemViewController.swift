@@ -2,13 +2,17 @@ import UIKit
 
 final class DetailTodoItemViewController: UIViewController {
     
+    private var currentText = String()
+    private var currentImportance = Importance.normal
+    private var currentDeadline: Date? = nil
+    
     private var viewModel: TodoListViewModel
     
     var todoItem: TodoItem?
     
     override func loadView() {
         let customView = DetailTodoItemView()
-        customView.configureView(delegate: self)
+        customView.configureView(delegate: self, todoItem)
         view = customView
     }
     
@@ -55,5 +59,21 @@ final class DetailTodoItemViewController: UIViewController {
 }
 
 extension DetailTodoItemViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.text = currentText
+        textView.textColor = .tdLabelPrimaryColor
+    }
     
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Что надо сделать?"
+            textView.textColor = .tdLabelTertiaryColor
+        } else {
+            currentText = textView.text
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        navigationItem.rightBarButtonItem?.isEnabled = textView.text.isEmpty ? false : true
+    }
 }
