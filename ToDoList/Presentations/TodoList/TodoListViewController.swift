@@ -2,6 +2,9 @@ import UIKit
 
 class TodoListViewController: UIViewController {
     
+    //MARK: - Properties
+    private var viewModel: TodoListViewModel
+    
     private lazy var openButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemBlue
@@ -14,12 +17,23 @@ class TodoListViewController: UIViewController {
         return button
     }()
 
+    //MARK: - Lifecycle
+    init(viewModel: TodoListViewModel = TodoListViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .tdBackPrimaryColor
         setupButton()
     }
     
+    //MARK: - Helpers
     private func setupButton() {
         view.addSubview(openButton)
         
@@ -32,7 +46,10 @@ class TodoListViewController: UIViewController {
     }
 
     @objc private func openDetailVC() {
-        let detailVC = DetailTodoItemViewController()
+        let detailVC = DetailTodoItemViewController(viewModel: viewModel)
+        if !viewModel.todoItems.isEmpty {
+            detailVC.todoItem = viewModel.todoItems[0]
+        }
         let navController = UINavigationController(rootViewController: detailVC)
         present(navController, animated: true)
     }
