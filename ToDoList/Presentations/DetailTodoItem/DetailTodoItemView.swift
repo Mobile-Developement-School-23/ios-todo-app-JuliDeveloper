@@ -222,7 +222,15 @@ extension DetailTodoItemView {
     }
     
     @objc private func selectedImportance() {
+        var importance = Importance.normal
         
+        switch importanceSegmentedControl.selectedSegmentIndex {
+        case 0: importance = .unimportant
+        case 2: importance = .important
+        default: importance = .normal
+        }
+        
+        delegate?.didUpdateImportance(importance)
     }
     
     @objc private func deleteItem() {
