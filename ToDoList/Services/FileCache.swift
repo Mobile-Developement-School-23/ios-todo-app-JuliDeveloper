@@ -133,7 +133,6 @@ extension FileCache: FileCacheProtocol {
         do {
             let data = try Data(contentsOf: filePath)
             if let json = try JSONSerialization.jsonObject(with: data) as? [Any] {
-                todoItems.removeAll()
                 todoItems = fetchItemsFromJson(json) ?? []
             }
         } catch {

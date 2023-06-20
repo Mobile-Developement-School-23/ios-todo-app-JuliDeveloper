@@ -30,10 +30,20 @@ class TodoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .tdBackPrimaryColor
+        
+        viewModel.$todoItems.bind { [weak self] _ in
+            self?.bindViewModel()
+        }
+        
         setupButton()
+        bindViewModel()        
     }
     
     //MARK: - Helpers
+    private func bindViewModel() {
+        print(viewModel.todoItems)
+    }
+    
     private func setupButton() {
         view.addSubview(openButton)
         

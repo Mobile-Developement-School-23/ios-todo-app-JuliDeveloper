@@ -27,6 +27,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     override func viewDidLoad() {
         configureNavBar()
+        checkItem()
     }
     
     private func configureNavBar() {
@@ -47,12 +48,38 @@ final class DetailTodoItemViewController: UIViewController {
         )
     }
     
+    private func checkItem() {
+        if todoItem != nil {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+            currentText = todoItem?.text ?? ""
+            currentImportance = todoItem?.importance ?? Importance.normal
+            currentDeadline = todoItem?.deadline ?? nil
+        }
+    }
+    
     @objc private func cancel() {
         dismiss(animated: true)
     }
     
     @objc private func save() {
         view.endEditing(true)
+        
+        if todoItem != nil {
+            let oldItem = TodoItem(
+                id: todoItem?.id ?? "",
+                text: currentText,
+                importance: currentImportance,
+                deadline: currentDeadline
+            )
+            viewModel.addItem(oldItem)
+        } else {
+            let newItem = TodoItem(
+                text: currentText,
+                importance: currentImportance,
+                deadline: currentDeadline
+            )
+            viewModel.addItem(newItem)
+        }
         
         dismiss(animated: true)
     }

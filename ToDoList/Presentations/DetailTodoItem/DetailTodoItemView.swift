@@ -159,6 +159,7 @@ final class DetailTodoItemView: UIView {
     func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?) {
         backgroundColor = .tdBackPrimaryColor
         
+        self.delegate = delegate
         titleTextView.delegate = delegate
         
         addElements()
