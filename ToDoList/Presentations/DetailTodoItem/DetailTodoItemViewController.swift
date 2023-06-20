@@ -2,6 +2,7 @@ import UIKit
 
 final class DetailTodoItemViewController: UIViewController {
     
+    //MARK: - Properties
     private var currentText = String()
     private var currentImportance = Importance.normal
     private var currentDeadline: Date? = nil
@@ -12,6 +13,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     weak var delegate: DetailTodoItemViewControllerDelegate?
     
+    //MARK: - Lifecycle
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -38,33 +40,7 @@ final class DetailTodoItemViewController: UIViewController {
         view.setNeedsUpdateConstraints()
     }
     
-    private func configureNavBar() {
-        title = "Дело"
-    
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "Отменить",
-            style: .plain,
-            target: self,
-            action: #selector(cancel)
-        )
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Сохранить",
-            style: .done,
-            target: self,
-            action: #selector(save)
-        )
-    }
-    
-    private func checkItem() {
-        if todoItem != nil {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-            currentText = todoItem?.text ?? ""
-            currentImportance = todoItem?.importance ?? Importance.normal
-            currentDeadline = todoItem?.deadline ?? nil
-        }
-    }
-    
+    //MARK: - Actions
     @objc private func cancel() {
         dismiss(animated: true)
     }
@@ -93,6 +69,37 @@ final class DetailTodoItemViewController: UIViewController {
     }
 }
 
+//MARK: - Private methods
+extension DetailTodoItemViewController {
+    private func configureNavBar() {
+        title = "Дело"
+    
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "Отменить",
+            style: .plain,
+            target: self,
+            action: #selector(cancel)
+        )
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Сохранить",
+            style: .done,
+            target: self,
+            action: #selector(save)
+        )
+    }
+    
+    private func checkItem() {
+        if todoItem != nil {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+            currentText = todoItem?.text ?? ""
+            currentImportance = todoItem?.importance ?? Importance.normal
+            currentDeadline = todoItem?.deadline ?? nil
+        }
+    }
+}
+
+//MARK: - UITextViewDelegate
 extension DetailTodoItemViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.text = currentText
@@ -114,6 +121,7 @@ extension DetailTodoItemViewController: UITextViewDelegate {
     }
 }
 
+//MARK: - DetailTodoItemViewDelegate
 extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     func didUpdateText(_ text: String) {
         currentText = text

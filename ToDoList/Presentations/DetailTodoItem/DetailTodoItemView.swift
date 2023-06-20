@@ -504,6 +504,7 @@ extension DetailTodoItemView {
     }
 }
 
+//MARK: - DetailTodoItemViewControllerDelegate
 extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     func setupStateDeleteButton(from textView: UITextView) {
         deleteButton.isEnabled = textView.text.isEmpty ? false : true
