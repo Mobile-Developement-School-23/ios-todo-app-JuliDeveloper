@@ -103,8 +103,8 @@ final class DetailTodoItemView: UIView {
             action: #selector(selectDate),
             for: .touchUpInside
         )
-        button.isHidden = false
-        button.alpha = 1
+        button.isHidden = true
+        button.alpha = 0
         return button
     }()
     
@@ -151,10 +151,14 @@ final class DetailTodoItemView: UIView {
         return picker
     }()
     
+    private var isSelectedDeadline = false
+    
+    weak var delegate: DetailTodoItemViewDelegate?
+    
     //MARK: - Method configure view
     func configureView(delegate: DetailTodoItemViewController) {
         backgroundColor = .tdBackPrimaryColor
-
+        
         titleTextView.delegate = delegate
         
         addElements()
@@ -168,18 +172,56 @@ final class DetailTodoItemView: UIView {
 //MARK: - Actions
 extension DetailTodoItemView {
     @objc private func selectDate() {
+        isSelectedDeadline.toggle()
         
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            guard let self = self else { return }
+            
+            self.secondSeparatorView.isHidden = !self.isSelectedDeadline
+            self.datePicker.isHidden = !self.isSelectedDeadline
+            
+            self.layoutIfNeeded()
+        })
     }
     
     @objc private func switchDeadline() {
-       
-    }
-    
-    @objc private func selectedImportance() {
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
+            guard let self = self else { return }
+            
+            self.selectDateButton.alpha = switchControl.isOn ? 1 : 0
+            self.selectDateButton.isHidden = switchControl.isOn ? false : true
+            
+            self.layoutIfNeeded()
+        })
         
+        if isSelectedDeadline {
+            UIView.animate(withDuration: 0.5, animations: { [weak self] in
+                guard let self = self else { return }
+                
+                self.isSelectedDeadline = false
+                self.secondSeparatorView.isHidden = true
+                self.datePicker.isHidden = true
+                self.datePicker.date = Date()
+                
+                self.layoutIfNeeded()
+            })
+        }
+        
+        if switchControl.isOn == false {
+            datePicker.date = Date()
+            selectDateButton.setTitle(datePicker.date.dateForLabel, for: .normal)
+            delegate?.didUpdateDeadline(nil)
+        } else {
+            defaultConfigureDatePicker()
+        }
     }
     
     @objc private func datePickerValueChanged() {
+        selectDateButton.setTitle(datePicker.date.dateForLabel, for: .normal)
+        delegate?.didUpdateDeadline(datePicker.date)
+    }
+    
+    @objc private func selectedImportance() {
         
     }
     
@@ -306,5 +348,16 @@ extension DetailTodoItemView {
                 equalTo: containerView.bottomAnchor
             )
         ])
+    }
+    
+    private func defaultConfigureDatePicker() {
+        let calendar = Calendar.current
+        datePicker.minimumDate = calendar.startOfDay(for: Date())
+        let selectedDate = datePicker.date
+        if let nextDay = calendar.date(byAdding: .day, value: 1, to: selectedDate) {
+            datePicker.date = nextDay
+            selectDateButton.setTitle(nextDay.dateForLabel, for: .normal)
+            delegate?.didUpdateDeadline(nextDay)
+        }
     }
 }
