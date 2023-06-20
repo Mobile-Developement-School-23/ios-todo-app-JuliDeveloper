@@ -21,6 +21,9 @@
 		2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */; };
 		2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */; };
 		2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7512A42150C00919419 /* SelectColorStackView.swift */; };
+		2501F7542A4220F700919419 /* CustomColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */; };
+		2501F7582A42446A00919419 /* OpacitySlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7572A42446A00919419 /* OpacitySlider.swift */; };
+		2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -59,6 +62,9 @@
 		2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewDelegate.swift; sourceTree = "<group>"; };
 		2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewControllerDelegate.swift; sourceTree = "<group>"; };
 		2501F7512A42150C00919419 /* SelectColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectColorStackView.swift; sourceTree = "<group>"; };
+		2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickerViewController.swift; sourceTree = "<group>"; };
+		2501F7572A42446A00919419 /* OpacitySlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpacitySlider.swift; sourceTree = "<group>"; };
+		2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Extension.swift"; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 				2501F73D2A41BAC900919419 /* CustomLable.swift */,
 				2501F73F2A41BADB00919419 /* CustomStackView.swift */,
 				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
+				2501F7572A42446A00919419 /* OpacitySlider.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -147,6 +154,14 @@
 				2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		2501F7592A424E9700919419 /* CustomColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */,
+			);
+			path = CustomColorPicker;
 			sourceTree = "<group>";
 		};
 		25B634702A3CA0DD00AC6AD7 = {
@@ -206,6 +221,7 @@
 				2501F7362A41B91800919419 /* Views */,
 				2501F7452A41D8EA00919419 /* TodoList */,
 				2501F7352A41B8D500919419 /* DetailTodoItem */,
+				2501F7592A424E9700919419 /* CustomColorPicker */,
 				2501F7462A41D8FB00919419 /* LaunchScreen */,
 			);
 			path = Presentations;
@@ -226,6 +242,7 @@
 				25B634992A3CAE2D00AC6AD7 /* Int+Extension.swift */,
 				2501F7392A41B9A000919419 /* UIColor+Extension.swift */,
 				2501F73B2A41B9B800919419 /* UIFont+Extension.swift */,
+				2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -360,13 +377,16 @@
 				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
 				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,
 				2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */,
+				2501F7542A4220F700919419 /* CustomColorPickerViewController.swift in Sources */,
 				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
+				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
 				2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */,
+				2501F7582A42446A00919419 /* OpacitySlider.swift in Sources */,
 				25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,7 +549,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -559,7 +579,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -5,16 +5,6 @@ final class SelectColorStackView: CustomStackView {
     //MARK: - Properties
     private let titleLabelColor = CustomLabel(text: "Цвет текста")
     
-    private let colorStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        stack.spacing = 10
-        return stack
-    }()
-    
-    private let hexColorLabel = CustomLabel(text: "#000000")
-    
     private lazy var colorButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .orange
@@ -22,7 +12,7 @@ final class SelectColorStackView: CustomStackView {
         button.heightAnchor.constraint(equalToConstant: 34).isActive = true
         button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
         button.clipsToBounds = true
-        button.layer.borderColor = UIColor.tdSupportOverlayColor.withAlphaComponent(0.5).cgColor
+        button.layer.borderColor = UIColor.tdSupportOverlayColor.withAlphaComponent(0.1).cgColor
         button.layer.borderWidth = 2
         button.layer.cornerRadius = 34 / 2
         button.addTarget(
@@ -33,6 +23,8 @@ final class SelectColorStackView: CustomStackView {
         return button
     }()
     
+    var buttonAction: ((CustomColorPickerViewController) -> Void)?
+        
     //MARK: - Initialization
     override init() {
         super.init()
@@ -43,19 +35,21 @@ final class SelectColorStackView: CustomStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Heplers
+    //MARK: - Helpers
     private func addElements() {
-        [titleLabelColor, colorStackView].forEach {
+        [titleLabelColor, colorButton].forEach {
             addArrangedSubview($0)
-        }
-        
-        [hexColorLabel, colorButton].forEach {
-            colorStackView.addArrangedSubview($0)
         }
     }
     
     @objc private func openColorPicker() {
-        print("open colorPicker")
+        let colorPickerVC = CustomColorPickerViewController()
+
+        if let sheet = colorPickerVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+        }
+        
+        buttonAction?(colorPickerVC)
     }
 }
 

@@ -170,11 +170,12 @@ final class DetailTodoItemView: UIView {
     }
     
     //MARK: - Method configure view
-    func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?) {
+    func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?, colorButtonAction: @escaping ((CustomColorPickerViewController) -> Void)) {
         backgroundColor = .tdBackPrimaryColor
         
         self.delegate = delegate
         titleTextView.delegate = delegate
+        selectColorStackView.buttonAction = colorButtonAction
         
         addElements()
         setupConstraints()

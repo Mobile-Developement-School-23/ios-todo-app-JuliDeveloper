@@ -25,7 +25,11 @@ final class DetailTodoItemViewController: UIViewController {
     
     override func loadView() {
         let customView = DetailTodoItemView()
-        customView.configureView(delegate: self, todoItem)
+        customView.configureView(delegate: self, todoItem) { [weak self] viewController in
+            print("open")
+            self?.present(viewController, animated: true)
+        }
+        
         self.delegate = customView
         view = customView
     }
