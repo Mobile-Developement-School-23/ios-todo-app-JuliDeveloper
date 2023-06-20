@@ -1,6 +1,6 @@
 import UIKit
 
-final class CustomStackView: UIStackView {
+class CustomStackView: UIStackView {
     init() {
         super.init(frame: .zero)
         axis = .horizontal

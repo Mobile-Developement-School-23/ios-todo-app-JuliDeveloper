@@ -45,6 +45,7 @@ final class DetailTodoItemView: UIView {
     }()
     
     private let importanceStackView = CustomStackView()
+    private let selectColorStackView = SelectColorStackView()
     private let dateStackView = CustomStackView()
     
     private let deadlineStackView: UIStackView = {
@@ -57,6 +58,7 @@ final class DetailTodoItemView: UIView {
     
     private let firstSeparatorView = SeparatorView()
     private let secondSeparatorView = SeparatorView()
+    private let theirSeparatorView = SeparatorView()
     
     private let bottomAnchorView: UIView = {
         let view = UIView()
@@ -179,7 +181,7 @@ final class DetailTodoItemView: UIView {
         setupObservers()
         
         scrollView.contentSize = containerView.bounds.size
-        secondSeparatorView.isHidden = true
+        theirSeparatorView.isHidden = true
         
         checkItem(item)
     }
@@ -193,7 +195,7 @@ extension DetailTodoItemView {
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
             guard let self = self else { return }
             
-            self.secondSeparatorView.isHidden = !self.isSelectedDeadline
+            self.theirSeparatorView.isHidden = !self.isSelectedDeadline
             self.datePicker.isHidden = !self.isSelectedDeadline
             
             self.layoutIfNeeded()
@@ -215,7 +217,7 @@ extension DetailTodoItemView {
                 guard let self = self else { return }
                 
                 self.isSelectedDeadline = false
-                self.secondSeparatorView.isHidden = true
+                self.theirSeparatorView.isHidden = true
                 self.datePicker.isHidden = true
                 self.datePicker.date = Date()
                 
@@ -299,7 +301,7 @@ extension DetailTodoItemView {
         
         detailView.addSubview(mainStackView)
         
-        [importanceStackView, firstSeparatorView, dateStackView, secondSeparatorView, datePicker].forEach {
+        [importanceStackView, firstSeparatorView, selectColorStackView, secondSeparatorView, dateStackView, theirSeparatorView, datePicker].forEach {
             mainStackView.addArrangedSubview($0)
         }
         
