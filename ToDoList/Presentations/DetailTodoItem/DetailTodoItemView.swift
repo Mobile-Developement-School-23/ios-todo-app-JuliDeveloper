@@ -155,6 +155,11 @@ final class DetailTodoItemView: UIView {
     
     weak var delegate: DetailTodoItemViewDelegate?
     
+    //MARK: - Lifecycle
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     //MARK: - Method configure view
     func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?) {
         backgroundColor = .tdBackPrimaryColor
@@ -164,6 +169,7 @@ final class DetailTodoItemView: UIView {
         
         addElements()
         setupConstraints()
+        setupObservers()
         
         scrollView.contentSize = containerView.bounds.size
         secondSeparatorView.isHidden = true
@@ -238,6 +244,38 @@ extension DetailTodoItemView {
     
     @objc private func deleteItem() {
         delegate?.deleteItem()
+    }
+    
+    @objc private func handleKeyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardHeight = keyboardSize.cgRectValue.height
+
+        scrollView.contentInset = UIEdgeInsets(
+            top: 0, left: 0, bottom: keyboardHeight, right: 0
+        )
+    }
+    
+    @objc private func handleKeyboardDidShow() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOnScrollView))
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func handleKeyboardWillHide() {
+        if let gestures = scrollView.gestureRecognizers {
+            for gesture in gestures {
+                if gesture is UITapGestureRecognizer {
+                    scrollView.removeGestureRecognizer(gesture)
+                }
+            }
+        }
+        
+        scrollView.contentInset = UIEdgeInsets.zero
+    }
+
+    @objc private func handleTapOnScrollView() {
+        scrollView.endEditing(true)
     }
 }
 
@@ -399,6 +437,29 @@ extension DetailTodoItemView {
             titleTextView.text = "Что надо сделать?"
             importanceSegmentedControl.selectedSegmentIndex = 1
         }
+    }
+    
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardDidShow),
+            name: UIResponder.keyboardDidShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
 }
 
