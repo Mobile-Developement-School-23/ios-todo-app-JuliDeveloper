@@ -153,6 +153,8 @@ final class DetailTodoItemView: UIView {
         return picker
     }()
     
+    private let uiColorMarshallings = UIColorMarshallings()
+    
     private var isSelectedDeadline = false
     private var containerViewLeading: NSLayoutConstraint?
     private var containerViewTrailing: NSLayoutConstraint?
@@ -421,7 +423,13 @@ extension DetailTodoItemView {
     private func checkItem(_ item: TodoItem?) {
         if item != nil {
             titleTextView.text = item?.text
-            titleTextView.textColor = .tdLabelPrimaryColor
+            titleTextView.textColor = uiColorMarshallings.fromHexString(hex: item?.hexColor ?? "")
+            
+            selectColorStackView.arrangedSubviews.forEach { view in
+                if let button = view as? UIButton {
+                    button.backgroundColor = uiColorMarshallings.fromHexString(hex: item?.hexColor ?? "")
+                }
+            }
             
             switch item?.importance {
             case .important: importanceSegmentedControl.selectedSegmentIndex = 2
@@ -511,5 +519,14 @@ extension DetailTodoItemView {
 extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     func setupStateDeleteButton(from textView: UITextView) {
         deleteButton.isEnabled = textView.text.isEmpty ? false : true
+    }
+    
+    func setupColor(_ color: UIColor) {
+        selectColorStackView.arrangedSubviews.forEach { view in
+            if let button = view as? UIButton {
+                button.backgroundColor = color
+            }
+        }
+        titleTextView.textColor = color
     }
 }

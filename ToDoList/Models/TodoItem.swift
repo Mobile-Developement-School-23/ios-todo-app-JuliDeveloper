@@ -7,6 +7,7 @@ private let deadlineKey = "deadline"
 private let isDoneKey = "isDone"
 private let createdAtKey = "createdAt"
 private let changesAtKey = "changesAt"
+private let hexColorKey = "hexColor"
 
 enum Importance: String {
     case unimportant
@@ -22,6 +23,7 @@ struct TodoItem {
     let isDone: Bool
     let createdAt: Date
     let changesAt: Date?
+    let hexColor: String
     
     init(
         id: String = UUID().uuidString,
@@ -30,7 +32,8 @@ struct TodoItem {
         deadline: Date? = nil,
         isDone: Bool = false,
         createdAt: Date = Date(),
-        changesAt: Date? = nil
+        changesAt: Date? = nil,
+        hexColor: String = "#000000"
     ) {
         self.id = id
         self.text = text
@@ -39,6 +42,7 @@ struct TodoItem {
         self.isDone = isDone
         self.createdAt = createdAt
         self.changesAt = changesAt
+        self.hexColor = hexColor
     }
 }
 
@@ -50,6 +54,7 @@ extension TodoItem {
         result[idKey] = id
         result[textKey] = text
         result[isDoneKey] = isDone
+        result[hexColorKey] = hexColor
         
         if importance != Importance.normal {
             result[importanceKey] = importance.rawValue
@@ -75,6 +80,7 @@ extension TodoItem {
               let id = json["id"] as? String,
               let text = json["text"] as? String,
               let isDone = json["isDone"] as? Bool,
+              let hexColor = json["hexColor"] as? String,
               let createdAt = (json["createdAt"] as? Int)?.dateValue
         else {
             return nil
@@ -91,7 +97,8 @@ extension TodoItem {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            hexColor: hexColor
         )
     }
 }
@@ -106,13 +113,13 @@ extension TodoItem {
         let createdAtString = String(createdAt.dateIntValue ?? 0)
         let changesAtString = changesAt != nil ? String(changesAt?.dateIntValue ?? 0) : ""
         
-        return "\(id),\(textCsv),\(importanceString),\(deadlineString),\(isDoneString),\(createdAtString),\(changesAtString)"
+        return "\(id),\(textCsv),\(importanceString),\(deadlineString),\(isDoneString),\(createdAtString),\(changesAtString),\(hexColor)"
     }
     
     static func parse(csv: String) -> TodoItem? {
         let strings = csv.components(separatedBy: ",")
         
-        guard strings.count == 7 else {
+        guard strings.count == 8 else {
             return nil
         }
         
@@ -121,6 +128,7 @@ extension TodoItem {
         let importanceString = strings[2].isEmpty ? Importance.normal.rawValue : strings[2]
         let deadline = strings[3].isEmpty ? nil : Int(strings[3])?.dateValue
         let changesAt = strings[6].isEmpty ? nil : Int(strings[6])?.dateValue
+        let hexColor = strings[7]
         
         guard let importance = Importance(rawValue: importanceString),
               let isDone = Bool(strings[4]),
@@ -136,7 +144,8 @@ extension TodoItem {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            hexColor: hexColor
         )
     }
 }

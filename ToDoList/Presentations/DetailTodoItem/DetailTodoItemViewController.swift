@@ -3,9 +3,12 @@ import UIKit
 final class DetailTodoItemViewController: UIViewController {
     
     //MARK: - Properties
+    private let uiColorMarshallings = UIColorMarshallings()
+    
     private var currentText = String()
     private var currentImportance = Importance.normal
     private var currentDeadline: Date? = nil
+    private var currentColor: UIColor = .black
     
     private var viewModel: TodoListViewModel
     
@@ -26,7 +29,8 @@ final class DetailTodoItemViewController: UIViewController {
     override func loadView() {
         let customView = DetailTodoItemView()
         customView.configureView(delegate: self, todoItem) { [weak self] viewController in
-            print("open")
+            viewController.delegate = self
+            viewController.currentHexColor = self?.todoItem?.hexColor ?? ""
             self?.present(viewController, animated: true)
         }
         
@@ -57,14 +61,16 @@ final class DetailTodoItemViewController: UIViewController {
                 id: todoItem?.id ?? "",
                 text: currentText,
                 importance: currentImportance,
-                deadline: currentDeadline
+                deadline: currentDeadline,
+                hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
             viewModel.addItem(oldItem)
         } else {
             let newItem = TodoItem(
                 text: currentText,
                 importance: currentImportance,
-                deadline: currentDeadline
+                deadline: currentDeadline,
+                hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
             viewModel.addItem(newItem)
         }
@@ -99,6 +105,9 @@ extension DetailTodoItemViewController {
             currentText = todoItem?.text ?? ""
             currentImportance = todoItem?.importance ?? Importance.normal
             currentDeadline = todoItem?.deadline ?? nil
+            currentColor = uiColorMarshallings.fromHexString(
+                hex: todoItem?.hexColor ?? ""
+            )
         }
     }
 }
@@ -137,6 +146,11 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     
     func didUpdateDeadline(_ deadline: Date?) {
         currentDeadline = deadline
+    }
+    
+    func didUpdateColor(_ color: UIColor) {
+        currentColor = color
+        delegate?.setupColor(color)
     }
     
     func deleteItem() {

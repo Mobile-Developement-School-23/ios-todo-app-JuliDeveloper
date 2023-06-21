@@ -20,11 +20,10 @@ final class CustomColorPickerViewController: UIViewController {
         return stack
     }()
     
-    private let hexCurrentColorLabel = CustomLabel(text: "#000000")
+    private let hexCurrentColorLabel = CustomLabel(text: "")
     
     private let currentColorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .orange
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 34).isActive = true
         view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
@@ -73,7 +72,11 @@ final class CustomColorPickerViewController: UIViewController {
     
     private lazy var opacitySlider = OpacitySlider()
     
-    private var currentColor = UIColor()
+    private let uiColorMarshallings = UIColorMarshallings()
+    
+    var currentHexColor = ""
+    
+    weak var delegate: DetailTodoItemViewDelegate?
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -81,7 +84,9 @@ final class CustomColorPickerViewController: UIViewController {
         addElements()
         setupConstraints()
         
-        currentColor = .orange
+        currentColorView.backgroundColor = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        hexCurrentColorLabel.text = currentHexColor
+        
         let panRecognizer = UIPanGestureRecognizer(
             target: self,
             action: #selector(handlePan(_:))
@@ -93,6 +98,11 @@ final class CustomColorPickerViewController: UIViewController {
         gradientLayer.frame = colorView.bounds
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        let color = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        delegate?.didUpdateColor(color)
+    }
+    
     //MARK: - Actions
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
         let point = gestureRecognizer.location(in: colorView)
@@ -101,9 +111,11 @@ final class CustomColorPickerViewController: UIViewController {
         indicator.center = CGPoint(x: point.x, y: point.y)
         indicator.backgroundColor = color
         
-        currentColor = color
-        opacitySlider.setupColorsGradient(color: currentColor)
-        currentColorView.backgroundColor = currentColor
+        currentHexColor = uiColorMarshallings.toHexString(color: color)
+
+        opacitySlider.setupColorsGradient(color: color)
+        currentColorView.backgroundColor = color
+        hexCurrentColorLabel.text = currentHexColor
     }
     
     //MARK: - Private methods
