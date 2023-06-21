@@ -11,28 +11,7 @@ final class CustomColorPickerViewController: UIViewController {
         return view
     }()
     
-    private let currentColorStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .fill
-        stack.spacing = 10
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private let hexCurrentColorLabel = CustomLabel(text: "")
-    
-    private let currentColorView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.heightAnchor.constraint(equalToConstant: 34).isActive = true
-        view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
-        view.clipsToBounds = true
-        view.layer.borderColor = UIColor.tdSupportOverlayColor.withAlphaComponent(0.1).cgColor
-        view.layer.borderWidth = 2
-        view.layer.cornerRadius = 34 / 2
-        return view
-    }()
+    private let currentColorStackView = ColorStackViewColorPicker()
     
     private let colorView: UIView = {
         let view = UIView()
@@ -73,7 +52,9 @@ final class CustomColorPickerViewController: UIViewController {
     private lazy var opacitySlider = OpacitySlider()
     
     private let uiColorMarshallings = UIColorMarshallings()
-    
+    private var currentColor = UIColor()
+    private var alpha = Float()
+
     var currentHexColor = ""
     
     weak var delegate: DetailTodoItemViewDelegate?
@@ -84,14 +65,23 @@ final class CustomColorPickerViewController: UIViewController {
         addElements()
         setupConstraints()
         
-        currentColorView.backgroundColor = uiColorMarshallings.fromHexString(hex: currentHexColor)
-        hexCurrentColorLabel.text = currentHexColor
+        currentColor = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        currentColorStackView.setColor(currentColor, hexColor: currentHexColor)
+        opacitySlider.setupColorsGradient(
+            color: uiColorMarshallings.fromHexString(hex: currentHexColor)
+        )
         
         let panRecognizer = UIPanGestureRecognizer(
             target: self,
             action: #selector(handlePan(_:))
         )
         colorView.addGestureRecognizer(panRecognizer)
+        
+        opacitySlider.addTarget(
+            self,
+            action: #selector(changeValue),
+            for: .valueChanged
+        )
     }
     
     override func viewDidLayoutSubviews() {
@@ -111,11 +101,27 @@ final class CustomColorPickerViewController: UIViewController {
         indicator.center = CGPoint(x: point.x, y: point.y)
         indicator.backgroundColor = color
         
-        currentHexColor = uiColorMarshallings.toHexString(color: color)
+        currentColor = color
+        
+        currentHexColor = uiColorMarshallings.toHexString(color: currentColor)
 
-        opacitySlider.setupColorsGradient(color: color)
-        currentColorView.backgroundColor = color
-        hexCurrentColorLabel.text = currentHexColor
+        opacitySlider.setupColorsGradient(color: currentColor)
+        currentColorStackView.setColor(currentColor, hexColor: currentHexColor)
+    }
+    
+    @objc private func changeValue() {
+        alpha = opacitySlider.value
+        
+        let colorWithAlpha = currentColor.withAlphaComponent(CGFloat(alpha))
+        currentHexColor = uiColorMarshallings.toHexString(color: colorWithAlpha)
+
+        opacitySlider.setupColorsGradient(
+            color: uiColorMarshallings.fromHexString(hex: currentHexColor)
+        )
+        currentColorStackView.setColor(
+            uiColorMarshallings.fromHexString(hex: currentHexColor),
+            hexColor: currentHexColor
+        )
     }
     
     //MARK: - Private methods
@@ -131,13 +137,6 @@ final class CustomColorPickerViewController: UIViewController {
         
         colorView.layer.addSublayer(gradientLayer)
         colorView.addSubview(indicator)
-        
-        [
-            currentColorView,
-            hexCurrentColorLabel
-        ].forEach {
-            currentColorStackView.addArrangedSubview($0)
-        }
     }
     
     private func setupConstraints() {

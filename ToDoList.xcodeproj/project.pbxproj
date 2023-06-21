@@ -25,6 +25,7 @@
 		2501F7582A42446A00919419 /* OpacitySlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7572A42446A00919419 /* OpacitySlider.swift */; };
 		2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */; };
 		2501F75D2A432B6200919419 /* UIColorMarshallings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F75C2A432B6200919419 /* UIColorMarshallings.swift */; };
+		2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -67,6 +68,7 @@
 		2501F7572A42446A00919419 /* OpacitySlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpacitySlider.swift; sourceTree = "<group>"; };
 		2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Extension.swift"; sourceTree = "<group>"; };
 		2501F75C2A432B6200919419 /* UIColorMarshallings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshallings.swift; sourceTree = "<group>"; };
+		2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackViewColorPicker.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				2501F73F2A41BADB00919419 /* CustomStackView.swift */,
 				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
 				2501F7572A42446A00919419 /* OpacitySlider.swift */,
+				2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
+				2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
 				2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */,
 				2501F7582A42446A00919419 /* OpacitySlider.swift in Sources */,

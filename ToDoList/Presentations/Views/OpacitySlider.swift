@@ -39,20 +39,21 @@ final class OpacitySlider: UISlider {
         thumbImageView.center = CGPoint(x: thumbRect.midX, y: thumbRect.midY)
     }
     
-    //MARK: - Methods
+    //MARK: - Helpers
     func setupColorsGradient(color: UIColor) {
         layer.insertSublayer(gradientLayer, at: 0)
         gradientLayer.colors = [
             UIColor.clear.cgColor,
             color.cgColor
         ]
+        
+        value = Float(color.cgColor.alpha)
     }
     
-    //MARK: - Helpers
+    //MARK: - Private methods
     private func setupSlider() {
         minimumValue = 0
         maximumValue = 1
-        value = 0.5
 
         clipsToBounds = true
         layer.cornerRadius = Constants.sliderRadius
