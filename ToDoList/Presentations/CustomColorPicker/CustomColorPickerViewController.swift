@@ -65,7 +65,13 @@ final class CustomColorPickerViewController: UIViewController {
         addElements()
         setupConstraints()
         
-        currentColor = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        if currentHexColor.isEmpty {
+            currentColor = .tdLabelPrimaryColor
+            currentHexColor = uiColorMarshallings.toHexString(color: currentColor)
+        } else {
+            currentColor = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        }
+        
         currentColorStackView.setColor(currentColor, hexColor: currentHexColor)
         opacitySlider.setupColorsGradient(
             color: uiColorMarshallings.fromHexString(hex: currentHexColor)

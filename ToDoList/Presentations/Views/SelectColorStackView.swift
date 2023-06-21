@@ -7,7 +7,6 @@ final class SelectColorStackView: CustomStackView {
     
     private lazy var colorButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .orange
         button.translatesAutoresizingMaskIntoConstraints = false
         button.heightAnchor.constraint(equalToConstant: 34).isActive = true
         button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true

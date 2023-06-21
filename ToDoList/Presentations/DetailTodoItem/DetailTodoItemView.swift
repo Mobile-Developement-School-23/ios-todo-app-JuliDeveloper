@@ -452,6 +452,12 @@ extension DetailTodoItemView {
         } else {
             titleTextView.text = "Что надо сделать?"
             importanceSegmentedControl.selectedSegmentIndex = 1
+            
+            selectColorStackView.arrangedSubviews.forEach { view in
+                if let button = view as? UIButton {
+                    button.backgroundColor = .tdLabelPrimaryColor
+                }
+            }
         }
     }
     
