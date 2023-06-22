@@ -15,7 +15,7 @@ extension UIColor {
     static var tdBlueColor: UIColor { UIColor(named: "tdBlueColor") ?? UIColor() }
     static var tdWhiteColor: UIColor { UIColor(named: "tdWhiteColor") ?? UIColor() }
     static var tdBackElevatedColor: UIColor { UIColor(named: "tdBackElevatedColor") ?? UIColor() }
-    static var tdBackiOSPrimaryColor: UIColor { UIColor(named: "tdBackiOSPrimaryColor") ?? UIColor() }
+    static var tdBackIOSPrimaryColor: UIColor { UIColor(named: "tdBackIOSPrimaryColor") ?? UIColor() }
     static var tdBackPrimaryColor: UIColor { UIColor(named: "tdBackPrimaryColor") ?? UIColor() }
     static var tdBackSecondaryColor: UIColor { UIColor(named: "tdBackSecondaryColor") ?? UIColor() }
 }

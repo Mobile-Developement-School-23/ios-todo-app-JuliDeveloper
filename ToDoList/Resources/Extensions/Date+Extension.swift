@@ -8,7 +8,7 @@ private let dateTimeDefaultFormatter: ISO8601DateFormatter = {
 
 private let dateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
-    dateFormatter.locale = .current
+    dateFormatter.locale = Locale(identifier: "Ru_ru")
     dateFormatter.dateFormat = "dd MMMM yyyy"
     return dateFormatter
 }()

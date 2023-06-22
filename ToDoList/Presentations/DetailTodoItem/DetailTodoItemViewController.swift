@@ -83,20 +83,27 @@ final class DetailTodoItemViewController: UIViewController {
 extension DetailTodoItemViewController {
     private func configureNavBar() {
         title = "Дело"
-    
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
+        
+        let leftButton = UIBarButtonItem(
             title: "Отменить",
             style: .plain,
             target: self,
             action: #selector(cancel)
         )
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let rightButton = UIBarButtonItem(
             title: "Сохранить",
             style: .done,
             target: self,
             action: #selector(save)
         )
+        
+        leftButton.tintColor = .tdBlueColor
+        rightButton.tintColor = .tdBlueColor
+    
+        navigationItem.leftBarButtonItem = leftButton
+        
+        navigationItem.rightBarButtonItem = rightButton
     }
     
     private func checkItem() {

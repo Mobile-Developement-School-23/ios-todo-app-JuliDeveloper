@@ -15,6 +15,7 @@ final class DateStackView: CustomStackView {
     
     private lazy var switchControl: UISwitch = {
         let control = UISwitch()
+        control.subviews[0].subviews[0].backgroundColor = .tdSupportOverlayColor
         control.addTarget(
             self,
             action: #selector(switchDeadline),

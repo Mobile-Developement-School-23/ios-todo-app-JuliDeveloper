@@ -15,7 +15,7 @@ final class DetailMainStackView: UIStackView {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
         picker.preferredDatePickerStyle = .inline
-        picker.locale = .current
+        picker.locale = Locale(identifier: "Ru_ru")
         picker.calendar.firstWeekday = 2
         picker.isHidden = true
         picker.addTarget(
