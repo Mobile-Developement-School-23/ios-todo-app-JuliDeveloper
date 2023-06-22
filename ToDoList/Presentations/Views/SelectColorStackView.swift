@@ -34,13 +34,7 @@ final class SelectColorStackView: CustomStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
-    private func addElements() {
-        [titleLabelColor, colorButton].forEach {
-            addArrangedSubview($0)
-        }
-    }
-    
+    //MARK: - Actions
     @objc private func openColorPicker() {
         let colorPickerVC = CustomColorPickerViewController()
 
@@ -49,6 +43,13 @@ final class SelectColorStackView: CustomStackView {
         }
         
         buttonAction?(colorPickerVC)
+    }
+    
+    //MARK: - Private methods
+    private func addElements() {
+        [titleLabelColor, colorButton].forEach {
+            addArrangedSubview($0)
+        }
     }
 }
 

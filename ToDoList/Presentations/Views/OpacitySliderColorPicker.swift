@@ -1,6 +1,6 @@
 import UIKit
 
-final class OpacitySlider: UISlider {
+final class OpacitySliderColorPicker: UISlider {
     
     //MARK: - Properties
     private let gradientLayer: CAGradientLayer = {

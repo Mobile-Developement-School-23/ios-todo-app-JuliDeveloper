@@ -24,9 +24,6 @@ final class DetailTodoItemView: UIView {
         return textView
     }()
     
-    private let titleLabelImportance = CustomLabel(text: "Важность")
-    private let titleLabelDate = CustomLabel(text: "Сделать до")
-    
     private let detailView: UIView = {
         let view = UIView()
         view.backgroundColor = .tdBackSecondaryColor
@@ -35,30 +32,7 @@ final class DetailTodoItemView: UIView {
         return view
     }()
     
-    private let mainStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.distribution = .fill
-        stack.backgroundColor = .tdBackSecondaryColor
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
-    }()
-    
-    private let importanceStackView = CustomStackView()
-    private let selectColorStackView = SelectColorStackView()
-    private let dateStackView = CustomStackView()
-    
-    private let deadlineStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.distribution = .equalCentering
-        stack.alignment = .leading
-        return stack
-    }()
-    
-    private let firstSeparatorView = SeparatorView()
-    private let secondSeparatorView = SeparatorView()
-    private let theirSeparatorView = SeparatorView()
+    private let mainStackView = DetailMainStackView()
     
     private let bottomAnchorView: UIView = {
         let view = UIView()
@@ -73,41 +47,6 @@ final class DetailTodoItemView: UIView {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
-    }()
-    
-    private lazy var importanceSegmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["", "нет", ""])
-        control.setImage(UIImage(named: "unimportant"), forSegmentAt: 0)
-        control.setImage(UIImage(named: "importance"), forSegmentAt: 2)
-        control.selectedSegmentIndex = 1
-        control.backgroundColor = .tdSupportOverlayColor
-        control.tintColor = .tdBackElevatedColor
-        control.translatesAutoresizingMaskIntoConstraints = false
-        control.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        control.addTarget(
-            self,
-            action: #selector(selectedImportance),
-            for: .valueChanged
-        )
-        return control
-    }()
-    
-    private lazy var selectDateButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.contentEdgeInsets = UIEdgeInsets(
-            top: 0, left: 0, bottom: 0, right: 0
-        )
-        button.setTitle("2 июня 2021", for: .normal)
-        button.tintColor = .tdBlueColor
-        button.titleLabel?.font = .tdFootnote
-        button.addTarget(
-            self,
-            action: #selector(selectDate),
-            for: .touchUpInside
-        )
-        button.isHidden = true
-        button.alpha = 0
-        return button
     }()
     
     private lazy var deleteButton: UIButton = {
@@ -126,31 +65,6 @@ final class DetailTodoItemView: UIView {
             for: .touchUpInside
         )
         return button
-    }()
-    
-    private lazy var switchControl: UISwitch = {
-        let control = UISwitch()
-        control.addTarget(
-            self,
-            action: #selector(switchDeadline),
-            for: .touchUpInside
-        )
-        return control
-    }()
-    
-    private lazy var datePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .date
-        picker.preferredDatePickerStyle = .inline
-        picker.locale = .current
-        picker.calendar.firstWeekday = 2
-        picker.isHidden = true
-        picker.addTarget(
-            self,
-            action: #selector(datePickerValueChanged),
-            for: .valueChanged
-        )
-        return picker
     }()
     
     private let uiColorMarshallings = UIColorMarshallings()
@@ -177,14 +91,15 @@ final class DetailTodoItemView: UIView {
         
         self.delegate = delegate
         titleTextView.delegate = delegate
-        selectColorStackView.buttonAction = colorButtonAction
+        mainStackView.delegate = self
+        
+        mainStackView.passAction(colorButtonAction)
         
         addElements()
         setupConstraints()
         setupObservers()
         
         scrollView.contentSize = containerView.bounds.size
-        theirSeparatorView.isHidden = true
         
         checkItem(item)
     }
@@ -192,68 +107,6 @@ final class DetailTodoItemView: UIView {
 
 //MARK: - Actions
 extension DetailTodoItemView {
-    @objc private func selectDate() {
-        isSelectedDeadline.toggle()
-        
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-            guard let self = self else { return }
-            
-            self.theirSeparatorView.isHidden = !self.isSelectedDeadline
-            self.datePicker.isHidden = !self.isSelectedDeadline
-            
-            self.layoutIfNeeded()
-        })
-    }
-    
-    @objc private func switchDeadline() {
-        UIView.animate(withDuration: 0.5, animations: { [weak self] in
-            guard let self = self else { return }
-            
-            self.selectDateButton.alpha = switchControl.isOn ? 1 : 0
-            self.selectDateButton.isHidden = switchControl.isOn ? false : true
-            
-            self.layoutIfNeeded()
-        })
-        
-        if isSelectedDeadline {
-            UIView.animate(withDuration: 0.5, animations: { [weak self] in
-                guard let self = self else { return }
-                
-                self.isSelectedDeadline = false
-                self.theirSeparatorView.isHidden = true
-                self.datePicker.isHidden = true
-                self.datePicker.date = Date()
-                
-                self.layoutIfNeeded()
-            })
-        }
-        
-        if switchControl.isOn == false {
-            datePicker.date = Date()
-            selectDateButton.setTitle(datePicker.date.dateForLabel, for: .normal)
-            delegate?.didUpdateDeadline(nil)
-        } else {
-            defaultConfigureDatePicker()
-        }
-    }
-    
-    @objc private func datePickerValueChanged() {
-        selectDateButton.setTitle(datePicker.date.dateForLabel, for: .normal)
-        delegate?.didUpdateDeadline(datePicker.date)
-    }
-    
-    @objc private func selectedImportance() {
-        var importance = Importance.normal
-        
-        switch importanceSegmentedControl.selectedSegmentIndex {
-        case 0: importance = .unimportant
-        case 2: importance = .important
-        default: importance = .normal
-        }
-        
-        delegate?.didUpdateImportance(importance)
-    }
-    
     @objc private func deleteItem() {
         delegate?.deleteItem()
     }
@@ -298,27 +151,15 @@ extension DetailTodoItemView {
         
         scrollView.addSubview(containerView)
         
-        [titleTextView, detailView, deleteButton, bottomAnchorView].forEach {
+        [titleTextView,
+         detailView,
+         deleteButton,
+         bottomAnchorView
+        ].forEach {
             containerView.addSubview($0)
         }
         
         detailView.addSubview(mainStackView)
-        
-        [importanceStackView, firstSeparatorView, selectColorStackView, secondSeparatorView, dateStackView, theirSeparatorView, datePicker].forEach {
-            mainStackView.addArrangedSubview($0)
-        }
-        
-        [titleLabelImportance, importanceSegmentedControl].forEach {
-            importanceStackView.addArrangedSubview($0)
-        }
-        
-        [deadlineStackView, switchControl].forEach {
-            dateStackView.addArrangedSubview($0)
-        }
-        
-        [titleLabelDate, selectDateButton].forEach {
-            deadlineStackView.addArrangedSubview($0)
-        }
     }
     
     private func setupConstraints() {
@@ -409,55 +250,15 @@ extension DetailTodoItemView {
         ])
     }
     
-    private func defaultConfigureDatePicker() {
-        let calendar = Calendar.current
-        datePicker.minimumDate = calendar.startOfDay(for: Date())
-        let selectedDate = datePicker.date
-        if let nextDay = calendar.date(byAdding: .day, value: 1, to: selectedDate) {
-            datePicker.date = nextDay
-            selectDateButton.setTitle(nextDay.dateForLabel, for: .normal)
-            delegate?.didUpdateDeadline(nextDay)
-        }
-    }
-    
     private func checkItem(_ item: TodoItem?) {
         if item != nil {
             titleTextView.text = item?.text
             titleTextView.textColor = uiColorMarshallings.fromHexString(hex: item?.hexColor ?? "")
-            
-            selectColorStackView.arrangedSubviews.forEach { view in
-                if let button = view as? UIButton {
-                    button.backgroundColor = uiColorMarshallings.fromHexString(hex: item?.hexColor ?? "")
-                }
-            }
-            
-            switch item?.importance {
-            case .important: importanceSegmentedControl.selectedSegmentIndex = 2
-            case .unimportant: importanceSegmentedControl.selectedSegmentIndex = 0
-            default: importanceSegmentedControl.selectedSegmentIndex = 1
-            }
-            
-            if item?.deadline != nil {
-                switchControl.isOn = true
-                selectDateButton.setTitle(
-                    item?.deadline?.dateForLabel,
-                    for: .normal
-                )
-                selectDateButton.isHidden = false
-                selectDateButton.alpha = 1
-                datePicker.date = item?.deadline ?? Date()
-            }
-            
+            mainStackView.setUiIfItemNotNil(from: item)
             deleteButton.isEnabled = true
         } else {
             titleTextView.text = "Что надо сделать?"
-            importanceSegmentedControl.selectedSegmentIndex = 1
-            
-            selectColorStackView.arrangedSubviews.forEach { view in
-                if let button = view as? UIButton {
-                    button.backgroundColor = .tdLabelPrimaryColor
-                }
-            }
+            mainStackView.setUiIfItemNil()
         }
     }
     
@@ -528,11 +329,18 @@ extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     }
     
     func setupColor(_ color: UIColor) {
-        selectColorStackView.arrangedSubviews.forEach { view in
-            if let button = view as? UIButton {
-                button.backgroundColor = color
-            }
-        }
+        mainStackView.getColorButton(with: color)
         titleTextView.textColor = color
+    }
+}
+
+//MARK: - DetailMainStackViewDelegate
+extension DetailTodoItemView: DetailMainStackViewDelegate {
+    func didUpdateImportance(_ importance: Importance) {
+        delegate?.didUpdateImportance(importance)
+    }
+    
+    func didUpdateDeadline(_ deadline: Date?) {
+        delegate?.didUpdateDeadline(deadline)
     }
 }

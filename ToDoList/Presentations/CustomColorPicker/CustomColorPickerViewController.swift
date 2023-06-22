@@ -12,15 +12,7 @@ final class CustomColorPickerViewController: UIViewController {
     }()
     
     private let currentColorStackView = ColorStackViewColorPicker()
-    
-    private let colorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = true
-        view.layer.cornerRadius = Constants.radius
-        return view
-    }()
+    private let gradientView = GradientView()
     
     private let indicator: UIView = {
         let indicator = UIView()
@@ -31,25 +23,7 @@ final class CustomColorPickerViewController: UIViewController {
         return indicator
     }()
     
-    private var gradientLayer: CAGradientLayer = {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [
-            UIColor.red.cgColor,
-            UIColor.orange.cgColor,
-            UIColor.yellow.cgColor,
-            UIColor.green.cgColor,
-            UIColor.blue.cgColor,
-            UIColor.purple.cgColor,
-            UIColor.red.cgColor
-        ]
-
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
-        
-        return gradientLayer
-    }()
-    
-    private lazy var opacitySlider = OpacitySlider()
+    private lazy var opacitySlider = OpacitySliderColorPicker()
     
     private let uiColorMarshallings = UIColorMarshallings()
     private var currentColor = UIColor()
@@ -81,17 +55,13 @@ final class CustomColorPickerViewController: UIViewController {
             target: self,
             action: #selector(handlePan(_:))
         )
-        colorView.addGestureRecognizer(panRecognizer)
+        gradientView.addGestureRecognizer(panRecognizer)
         
         opacitySlider.addTarget(
             self,
             action: #selector(changeValue),
             for: .valueChanged
         )
-    }
-    
-    override func viewDidLayoutSubviews() {
-        gradientLayer.frame = colorView.bounds
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,12 +71,12 @@ final class CustomColorPickerViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        let point = gestureRecognizer.location(in: colorView)
-        let color = gradientLayer.pickColor(at: point)
+        let point = gestureRecognizer.location(in: gradientView)
+        let color = gradientView.getColor(from: point)
         
         indicator.center = CGPoint(x: point.x, y: point.y)
         indicator.backgroundColor = color
-        
+        // поправить зону для индикатора !!!
         currentColor = color
         
         currentHexColor = uiColorMarshallings.toHexString(color: currentColor)
@@ -135,14 +105,13 @@ final class CustomColorPickerViewController: UIViewController {
         [
             closeView,
             currentColorStackView,
-            colorView,
+            gradientView,
             opacitySlider
         ].forEach {
             view.addSubview($0)
         }
         
-        colorView.layer.addSublayer(gradientLayer)
-        colorView.addSubview(indicator)
+        gradientView.addSubview(indicator)
     }
     
     private func setupConstraints() {
@@ -168,15 +137,15 @@ final class CustomColorPickerViewController: UIViewController {
                 equalTo: closeView.bottomAnchor, constant: 20
             ),
             
-            colorView.leadingAnchor.constraint(
+            gradientView.leadingAnchor.constraint(
                 equalTo: view.leadingAnchor,
                 constant: 20
             ),
-            colorView.topAnchor.constraint(
+            gradientView.topAnchor.constraint(
                 equalTo: currentColorStackView.bottomAnchor,
                 constant: 20
             ),
-            colorView.trailingAnchor.constraint(
+            gradientView.trailingAnchor.constraint(
                 equalTo: view.trailingAnchor,
                 constant: -20
             ),
@@ -186,7 +155,7 @@ final class CustomColorPickerViewController: UIViewController {
                 constant: 20
             ),
             opacitySlider.topAnchor.constraint(
-                equalTo: colorView.bottomAnchor,
+                equalTo: gradientView.bottomAnchor,
                 constant: 50
             ),
             opacitySlider.trailingAnchor.constraint(
