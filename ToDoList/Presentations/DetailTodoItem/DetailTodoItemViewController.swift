@@ -116,7 +116,7 @@ extension DetailTodoItemViewController {
 extension DetailTodoItemViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.text = currentText
-        textView.textColor = .tdLabelPrimaryColor
+        textView.textColor = uiColorMarshallings.fromHexString(hex: todoItem?.hexColor ?? "")
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
