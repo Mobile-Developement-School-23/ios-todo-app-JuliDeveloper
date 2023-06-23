@@ -7,9 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7312A41B7CD00919419 /* DetailTodoItemViewController.swift */; };
+		2501F7342A41B87900919419 /* DetailTodoItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7332A41B87900919419 /* DetailTodoItemView.swift */; };
+		2501F7382A41B93200919419 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7372A41B93200919419 /* SeparatorView.swift */; };
+		2501F73A2A41B9A000919419 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7392A41B9A000919419 /* UIColor+Extension.swift */; };
+		2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F73B2A41B9B800919419 /* UIFont+Extension.swift */; };
+		2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F73D2A41BAC900919419 /* CustomLable.swift */; };
+		2501F7402A41BADB00919419 /* CustomStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F73F2A41BADB00919419 /* CustomStackView.swift */; };
+		2501F7422A41BAF300919419 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7412A41BAF300919419 /* Constants.swift */; };
+		2501F7442A41D8BE00919419 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7432A41D8BE00919419 /* TodoListViewModel.swift */; };
+		2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7482A41D93400919419 /* ObservableWrapper.swift */; };
+		2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74B2A41D98100919419 /* FileCacheProtocol.swift */; };
+		2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */; };
+		2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */; };
+		2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7512A42150C00919419 /* SelectColorStackView.swift */; };
+		2501F7542A4220F700919419 /* CustomColorPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */; };
+		2501F7582A42446A00919419 /* OpacitySliderColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7572A42446A00919419 /* OpacitySliderColorPicker.swift */; };
+		2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */; };
+		2501F75D2A432B6200919419 /* UIColorMarshallings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F75C2A432B6200919419 /* UIColorMarshallings.swift */; };
+		2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */; };
+		2501F7652A444CD000919419 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7642A444CD000919419 /* GradientView.swift */; };
+		2501F7672A4450E000919419 /* DateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7662A4450E000919419 /* DateStackView.swift */; };
+		2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7682A44647100919419 /* DateStackViewDelegate.swift */; };
+		2501F76B2A4464BD00919419 /* ImportanceStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76A2A4464BD00919419 /* ImportanceStackView.swift */; };
+		2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76C2A44698700919419 /* DetailMainStackView.swift */; };
+		2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */; };
+		2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */; };
+		2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
-		25B634812A3CA0DD00AC6AD7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* ViewController.swift */; };
+		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
 		25B634862A3CA0DE00AC6AD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25B634852A3CA0DE00AC6AD7 /* Assets.xcassets */; };
 		25B634892A3CA0DE00AC6AD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25B634872A3CA0DE00AC6AD7 /* LaunchScreen.storyboard */; };
 		25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634942A3CACA900AC6AD7 /* TodoItem.swift */; };
@@ -31,10 +58,37 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2501F7312A41B7CD00919419 /* DetailTodoItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewController.swift; sourceTree = "<group>"; };
+		2501F7332A41B87900919419 /* DetailTodoItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemView.swift; sourceTree = "<group>"; };
+		2501F7372A41B93200919419 /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		2501F7392A41B9A000919419 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		2501F73B2A41B9B800919419 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		2501F73D2A41BAC900919419 /* CustomLable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLable.swift; sourceTree = "<group>"; };
+		2501F73F2A41BADB00919419 /* CustomStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomStackView.swift; sourceTree = "<group>"; };
+		2501F7412A41BAF300919419 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2501F7432A41D8BE00919419 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
+		2501F7482A41D93400919419 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
+		2501F74B2A41D98100919419 /* FileCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCacheProtocol.swift; sourceTree = "<group>"; };
+		2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewDelegate.swift; sourceTree = "<group>"; };
+		2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewControllerDelegate.swift; sourceTree = "<group>"; };
+		2501F7512A42150C00919419 /* SelectColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectColorStackView.swift; sourceTree = "<group>"; };
+		2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorPickerViewController.swift; sourceTree = "<group>"; };
+		2501F7572A42446A00919419 /* OpacitySliderColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpacitySliderColorPicker.swift; sourceTree = "<group>"; };
+		2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+Extension.swift"; sourceTree = "<group>"; };
+		2501F75C2A432B6200919419 /* UIColorMarshallings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshallings.swift; sourceTree = "<group>"; };
+		2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorStackViewColorPicker.swift; sourceTree = "<group>"; };
+		2501F7642A444CD000919419 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		2501F7662A4450E000919419 /* DateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStackView.swift; sourceTree = "<group>"; };
+		2501F7682A44647100919419 /* DateStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStackViewDelegate.swift; sourceTree = "<group>"; };
+		2501F76A2A4464BD00919419 /* ImportanceStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceStackView.swift; sourceTree = "<group>"; };
+		2501F76C2A44698700919419 /* DetailMainStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainStackView.swift; sourceTree = "<group>"; };
+		2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceStackViewDelegate.swift; sourceTree = "<group>"; };
+		2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainStackViewDelegate.swift; sourceTree = "<group>"; };
+		2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMarshallingsProtocol.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		25B634802A3CA0DD00AC6AD7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
 		25B634852A3CA0DE00AC6AD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25B634882A3CA0DE00AC6AD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		25B6348A2A3CA0DE00AC6AD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,6 +119,81 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2501F7352A41B8D500919419 /* DetailTodoItem */ = {
+			isa = PBXGroup;
+			children = (
+				2501F7312A41B7CD00919419 /* DetailTodoItemViewController.swift */,
+				2501F7332A41B87900919419 /* DetailTodoItemView.swift */,
+			);
+			path = DetailTodoItem;
+			sourceTree = "<group>";
+		};
+		2501F7362A41B91800919419 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2501F7372A41B93200919419 /* SeparatorView.swift */,
+				2501F73D2A41BAC900919419 /* CustomLable.swift */,
+				2501F73F2A41BADB00919419 /* CustomStackView.swift */,
+				2501F7572A42446A00919419 /* OpacitySliderColorPicker.swift */,
+				2501F7602A43811000919419 /* ColorStackViewColorPicker.swift */,
+				2501F7642A444CD000919419 /* GradientView.swift */,
+				2501F76C2A44698700919419 /* DetailMainStackView.swift */,
+				2501F76A2A4464BD00919419 /* ImportanceStackView.swift */,
+				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
+				2501F7662A4450E000919419 /* DateStackView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2501F7452A41D8EA00919419 /* TodoList */ = {
+			isa = PBXGroup;
+			children = (
+				25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */,
+				2501F7432A41D8BE00919419 /* TodoListViewModel.swift */,
+			);
+			path = TodoList;
+			sourceTree = "<group>";
+		};
+		2501F7462A41D8FB00919419 /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				25B634872A3CA0DE00AC6AD7 /* LaunchScreen.storyboard */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
+		2501F7472A41D91500919419 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				2501F74A2A41D96600919419 /* Protocols */,
+				2501F7482A41D93400919419 /* ObservableWrapper.swift */,
+				2501F75C2A432B6200919419 /* UIColorMarshallings.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		2501F74A2A41D96600919419 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				2501F74B2A41D98100919419 /* FileCacheProtocol.swift */,
+				2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */,
+				2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */,
+				2501F7682A44647100919419 /* DateStackViewDelegate.swift */,
+				2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */,
+				2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */,
+				2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		2501F7592A424E9700919419 /* CustomColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				2501F7532A4220F700919419 /* CustomColorPickerViewController.swift */,
+			);
+			path = CustomColorPicker;
+			sourceTree = "<group>";
+		};
 		25B634702A3CA0DD00AC6AD7 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +218,7 @@
 				25B634922A3CA13400AC6AD7 /* Presentations */,
 				25B634932A3CAC9B00AC6AD7 /* Models */,
 				25B6349B2A3CAF2900AC6AD7 /* Services */,
+				2501F7472A41D91500919419 /* Helpers */,
 				25B634912A3CA11400AC6AD7 /* Resources */,
 				25B634902A3CA10A00AC6AD7 /* App */,
 			);
@@ -109,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				25B634962A3CADE900AC6AD7 /* Extensions */,
+				2501F7412A41BAF300919419 /* Constants.swift */,
 				25B634852A3CA0DE00AC6AD7 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -117,8 +248,11 @@
 		25B634922A3CA13400AC6AD7 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
-				25B634802A3CA0DD00AC6AD7 /* ViewController.swift */,
-				25B634872A3CA0DE00AC6AD7 /* LaunchScreen.storyboard */,
+				2501F7362A41B91800919419 /* Views */,
+				2501F7452A41D8EA00919419 /* TodoList */,
+				2501F7352A41B8D500919419 /* DetailTodoItem */,
+				2501F7592A424E9700919419 /* CustomColorPicker */,
+				2501F7462A41D8FB00919419 /* LaunchScreen */,
 			);
 			path = Presentations;
 			sourceTree = "<group>";
@@ -136,6 +270,9 @@
 			children = (
 				25B634972A3CAE0A00AC6AD7 /* Date+Extension.swift */,
 				25B634992A3CAE2D00AC6AD7 /* Int+Extension.swift */,
+				2501F7392A41B9A000919419 /* UIColor+Extension.swift */,
+				2501F73B2A41B9B800919419 /* UIFont+Extension.swift */,
+				2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -257,12 +394,39 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2501F75D2A432B6200919419 /* UIColorMarshallings.swift in Sources */,
+				2501F7672A4450E000919419 /* DateStackView.swift in Sources */,
+				2501F7442A41D8BE00919419 /* TodoListViewModel.swift in Sources */,
+				2501F76B2A4464BD00919419 /* ImportanceStackView.swift in Sources */,
 				25B634982A3CAE0A00AC6AD7 /* Date+Extension.swift in Sources */,
-				25B634812A3CA0DD00AC6AD7 /* ViewController.swift in Sources */,
+				25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */,
+				2501F7382A41B93200919419 /* SeparatorView.swift in Sources */,
+				2501F73A2A41B9A000919419 /* UIColor+Extension.swift in Sources */,
+				2501F7402A41BADB00919419 /* CustomStackView.swift in Sources */,
+				2501F7422A41BAF300919419 /* Constants.swift in Sources */,
+				2501F7652A444CD000919419 /* GradientView.swift in Sources */,
+				2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */,
+				2501F7342A41B87900919419 /* DetailTodoItemView.swift in Sources */,
+				2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */,
+				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
+				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
+				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
 				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,
+				2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */,
+				2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */,
+				2501F7542A4220F700919419 /* CustomColorPickerViewController.swift in Sources */,
+				2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */,
+				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
+				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
+				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
+				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
+				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
+				2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
+				2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */,
+				2501F7582A42446A00919419 /* OpacitySliderColorPicker.swift in Sources */,
 				25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,9 +588,8 @@
 				INFOPLIST_FILE = ToDoList/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,9 +618,8 @@
 				INFOPLIST_FILE = ToDoList/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
