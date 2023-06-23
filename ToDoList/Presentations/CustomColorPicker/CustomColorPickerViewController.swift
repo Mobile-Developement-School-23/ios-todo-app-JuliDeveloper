@@ -71,12 +71,23 @@ final class CustomColorPickerViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
-        let point = gestureRecognizer.location(in: gradientView)
+        var point = gestureRecognizer.location(in: gradientView)
         let color = gradientView.getColor(from: point)
         
-        indicator.center = CGPoint(x: point.x, y: point.y)
+        if point.x < 0 {
+             point.x = 0
+         } else if point.x > gradientView.bounds.width {
+             point.x = gradientView.bounds.width
+         }
+
+         if point.y < 0 {
+             point.y = 0
+         } else if point.y > gradientView.bounds.height {
+             point.y = gradientView.bounds.height
+         }
+        
+        indicator.center = point
         indicator.backgroundColor = color
-        // поправить зону для индикатора !!!
         currentColor = color
         
         currentHexColor = uiColorMarshallings.toHexString(color: currentColor)

@@ -2,7 +2,7 @@ import UIKit
 
 extension CAGradientLayer {
     func pickColor(at point: CGPoint) -> UIColor {
-        guard let colors = colors as? [CGColor] else { return .black }
+        guard let colors = colors as? [CGColor] else { return .tdLabelPrimaryColor }
         
         let percentage = point.x / bounds.width
         let index = Int(percentage * CGFloat(colors.count - 1))

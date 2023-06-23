@@ -17,7 +17,6 @@ final class DetailMainStackView: UIStackView {
         picker.preferredDatePickerStyle = .inline
         picker.locale = Locale(identifier: "Ru_ru")
         picker.calendar.firstWeekday = 2
-        picker.isHidden = true
         picker.addTarget(
             self,
             action: #selector(datePickerValueChanged),
@@ -35,6 +34,10 @@ final class DetailMainStackView: UIStackView {
         super.init(frame: .zero)
         configure()
         addElements()
+        
+        DispatchQueue.main.async() {
+            self.datePicker.isHidden = true
+        }
     }
     
     required init(coder: NSCoder) {

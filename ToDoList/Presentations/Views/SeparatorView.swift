@@ -5,7 +5,8 @@ final class SeparatorView: UIView {
         super.init(frame: .zero)
         backgroundColor = .tdSupportSeparatorColor
         translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        let separatorHeight = 1 / UIScreen.main.scale
+        heightAnchor.constraint(equalToConstant: separatorHeight).isActive = true
     }
     
     required init?(coder: NSCoder) {
