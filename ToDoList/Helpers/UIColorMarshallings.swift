@@ -1,6 +1,6 @@
 import UIKit
 
-struct UIColorMarshallings {
+struct UIColorMarshallings: ColorMarshallingsProtocol {
     func toHexString(color: UIColor) -> String {
         var r: CGFloat = 0
         var g: CGFloat = 0

@@ -13,7 +13,7 @@ final class ImportanceStackView: CustomStackView {
         control.backgroundColor = .tdSupportOverlayColor
         control.tintColor = .tdBackElevatedColor
         control.translatesAutoresizingMaskIntoConstraints = false
-        control.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        control.widthAnchor.constraint(equalToConstant: Constants.widthSegmentedControl).isActive = true
         control.addTarget(
             self,
             action: #selector(selectedImportance),

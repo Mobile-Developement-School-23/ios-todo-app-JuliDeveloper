@@ -33,6 +33,7 @@
 		2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76C2A44698700919419 /* DetailMainStackView.swift */; };
 		2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */; };
 		2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */; };
+		2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -83,6 +84,7 @@
 		2501F76C2A44698700919419 /* DetailMainStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainStackView.swift; sourceTree = "<group>"; };
 		2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceStackViewDelegate.swift; sourceTree = "<group>"; };
 		2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainStackViewDelegate.swift; sourceTree = "<group>"; };
+		2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMarshallingsProtocol.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				2501F7682A44647100919419 /* DateStackViewDelegate.swift */,
 				2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */,
 				2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */,
+				2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */,
 				2501F7342A41B87900919419 /* DetailTodoItemView.swift in Sources */,
 				2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */,
+				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
 				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
 				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
 				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,

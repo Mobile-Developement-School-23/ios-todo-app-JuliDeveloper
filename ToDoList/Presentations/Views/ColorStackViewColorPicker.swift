@@ -8,12 +8,12 @@ final class ColorStackViewColorPicker: UIStackView {
     private let currentColorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        view.heightAnchor.constraint(equalToConstant: Constants.heightRoundButton).isActive = true
         view.widthAnchor.constraint(equalTo: view.heightAnchor).isActive = true
         view.clipsToBounds = true
         view.layer.borderColor = UIColor.tdSupportOverlayColor.withAlphaComponent(0.1).cgColor
         view.layer.borderWidth = 2
-        view.layer.cornerRadius = 34 / 2
+        view.layer.cornerRadius = Constants.heightRoundButton / 2
         return view
     }()
     

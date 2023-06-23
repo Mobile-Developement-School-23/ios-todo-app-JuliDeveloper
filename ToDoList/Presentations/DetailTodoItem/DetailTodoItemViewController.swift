@@ -3,7 +3,7 @@ import UIKit
 final class DetailTodoItemViewController: UIViewController {
     
     //MARK: - Properties
-    private let uiColorMarshallings = UIColorMarshallings()
+    private let uiColorMarshallings: ColorMarshallingsProtocol
     
     private var currentText = String()
     private var currentImportance = Importance.normal
@@ -17,8 +17,9 @@ final class DetailTodoItemViewController: UIViewController {
     weak var delegate: DetailTodoItemViewControllerDelegate?
     
     //MARK: - Lifecycle
-    init(viewModel: TodoListViewModel) {
+    init(viewModel: TodoListViewModel, uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
         self.viewModel = viewModel
+        self.uiColorMarshallings = uiColorMarshallings
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -128,7 +129,9 @@ extension DetailTodoItemViewController: UITextViewDelegate {
         textView.text = currentText
 
         if todoItem != nil {
-            textView.textColor = uiColorMarshallings.fromHexString(hex: todoItem?.hexColor ?? "")
+            textView.textColor = uiColorMarshallings.fromHexString(
+                hex: todoItem?.hexColor ?? ""
+            )
         } else {
             textView.textColor = .tdLabelPrimaryColor
         }

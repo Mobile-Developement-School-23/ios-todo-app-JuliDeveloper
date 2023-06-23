@@ -8,8 +8,8 @@ final class CustomColorPickerViewController: UIViewController {
     
     private let indicator: UIView = {
         let indicator = UIView()
-        indicator.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        indicator.layer.cornerRadius = 30 / 2
+        indicator.frame = CGRect(x: 0, y: 0, width: Constants.sizeIndicator, height: Constants.sizeIndicator)
+        indicator.layer.cornerRadius = CGFloat(Constants.sizeIndicator / 2)
         indicator.layer.borderWidth = 2
         indicator.layer.borderColor = UIColor.tdBackPrimaryColor.cgColor
         return indicator
@@ -23,9 +23,9 @@ final class CustomColorPickerViewController: UIViewController {
         button.setImage(UIImage(named: "close"), for: .normal)
         button.tintColor = .tdLabelTertiaryColor
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        button.heightAnchor.constraint(equalToConstant: Constants.heightRoundButton).isActive = true
         button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
-        button.layer.cornerRadius = 34 / 2
+        button.layer.cornerRadius = Constants.heightRoundButton / 2
         button.addTarget(
             self,
             action: #selector(close),
@@ -34,7 +34,8 @@ final class CustomColorPickerViewController: UIViewController {
         return button
     }()
     
-    private let uiColorMarshallings = UIColorMarshallings()
+    private let uiColorMarshallings: ColorMarshallingsProtocol
+    
     private var currentColor = UIColor()
     private var alpha = Float()
 
@@ -43,6 +44,15 @@ final class CustomColorPickerViewController: UIViewController {
     weak var delegate: DetailTodoItemViewDelegate?
     
     //MARK: - Lifecycle
+    init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
+        self.uiColorMarshallings = uiColorMarshallings
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         view.backgroundColor = .tdBackPrimaryColor
         addElements()
@@ -150,10 +160,12 @@ final class CustomColorPickerViewController: UIViewController {
             ),
             
             currentColorStackView.leadingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 20
             ),
             currentColorStackView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: 20
             ),
             
             gradientView.leadingAnchor.constraint(

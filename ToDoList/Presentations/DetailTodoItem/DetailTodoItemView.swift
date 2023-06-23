@@ -67,13 +67,22 @@ final class DetailTodoItemView: UIView {
         return button
     }()
     
-    private let uiColorMarshallings = UIColorMarshallings()
+    private let uiColorMarshallings: ColorMarshallingsProtocol
     
     private var isSelectedDeadline = false
     
     weak var delegate: DetailTodoItemViewDelegate?
     
     //MARK: - Lifecycle
+    init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
+        self.uiColorMarshallings = uiColorMarshallings
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

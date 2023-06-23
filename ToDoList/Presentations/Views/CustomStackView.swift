@@ -7,7 +7,7 @@ class CustomStackView: UIStackView {
         distribution = .fill
         alignment = .center
         translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 58).isActive = true
+        heightAnchor.constraint(equalToConstant: Constants.heightStackView).isActive = true
     }
     
     required init(coder: NSCoder) {

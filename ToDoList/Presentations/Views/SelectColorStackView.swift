@@ -8,12 +8,12 @@ final class SelectColorStackView: CustomStackView {
     private lazy var colorButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        button.heightAnchor.constraint(equalToConstant: Constants.heightRoundButton).isActive = true
         button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
         button.clipsToBounds = true
         button.layer.borderColor = UIColor.tdSupportOverlayColor.withAlphaComponent(0.1).cgColor
         button.layer.borderWidth = 2
-        button.layer.cornerRadius = 34 / 2
+        button.layer.cornerRadius = Constants.heightRoundButton / 2
         button.addTarget(
             self,
             action: #selector(openColorPicker),

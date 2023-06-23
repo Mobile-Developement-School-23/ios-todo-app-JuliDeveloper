@@ -25,12 +25,13 @@ final class DetailMainStackView: UIStackView {
         return picker
     }()
     
-    private let uiColorMarshallings = UIColorMarshallings()
+    private let uiColorMarshallings: ColorMarshallingsProtocol
     
     weak var delegate: DetailMainStackViewDelegate?
     
     //MARK: - Initialization
-    override init(frame: CGRect) {
+    init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
+        self.uiColorMarshallings = uiColorMarshallings
         super.init(frame: .zero)
         configure()
         addElements()
