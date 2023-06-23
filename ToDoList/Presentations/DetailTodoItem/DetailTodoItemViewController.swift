@@ -29,9 +29,10 @@ final class DetailTodoItemViewController: UIViewController {
     override func loadView() {
         let customView = DetailTodoItemView()
         customView.configureView(delegate: self, todoItem) { [weak self] viewController in
+            guard let self = self else { return }
             viewController.delegate = self
-            viewController.currentHexColor = self?.todoItem?.hexColor ?? ""
-            self?.present(viewController, animated: true)
+            viewController.currentHexColor = self.todoItem?.hexColor ?? ""
+            self.present(viewController, animated: true)
         }
         
         self.delegate = customView
@@ -115,6 +116,8 @@ extension DetailTodoItemViewController {
             currentColor = uiColorMarshallings.fromHexString(
                 hex: todoItem?.hexColor ?? ""
             )
+        } else {
+            navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }
 }
@@ -123,21 +126,34 @@ extension DetailTodoItemViewController {
 extension DetailTodoItemViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.text = currentText
-        textView.textColor = uiColorMarshallings.fromHexString(hex: todoItem?.hexColor ?? "")
+
+        if todoItem != nil {
+            textView.textColor = uiColorMarshallings.fromHexString(hex: todoItem?.hexColor ?? "")
+        } else {
+            textView.textColor = .tdLabelPrimaryColor
+        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
+        let inputText = textView.text
+
+        if inputText?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true {
             textView.text = "Что надо сделать?"
             textView.textColor = .tdLabelTertiaryColor
         } else {
-            currentText = textView.text
+            let trimmedText = inputText?.trimmingCharacters(in: .whitespacesAndNewlines)
+            currentText = trimmedText ?? ""
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        navigationItem.rightBarButtonItem?.isEnabled = textView.text.isEmpty ? false : true
-        delegate?.setupStateDeleteButton(from: textView)
+        let inputText = textView.text
+
+        let isOnlySpaces = inputText?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
+        
+        navigationItem.rightBarButtonItem?.isEnabled = !isOnlySpaces
+                
+        delegate?.setupStateDeleteButton(from: !isOnlySpaces)
     }
 }
 

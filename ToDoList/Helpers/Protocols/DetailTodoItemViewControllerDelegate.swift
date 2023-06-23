@@ -1,6 +1,6 @@
 import UIKit
 
 protocol DetailTodoItemViewControllerDelegate: AnyObject {
-    func setupStateDeleteButton(from textView: UITextView)
+    func setupStateDeleteButton(from state: Bool)
     func setupColor(_ color: UIColor)
 }
