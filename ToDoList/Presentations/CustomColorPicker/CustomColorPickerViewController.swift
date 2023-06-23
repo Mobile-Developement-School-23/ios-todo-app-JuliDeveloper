@@ -3,14 +3,6 @@ import UIKit
 final class CustomColorPickerViewController: UIViewController {
     
     //MARK: - Properties
-    private let closeView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .tdBackSecondaryColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 2
-        return view
-    }()
-    
     private let currentColorStackView = ColorStackViewColorPicker()
     private let gradientView = GradientView()
     
@@ -24,6 +16,23 @@ final class CustomColorPickerViewController: UIViewController {
     }()
     
     private lazy var opacitySlider = OpacitySliderColorPicker()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .tdSupportOverlayColor
+        button.setImage(UIImage(named: "close"), for: .normal)
+        button.tintColor = .tdLabelTertiaryColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+        button.layer.cornerRadius = 34 / 2
+        button.addTarget(
+            self,
+            action: #selector(close),
+            for: .touchUpInside
+        )
+        return button
+    }()
     
     private let uiColorMarshallings = UIColorMarshallings()
     private var currentColor = UIColor()
@@ -65,8 +74,7 @@ final class CustomColorPickerViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let color = uiColorMarshallings.fromHexString(hex: currentHexColor)
-        delegate?.didUpdateColor(color)
+        passColor()
     }
     
     //MARK: - Actions
@@ -111,10 +119,15 @@ final class CustomColorPickerViewController: UIViewController {
         )
     }
     
+    @objc private func close() {
+        passColor()
+        dismiss(animated: true)
+    }
+    
     //MARK: - Private methods
     private func addElements() {
         [
-            closeView,
+            closeButton,
             currentColorStackView,
             gradientView,
             opacitySlider
@@ -127,29 +140,24 @@ final class CustomColorPickerViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            closeView.topAnchor.constraint(
-                equalTo: view.topAnchor,
-                constant: 10
+            closeButton.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: 20
             ),
-            closeView.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor
-            ),
-            closeView.heightAnchor.constraint(
-                equalToConstant: 5
-            ),
-            closeView.widthAnchor.constraint(
-                equalToConstant: 60
+            closeButton.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -20
             ),
             
             currentColorStackView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor, constant: 20
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20
             ),
             currentColorStackView.topAnchor.constraint(
-                equalTo: closeView.bottomAnchor, constant: 20
+                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20
             ),
             
             gradientView.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                 constant: 20
             ),
             gradientView.topAnchor.constraint(
@@ -157,26 +165,31 @@ final class CustomColorPickerViewController: UIViewController {
                 constant: 20
             ),
             gradientView.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -20
             ),
             
             opacitySlider.leadingAnchor.constraint(
-                equalTo: view.leadingAnchor,
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
                 constant: 20
             ),
             opacitySlider.topAnchor.constraint(
                 equalTo: gradientView.bottomAnchor,
-                constant: 50
+                constant: 30
             ),
             opacitySlider.trailingAnchor.constraint(
-                equalTo: view.trailingAnchor,
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
                 constant: -20
             ),
             opacitySlider.bottomAnchor.constraint(
-                equalTo: view.bottomAnchor,
-                constant: -70
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -30
             )
         ])
+    }
+    
+    private func passColor() {
+        let color = uiColorMarshallings.fromHexString(hex: currentHexColor)
+        delegate?.didUpdateColor(color)
     }
 }
