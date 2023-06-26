@@ -34,6 +34,11 @@
 		2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */; };
 		2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */; };
 		2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */; };
+		252B3F522A49B18E006356D4 /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */; };
+		252B3F542A49B6C8006356D4 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F532A49B6C8006356D4 /* RadioButton.swift */; };
+		252B3F562A49BD52006356D4 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F552A49BD52006356D4 /* TodoListView.swift */; };
+		252B3F582A49CAB1006356D4 /* NewTodoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */; };
+		252B3F5A2A49E54E006356D4 /* TodoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F592A49E54E006356D4 /* TodoStackView.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -85,6 +90,11 @@
 		2501F76E2A4471B700919419 /* ImportanceStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportanceStackViewDelegate.swift; sourceTree = "<group>"; };
 		2501F7702A4471D200919419 /* DetailMainStackViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMainStackViewDelegate.swift; sourceTree = "<group>"; };
 		2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMarshallingsProtocol.swift; sourceTree = "<group>"; };
+		252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
+		252B3F532A49B6C8006356D4 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		252B3F552A49BD52006356D4 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
+		252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoItemTableViewCell.swift; sourceTree = "<group>"; };
+		252B3F592A49E54E006356D4 /* TodoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoStackView.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +151,10 @@
 				2501F76A2A4464BD00919419 /* ImportanceStackView.swift */,
 				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
 				2501F7662A4450E000919419 /* DateStackView.swift */,
+				252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */,
+				252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */,
+				252B3F532A49B6C8006356D4 /* RadioButton.swift */,
+				252B3F592A49E54E006356D4 /* TodoStackView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -149,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */,
+				252B3F552A49BD52006356D4 /* TodoListView.swift */,
 				2501F7432A41D8BE00919419 /* TodoListViewModel.swift */,
 			);
 			path = TodoList;
@@ -411,6 +426,7 @@
 				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
 				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
 				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
+				252B3F562A49BD52006356D4 /* TodoListView.swift in Sources */,
 				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,
 				2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */,
 				2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */,
@@ -418,10 +434,14 @@
 				2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */,
 				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
+				252B3F582A49CAB1006356D4 /* NewTodoItemTableViewCell.swift in Sources */,
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
+				252B3F542A49B6C8006356D4 /* RadioButton.swift in Sources */,
 				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,
+				252B3F522A49B18E006356D4 /* TodoTableViewCell.swift in Sources */,
+				252B3F5A2A49E54E006356D4 /* TodoStackView.swift in Sources */,
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
 				2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
