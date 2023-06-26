@@ -24,6 +24,7 @@ class TodoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .tdBackPrimaryColor
+        configureNavBar()
         
         viewModel.$todoItems.bind { [weak self] _ in
             self?.bindViewModel()
@@ -32,9 +33,17 @@ class TodoListViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK: - Helpers
+    //MARK: - Private methods
     private func bindViewModel() {
         // метод перезагрузки таблицы
+    }
+    
+    private func configureNavBar() {
+        title = "Мои дела"
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.layoutMargins.left = 32
+        navigationController?.navigationBar.layoutMargins.right = 32
     }
 }
 
