@@ -3,6 +3,8 @@ import UIKit
 final class TodoListView: UIView {
     
     //MARK: - Properties
+    private let completionTasksStackView = CompletionTasksStackView()
+    
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.register(
@@ -36,12 +38,19 @@ final class TodoListView: UIView {
     //        return button
     //    }()
     
+    init() {
+        super.init(frame: .zero)
+        addElements()
+        setupConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func configure(delegate: TodoListViewController) {
         tableView.dataSource = delegate
         tableView.delegate = delegate
-        
-        addElements()
-        setupConstraints()
     }
     
 //    @objc private func openDetailVC() {
@@ -56,14 +65,25 @@ final class TodoListView: UIView {
 
 extension TodoListView {
     private func addElements() {
+        addSubview(completionTasksStackView)
         addSubview(tableView)
     }
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            completionTasksStackView.topAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.topAnchor, constant: 8
+            ),
+            completionTasksStackView.leadingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 32
+            ),
+            completionTasksStackView.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -32
+            ),
+            
             tableView.topAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.topAnchor,
-                constant: 16
+                equalTo: completionTasksStackView.bottomAnchor,
+                constant: 12
             ),
             tableView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor,
