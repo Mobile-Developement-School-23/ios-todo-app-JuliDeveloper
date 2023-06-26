@@ -1,8 +1,14 @@
 import UIKit
 
+protocol TodoListViewControllerDelegate: AnyObject {
+    func openDetailViewController()
+}
+
 class TodoListViewController: UIViewController {
     
     private var viewModel: TodoListViewModel
+    
+    weak var delegate: TodoListViewDelegate?
 
     //MARK: - Lifecycle
     init(viewModel: TodoListViewModel) {
@@ -16,8 +22,9 @@ class TodoListViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        let customView = TodoListView()
+        let customView = TodoListView(delegate: self)
         customView.configure(delegate: self)
+        delegate = customView
         view = customView
     }
     
@@ -35,7 +42,7 @@ class TodoListViewController: UIViewController {
     
     //MARK: - Private methods
     private func bindViewModel() {
-        // метод перезагрузки таблицы
+        delegate?.reloadTableView()
     }
     
     private func configureNavBar() {
@@ -72,4 +79,12 @@ extension TodoListViewController: UITableViewDataSource {
 
 extension TodoListViewController: UITableViewDelegate {
     
+}
+
+extension TodoListViewController: TodoListViewControllerDelegate {
+    func openDetailViewController() {
+        let detailVC = DetailTodoItemViewController(viewModel: viewModel)
+        let navController = UINavigationController(rootViewController: detailVC)
+        present(navController, animated: true)
+    }
 }
