@@ -1,8 +1,19 @@
 import UIKit
 
+protocol UpdateStateButtonCellDelegate: AnyObject {
+    func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell)
+}
+
 final class TodoTableViewCell: UITableViewCell {
     
     private let mainStackView = TodoStackView()
+    
+    weak var delegate: UpdateStateButtonCellDelegate?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        mainStackView.resetRadioButton()
+    }
     
     func configure(from todoItem: TodoItem, at indexPath: IndexPath, _ lastIndex: Int) {
         backgroundColor = .tdBackSecondaryColor
@@ -13,6 +24,7 @@ final class TodoTableViewCell: UITableViewCell {
         setupConstraints()
         
         mainStackView.setupData(todoItem: todoItem)
+        mainStackView.delegate = self
     }
     
     private func addElements() {
@@ -38,5 +50,11 @@ final class TodoTableViewCell: UITableViewCell {
                 constant: -16
             )
         ])
+    }
+}
+
+extension TodoTableViewCell: UpdateStateButtonStackViewDelegate {
+    func stackDidTapButton(_ sender: RadioButton) {
+        delegate?.cellDidTapButton(sender, in: self)
     }
 }

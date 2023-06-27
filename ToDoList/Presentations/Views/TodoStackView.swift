@@ -1,5 +1,9 @@
 import UIKit
 
+protocol UpdateStateButtonStackViewDelegate: AnyObject {
+    func stackDidTapButton(_ sender: RadioButton)
+}
+
 final class TodoStackView: UIStackView {
     
     private let titleStackView: UIStackView = {
@@ -55,13 +59,20 @@ final class TodoStackView: UIStackView {
     
     private lazy var radioButton = RadioButton(type: .custom)
     
-    init() {
+    private let uiMarshallingsColor: UIColorMarshallings
+    
+    weak var delegate: UpdateStateButtonStackViewDelegate?
+    
+    init(uiMarshallingsColor: UIColorMarshallings = UIColorMarshallings()) {
+        self.uiMarshallingsColor = uiMarshallingsColor
         super.init(frame: .zero)
         
         axis = .horizontal
         distribution = .fill
         spacing = 12
         translatesAutoresizingMaskIntoConstraints = false
+        
+        radioButton.delegate = self
         
         addElements()
     }
@@ -72,9 +83,19 @@ final class TodoStackView: UIStackView {
     
     func setupData(todoItem: TodoItem) {
         titleLabel.numberOfLines = 3
-        
         titleLabel.text = todoItem.text
-        radioButton.setupImage(from: todoItem)
+        titleLabel.textColor = uiMarshallingsColor.fromHexString(hex: todoItem.hexColor)
+        
+        if todoItem.isDone {
+            titleLabel.attributedText = strikeText(
+                strike: todoItem.text, color: .tdLabelTertiaryColor
+            )
+        } else {
+            titleLabel.textColor = uiMarshallingsColor.fromHexString(hex: todoItem.hexColor)
+            titleLabel.attributedText = NSAttributedString(string: todoItem.text)
+        }
+        
+        radioButton.setup(from: todoItem)
         
         switch todoItem.importance {
         case .important:
@@ -95,6 +116,12 @@ final class TodoStackView: UIStackView {
         }
     }
     
+    func resetRadioButton() {
+        radioButton.isSelected = false
+        radioButton.setImage(UIImage(named: "defaultImage"), for: .normal)
+        titleLabel.attributedText = nil
+    }
+    
     private func addElements() {
         [radioButton, titleStackView].forEach { addArrangedSubview($0) }
         
@@ -104,4 +131,24 @@ final class TodoStackView: UIStackView {
         [calendarImageView, subtitleLabel].forEach { dateStackView.addArrangedSubview($0) }
     }
     
+    private func strikeText(strike: String, color: UIColor) -> NSMutableAttributedString {
+        let attributeString = NSMutableAttributedString(string: strike)
+        attributeString.addAttribute(
+            NSAttributedString.Key.strikethroughStyle,
+            value: NSUnderlineStyle.single.rawValue,
+            range: NSMakeRange(0, attributeString.length)
+        )
+        attributeString.addAttribute(
+            NSAttributedString.Key.foregroundColor,
+            value: color,
+            range: NSMakeRange(0, attributeString.length)
+        )
+        return attributeString
+    }
+}
+
+extension TodoStackView: UpdateStateRadioButtonDelegate {
+    func buttonDidTap(_ sender: RadioButton) {
+        delegate?.stackDidTapButton(sender)
+    }
 }

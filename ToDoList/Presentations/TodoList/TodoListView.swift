@@ -3,6 +3,7 @@ import UIKit
 protocol TodoListViewDelegate: AnyObject {
     func reloadTableView()
     func setEditing(_ state: Bool)
+    func getIndexPath(for cell: TodoTableViewCell) -> IndexPath?
 }
 
 final class TodoListView: UIView {
@@ -120,5 +121,9 @@ extension TodoListView: TodoListViewDelegate {
     
     func setEditing(_ state: Bool) {
         tableView.isEditing = state
+    }
+    
+    func getIndexPath(for cell: TodoTableViewCell) -> IndexPath? {
+        tableView.indexPath(for: cell)
     }
 }

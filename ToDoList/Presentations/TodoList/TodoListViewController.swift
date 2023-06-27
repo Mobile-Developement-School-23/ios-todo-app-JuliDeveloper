@@ -10,7 +10,7 @@ class TodoListViewController: UIViewController {
     private var viewModel: TodoListViewModel
     
     weak var delegate: TodoListViewDelegate?
-
+    
     //MARK: - Lifecycle
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
@@ -86,11 +86,12 @@ class TodoListViewController: UIViewController {
         return action
     }
     
-    private func createInfoAction(at indexPath: IndexPath) -> UIContextualAction {
+    private func createInfoAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
         let todoItem = viewModel.todoItems[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
+            _ = self.viewModel.updateIsDone(from: todoItem)
+            tableView.reloadRows(at: [indexPath], with: .automatic)
             
-            print("Info")
             completion(true)
         }
         
@@ -128,6 +129,7 @@ extension TodoListViewController: UITableViewDataSource {
             let todoItem = viewModel.todoItems[indexPath.row]
             let lastIndex = viewModel.todoItems.count - 1
             
+            cell.delegate = self
             cell.configure(from: todoItem, at: indexPath, lastIndex)
             
             return cell
@@ -159,7 +161,7 @@ extension TodoListViewController: UITableViewDelegate {
             return nil
         }
         
-        let infoAction = createInfoAction(at: indexPath)
+        let infoAction = createInfoAction(tableView: tableView, at: indexPath)
         let deleteAction = createDeleteAction(tableView: tableView, at: indexPath)
         return UISwipeActionsConfiguration(actions: [deleteAction, infoAction])
     }
@@ -196,5 +198,25 @@ extension TodoListViewController: TodoListViewControllerDelegate {
         detailVC.todoItem = todoItem
         let navController = UINavigationController(rootViewController: detailVC)
         present(navController, animated: true)
+    }
+}
+
+extension TodoListViewController: UpdateStateButtonCellDelegate {
+    func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell) {
+        guard let indexPath = delegate?.getIndexPath(for: cell) else { return }
+        
+        let todoItem = viewModel.todoItems[indexPath.row]
+        let updateTodoItem = viewModel.updateIsDone(from: todoItem)
+        
+        var imagePriority = UIImage()
+        switch updateTodoItem.importance {
+        case .important: imagePriority = UIImage(named: "buttonHighPriority") ?? UIImage()
+        default: imagePriority = UIImage(named: "buttonOff") ?? UIImage()
+        }
+        
+        let image = updateTodoItem.isDone ? UIImage(named: "buttonOn") : imagePriority
+        sender.setImage(image, for: .normal)
+        
+        sender.isSelected.toggle()
     }
 }

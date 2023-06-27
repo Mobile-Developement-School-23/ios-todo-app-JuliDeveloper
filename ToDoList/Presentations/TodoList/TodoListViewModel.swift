@@ -38,6 +38,19 @@ final class TodoListViewModel: ObservableObject {
         }
     }
     
+    func updateIsDone(from todoItem: TodoItem) -> TodoItem {
+        let updateTodoItem = TodoItem(
+            id: todoItem.id,
+            text: todoItem.text,
+            importance: todoItem.importance,
+            deadline: todoItem.deadline,
+            isDone: !todoItem.isDone,
+            hexColor: todoItem.hexColor
+        )
+        addItem(updateTodoItem)
+        return updateTodoItem
+    }
+    
     func saveItems() {
         do {
             try fileCache.saveToJson(to: "todoItems")
