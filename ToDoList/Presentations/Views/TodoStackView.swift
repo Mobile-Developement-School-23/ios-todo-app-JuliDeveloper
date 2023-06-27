@@ -16,7 +16,7 @@ final class TodoStackView: UIStackView {
     private let importanceStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .fill
+        stack.distribution = .fillProportionally
         stack.spacing = 4
         return stack
     }()
@@ -25,7 +25,7 @@ final class TodoStackView: UIStackView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fill
-        stack.spacing = 4
+        stack.spacing = 2
         return stack
     }()
     
@@ -45,7 +45,6 @@ final class TodoStackView: UIStackView {
         view.tintColor = .tdLabelTertiaryColor
         view.contentMode = .center
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.widthAnchor.constraint(equalToConstant: 16).isActive = true
         return view
     }()
     
