@@ -2,6 +2,7 @@ import UIKit
 
 protocol TodoListViewDelegate: AnyObject {
     func reloadTableView()
+    func setEditing(_ state: Bool)
 }
 
 final class TodoListView: UIView {
@@ -117,5 +118,9 @@ extension TodoListView {
 extension TodoListView: TodoListViewDelegate {
     func reloadTableView() {
         tableView.reloadData()
+    }
+    
+    func setEditing(_ state: Bool) {
+        tableView.isEditing = state
     }
 }

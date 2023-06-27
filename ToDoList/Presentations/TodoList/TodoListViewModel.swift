@@ -30,6 +30,14 @@ final class TodoListViewModel: ObservableObject {
         }
     }
     
+    func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
+        if let item = fileCache.moveItem(from: sourceIndex, to: destinationIndex) {
+            todoItems.remove(at: sourceIndex)
+            todoItems.insert(item, at: destinationIndex)
+            saveItems()
+        }
+    }
+    
     func saveItems() {
         do {
             try fileCache.saveToJson(to: "todoItems")

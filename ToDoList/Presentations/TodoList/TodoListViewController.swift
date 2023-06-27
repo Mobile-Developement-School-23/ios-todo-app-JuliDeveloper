@@ -6,6 +6,7 @@ protocol TodoListViewControllerDelegate: AnyObject {
 
 class TodoListViewController: UIViewController {
     
+    private var isMoving = false
     private var viewModel: TodoListViewModel
     
     weak var delegate: TodoListViewDelegate?
@@ -40,6 +41,14 @@ class TodoListViewController: UIViewController {
         bindViewModel()
     }
     
+    // MARK: - Actions
+    @objc private func edit() {
+        isMoving.toggle()
+        delegate?.setEditing(isMoving)
+        
+        navigationItem.rightBarButtonItem?.image = isMoving ? UIImage(systemName: "checkmark.circle.fill") : UIImage(systemName: "gearshape.fill")
+    }
+    
     //MARK: - Private methods
     private func bindViewModel() {
         delegate?.reloadTableView()
@@ -51,6 +60,15 @@ class TodoListViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.layoutMargins.left = 32
         navigationController?.navigationBar.layoutMargins.right = 32
+        
+        let editButton = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape.fill"),
+            style: .plain,
+            target: self,
+            action: #selector(edit)
+        )
+        editButton.tintColor = .tdBlueColor
+        navigationItem.rightBarButtonItem = editButton
     }
     
     private func createIsDoneAction(at indexPath: IndexPath) -> UIContextualAction {
@@ -136,6 +154,31 @@ extension TodoListViewController: UITableViewDelegate {
         let deleteAction = createDeleteAction(tableView: tableView, at: indexPath)
         return UISwipeActionsConfiguration(actions: [deleteAction, infoAction])
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+           if indexPath.row == viewModel.todoItems.count {
+               return .none
+           } else {
+               return .delete
+           }
+       }
+       
+       func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+           isMoving && indexPath.row != viewModel.todoItems.count
+       }
+       
+       
+       func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+           if proposedDestinationIndexPath.row >= viewModel.todoItems.count {
+               return sourceIndexPath
+           }
+           return proposedDestinationIndexPath
+       }
+       
+       func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+           viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
+           tableView.reloadData()
+       }
 }
 
 extension TodoListViewController: TodoListViewControllerDelegate {
