@@ -24,8 +24,6 @@ final class TodoListView: UIView {
         table.backgroundColor = .clear
         table.translatesAutoresizingMaskIntoConstraints = false
         table.layer.cornerRadius = Constants.radius
-        table.allowsSelection = false
-        
         table.showsVerticalScrollIndicator = false
         table.separatorInset = UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 0)
         return table
@@ -65,7 +63,7 @@ final class TodoListView: UIView {
     }
     
     @objc private func openDetailVC() {
-        delegate?.openDetailViewController()
+        delegate?.openDetailViewController(nil)
     }
 }
 

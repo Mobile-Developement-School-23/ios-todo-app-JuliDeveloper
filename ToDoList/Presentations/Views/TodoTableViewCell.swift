@@ -7,6 +7,7 @@ final class TodoTableViewCell: UITableViewCell {
     func configure(from todoItem: TodoItem, at indexPath: IndexPath, _ lastIndex: Int) {
         backgroundColor = .tdBackSecondaryColor
         accessoryType = .disclosureIndicator
+        selectionStyle = .none
         
         addElements()
         setupConstraints()

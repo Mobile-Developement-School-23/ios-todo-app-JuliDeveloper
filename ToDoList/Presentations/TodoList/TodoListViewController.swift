@@ -1,7 +1,7 @@
 import UIKit
 
 protocol TodoListViewControllerDelegate: AnyObject {
-    func openDetailViewController()
+    func openDetailViewController(_ todoItem: TodoItem?)
 }
 
 class TodoListViewController: UIViewController {
@@ -136,6 +136,15 @@ extension TodoListViewController: UITableViewDataSource {
 }
 
 extension TodoListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == viewModel.todoItems.count {
+            openDetailViewController(nil)
+        } else {
+            let todoItem = viewModel.todoItems[indexPath.row]
+            openDetailViewController(todoItem)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if indexPath.row == viewModel.todoItems.count {
             return nil
@@ -182,8 +191,9 @@ extension TodoListViewController: UITableViewDelegate {
 }
 
 extension TodoListViewController: TodoListViewControllerDelegate {
-    func openDetailViewController() {
+    func openDetailViewController(_ todoItem: TodoItem?) {
         let detailVC = DetailTodoItemViewController(viewModel: viewModel)
+        detailVC.todoItem = todoItem
         let navController = UINavigationController(rootViewController: detailVC)
         present(navController, animated: true)
     }

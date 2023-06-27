@@ -26,6 +26,7 @@ final class NewTodoItemTableViewCell: UITableViewCell {
     
     func configure() {
         backgroundColor = .tdBackSecondaryColor
+        selectionStyle = .none
         
         contentView.addSubview(mainStackView)
         [plusImageView, titleLabel].forEach { mainStackView.addArrangedSubview($0) }
