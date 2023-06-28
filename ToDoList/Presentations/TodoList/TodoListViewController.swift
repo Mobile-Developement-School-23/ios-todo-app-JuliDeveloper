@@ -198,6 +198,48 @@ extension TodoListViewController: UITableViewDelegate {
            viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
            bindViewModel()
        }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let todoItem = viewModel.tasksToShow[indexPath.row]
+        
+        let previewProvider: () -> UIViewController? = {
+            let vc = PreviewViewController()
+            vc.todoItem = todoItem
+            return vc
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { [weak self] _ in
+            guard let self = self else { return UIMenu() }
+            
+            let isDoneAction = UIAction(
+                title: "Выполнить",
+                image: UIImage(systemName: "checkmark.circle.fill")
+            ) { _ in
+                _ = self.viewModel.updateIsDone(from: todoItem)
+            }
+            
+            let editAction = UIAction(
+                title: "Редактировать",
+                image: UIImage(systemName: "pencil")
+            ) {  _ in
+                self.openDetailViewController(todoItem)
+            }
+            
+            let deleteAction = UIAction(
+                title: "Удалить",
+                image: UIImage(systemName: "trash.fill")
+            ) {  _ in
+                self.viewModel.deleteItem(with: todoItem.id)
+            }
+            
+            return UIMenu(children: [
+                    isDoneAction,
+                    editAction,
+                    deleteAction
+                ]
+            )
+        }
+    }
 }
 
 extension TodoListViewController: TodoListViewControllerDelegate {
