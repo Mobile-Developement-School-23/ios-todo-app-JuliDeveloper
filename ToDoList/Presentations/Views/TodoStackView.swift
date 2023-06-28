@@ -39,8 +39,13 @@ final class TodoStackView: UIStackView {
     private let titleLabel = CustomLabel(text: "")
     
     private let calendarImageView: UIImageView = {
+        let сonfigImage = UIImage.SymbolConfiguration(pointSize: 13)
+        let image = UIImage(systemName: "calendar",
+                            withConfiguration: сonfigImage)
+        
         let view = UIImageView()
-        view.image = UIImage(named: "calendar")
+        view.image = image
+        view.tintColor = .tdSupportSeparatorColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.widthAnchor.constraint(equalToConstant: 13).isActive = true
         view.contentMode = .center

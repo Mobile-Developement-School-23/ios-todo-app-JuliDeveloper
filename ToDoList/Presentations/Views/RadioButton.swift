@@ -23,7 +23,10 @@ class RadioButton: UIButton {
         var imagePriority = UIImage()
         switch todoItem.importance {
         case .important: imagePriority = UIImage(named: "buttonHighPriority") ?? UIImage()
-        default: imagePriority = UIImage(named: "buttonOff") ?? UIImage()
+        default:
+            let image = UIImage(named: "buttonOff") ?? UIImage()
+            let tintedColor = UIColor.tdSupportSeparatorColor.withAlphaComponent(1)
+            imagePriority = image.withTintColor(tintedColor)
         }
 
         let image = todoItem.isDone ? UIImage(named: "buttonOn") : imagePriority
