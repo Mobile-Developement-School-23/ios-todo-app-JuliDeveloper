@@ -2,6 +2,8 @@ import UIKit
 
 protocol TodoListViewControllerDelegate: AnyObject {
     func openDetailViewController(_ todoItem: TodoItem?)
+    func showCompletionItem()
+    func updateCompletedTasksLabel() -> Int
 }
 
 class TodoListViewController: UIViewController {
@@ -38,6 +40,10 @@ class TodoListViewController: UIViewController {
             self?.bindViewModel()
         }
         
+        viewModel.$completedTasksCount.bind { [weak self] _ in
+            self?.delegate?.updateCompletedLabel(count: self?.viewModel.completedTasksCount ?? 0)
+        }
+        
         bindViewModel()
     }
     
@@ -72,7 +78,7 @@ class TodoListViewController: UIViewController {
     }
     
     private func createIsDoneAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
-        let todoItem = viewModel.todoItems[indexPath.row]
+        let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
 
@@ -86,11 +92,11 @@ class TodoListViewController: UIViewController {
     }
     
     private func createInfoAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
-        let todoItem = viewModel.todoItems[indexPath.row]
+        let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
 
-            print("info")
+            print(todoItem)
             
             completion(true)
         }
@@ -101,7 +107,7 @@ class TodoListViewController: UIViewController {
     }
     
     private func createDeleteAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
-        let todoItem = viewModel.todoItems[indexPath.row]
+        let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
 
@@ -117,19 +123,19 @@ class TodoListViewController: UIViewController {
 
 extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.todoItems.count + 1
+        viewModel.tasksToShow.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == viewModel.todoItems.count {
+        if indexPath.row == viewModel.tasksToShow.count {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newTodoCellIdentifier, for: indexPath) as? NewTodoItemTableViewCell else { return UITableViewCell() }
             cell.configure()
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.todoCellIdentifier, for: indexPath) as? TodoTableViewCell else { return UITableViewCell() }
             
-            let todoItem = viewModel.todoItems[indexPath.row]
-            let lastIndex = viewModel.todoItems.count - 1
+            let todoItem = viewModel.tasksToShow[indexPath.row]
+            let lastIndex = viewModel.tasksToShow.count - 1
             
             cell.delegate = self
             cell.configure(from: todoItem, at: indexPath, lastIndex)
@@ -141,16 +147,16 @@ extension TodoListViewController: UITableViewDataSource {
 
 extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.todoItems.count {
+        if indexPath.row == viewModel.tasksToShow.count {
             openDetailViewController(nil)
         } else {
-            let todoItem = viewModel.todoItems[indexPath.row]
+            let todoItem = viewModel.tasksToShow[indexPath.row]
             openDetailViewController(todoItem)
         }
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.row == viewModel.todoItems.count {
+        if indexPath.row == viewModel.tasksToShow.count {
             return nil
         }
         
@@ -159,7 +165,7 @@ extension TodoListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if indexPath.row == viewModel.todoItems.count {
+        if indexPath.row == viewModel.tasksToShow.count {
             return nil
         }
         
@@ -169,7 +175,7 @@ extension TodoListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-           if indexPath.row == viewModel.todoItems.count {
+           if indexPath.row == viewModel.tasksToShow.count {
                return .none
            } else {
                return .delete
@@ -177,12 +183,12 @@ extension TodoListViewController: UITableViewDelegate {
        }
        
        func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-           isMoving && indexPath.row != viewModel.todoItems.count
+           isMoving && indexPath.row != viewModel.tasksToShow.count
        }
        
        
        func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-           if proposedDestinationIndexPath.row >= viewModel.todoItems.count {
+           if proposedDestinationIndexPath.row >= viewModel.tasksToShow.count {
                return sourceIndexPath
            }
            return proposedDestinationIndexPath
@@ -190,7 +196,7 @@ extension TodoListViewController: UITableViewDelegate {
        
        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
            viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
-           tableView.reloadData()
+           bindViewModel()
        }
 }
 
@@ -201,13 +207,22 @@ extension TodoListViewController: TodoListViewControllerDelegate {
         let navController = UINavigationController(rootViewController: detailVC)
         present(navController, animated: true)
     }
+    
+    func showCompletionItem() {
+        viewModel.toggleShowCompletedTasks()
+        bindViewModel()
+    }
+    
+    func updateCompletedTasksLabel() -> Int {
+        viewModel.completedTasksCount
+    }
 }
 
 extension TodoListViewController: UpdateStateButtonCellDelegate {
     func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell) {
         guard let indexPath = delegate?.getIndexPath(for: cell) else { return }
         
-        let todoItem = viewModel.todoItems[indexPath.row]
+        let todoItem = viewModel.tasksToShow[indexPath.row]
         let updateTodoItem = viewModel.updateIsDone(from: todoItem)
         
         var imagePriority = UIImage()

@@ -17,7 +17,7 @@ final class TodoStackView: UIStackView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fillProportionally
-        stack.spacing = 4
+        stack.spacing = 5
         return stack
     }()
     
@@ -25,14 +25,13 @@ final class TodoStackView: UIStackView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fill
-        stack.spacing = 2
+        stack.spacing = 3.5
         return stack
     }()
     
     private let importanceImageView: UIImageView = {
         let view = UIImageView()
         view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .center
         return view
     }()
@@ -41,16 +40,16 @@ final class TodoStackView: UIStackView {
     
     private let calendarImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(systemName: "calendar")
-        view.tintColor = .tdLabelTertiaryColor
-        view.contentMode = .center
+        view.image = UIImage(named: "calendar")
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.widthAnchor.constraint(equalToConstant: 13).isActive = true
+        view.contentMode = .center
         return view
     }()
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "11 июня"
+        label.text = ""
         label.font = UIFont.tdSubhead
         label.textColor = .tdLabelTertiaryColor
         return label
@@ -131,6 +130,10 @@ final class TodoStackView: UIStackView {
 
         [importanceImageView, titleLabel].forEach { importanceStackView.addArrangedSubview($0) }
         [calendarImageView, subtitleLabel].forEach { dateStackView.addArrangedSubview($0) }
+        
+        NSLayoutConstraint.activate([
+            
+        ])
     }
     
     private func strikeText(strike: String, color: UIColor) -> NSMutableAttributedString {

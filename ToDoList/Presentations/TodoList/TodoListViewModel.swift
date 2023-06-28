@@ -4,6 +4,10 @@ final class TodoListViewModel: ObservableObject {
     
     //MARK: - Properties
     @Observable var todoItems: [TodoItem] = []
+    @Observable var showCompletedTasks: Bool = false
+    @Observable var completedTasksCount: Int = 0
+    
+    private var uncompletedTodoItems: [TodoItem] = []
     
     private let fileCache: FileCacheProtocol
     
@@ -13,7 +17,16 @@ final class TodoListViewModel: ObservableObject {
         loadItems()
     }
     
+    var tasksToShow: [TodoItem] {
+        return showCompletedTasks ? todoItems : uncompletedTodoItems
+    }
+    
     //MARK: - Methods
+    func toggleShowCompletedTasks() {
+        showCompletedTasks.toggle()
+        loadItems()
+    }
+    
     func addItem(_ item: TodoItem) {
         if let newItem = fileCache.addItem(item) {
             todoItems.append(newItem)
@@ -48,6 +61,7 @@ final class TodoListViewModel: ObservableObject {
             hexColor: todoItem.hexColor
         )
         addItem(updateTodoItem)
+        loadItems()
         return updateTodoItem
     }
     
@@ -63,6 +77,8 @@ final class TodoListViewModel: ObservableObject {
         do {
             try fileCache.loadFromJson(from: "todoItems")
             todoItems = fileCache.todoItemsList
+            uncompletedTodoItems = todoItems.filter { !$0.isDone }
+            completedTasksCount = todoItems.filter { $0.isDone }.count
         } catch {
             print("Failed to load to JSON")
         }

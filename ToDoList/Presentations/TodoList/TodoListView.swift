@@ -4,6 +4,7 @@ protocol TodoListViewDelegate: AnyObject {
     func reloadTableView()
     func setEditing(_ state: Bool)
     func getIndexPath(for cell: TodoTableViewCell) -> IndexPath?
+    func updateCompletedLabel(count: Int)
 }
 
 final class TodoListView: UIView {
@@ -61,6 +62,7 @@ final class TodoListView: UIView {
     func configure(delegate: TodoListViewController) {
         tableView.dataSource = delegate
         tableView.delegate = delegate
+        completionTasksStackView.delegate = delegate
     }
     
     @objc private func openDetailVC() {
@@ -125,5 +127,11 @@ extension TodoListView: TodoListViewDelegate {
     
     func getIndexPath(for cell: TodoTableViewCell) -> IndexPath? {
         tableView.indexPath(for: cell)
+    }
+    
+    func updateCompletedLabel(count: Int) {
+        if let label = completionTasksStackView.subviews.first as? UILabel {
+            label.text = "Выполнено — \(count)"
+        }
     }
 }

@@ -23,6 +23,8 @@ final class CompletionTasksStackView: UIStackView {
     
     private var isShowCompletedTasks = false
     
+    weak var delegate: TodoListViewControllerDelegate?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         axis = .horizontal
@@ -31,7 +33,7 @@ final class CompletionTasksStackView: UIStackView {
         heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         [completionLabel, showButton].forEach { addArrangedSubview($0) }
-
+        
         setAmountTasks()
     }
     
@@ -40,13 +42,18 @@ final class CompletionTasksStackView: UIStackView {
     }
     
     private func setAmountTasks() {
-        completionLabel.text = "Выполнено — \(0)"
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let count = self.delegate?.updateCompletedTasksLabel() ?? 0
+            self.completionLabel.text = "Выполнено — \(count)"
+        }
     }
         
     @objc private func showCompletedTasks() {
         isShowCompletedTasks.toggle()
-        
         let title = isShowCompletedTasks ? "Cкрыть" : "Показать"
         showButton.setTitle(title, for: .normal)
+        
+        delegate?.showCompletionItem()
     }
 }
