@@ -68,6 +68,9 @@ final class DetailTodoItemView: UIView {
     }()
     
     private let uiColorMarshallings: ColorMarshallingsProtocol
+    private var titleTextViewHeightConstraint: NSLayoutConstraint!
+    private var detailViewTopConstraint: NSLayoutConstraint!
+    private var heightKeyboard: CGFloat = 0
     
     private var isSelectedDeadline = false
     
@@ -81,6 +84,23 @@ final class DetailTodoItemView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if frame.width > frame.height {
+            let navigationBarHeight: CGFloat = 44
+            let topInset: CGFloat = 16
+            let bottomInset: CGFloat = 16
+            
+            titleTextViewHeightConstraint.constant = frame.height - navigationBarHeight - topInset - bottomInset
+            detailViewTopConstraint.constant = 40
+        } else {
+            titleTextViewHeightConstraint.constant = 120
+        }
+        
+        layoutIfNeeded()
     }
     
     deinit {
@@ -165,6 +185,18 @@ extension DetailTodoItemView {
     }
     
     private func setupConstraints() {
+        
+        titleTextViewHeightConstraint = titleTextView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: 120
+        )
+        titleTextViewHeightConstraint.isActive = true
+        
+        detailViewTopConstraint = detailView.topAnchor.constraint(
+            equalTo: titleTextView.bottomAnchor,
+            constant: 16
+        )
+        detailViewTopConstraint.isActive = true
+        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor
@@ -205,16 +237,9 @@ extension DetailTodoItemView {
             titleTextView.trailingAnchor.constraint(
                 equalTo: containerView.trailingAnchor
             ),
-            titleTextView.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: 120
-            ),
             
             detailView.leadingAnchor.constraint(
                 equalTo: containerView.leadingAnchor
-            ),
-            detailView.topAnchor.constraint(
-                equalTo: titleTextView.bottomAnchor,
-                constant: 16
             ),
             detailView.trailingAnchor.constraint(
                 equalTo: containerView.trailingAnchor
