@@ -71,13 +71,12 @@ class TodoListViewController: UIViewController {
         navigationItem.rightBarButtonItem = editButton
     }
     
-    private func createIsDoneAction(at indexPath: IndexPath) -> UIContextualAction {
+    private func createIsDoneAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
         let todoItem = viewModel.todoItems[indexPath.row]
-        let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            
-            let updateTodoItem = TodoItem(id: todoItem.id,text: todoItem.text, importance: todoItem.importance, isDone: !todoItem.isDone)
-            
-            self.viewModel.addItem(updateTodoItem)
+        let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+            guard let self = self else { return }
+
+            _ = self.viewModel.updateIsDone(from: todoItem)
             completion(true)
         }
         
@@ -88,9 +87,10 @@ class TodoListViewController: UIViewController {
     
     private func createInfoAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
         let todoItem = viewModel.todoItems[indexPath.row]
-        let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
-            _ = self.viewModel.updateIsDone(from: todoItem)
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+        let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+            guard let self = self else { return }
+
+            print("info")
             
             completion(true)
         }
@@ -102,7 +102,9 @@ class TodoListViewController: UIViewController {
     
     private func createDeleteAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
         let todoItem = viewModel.todoItems[indexPath.row]
-        let action = UIContextualAction(style: .normal, title: nil) { (action, view, completion) in
+        let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
+            guard let self = self else { return }
+
             self.viewModel.deleteItem(with: todoItem.id)
             completion(true)
         }
@@ -152,7 +154,7 @@ extension TodoListViewController: UITableViewDelegate {
             return nil
         }
         
-        let idDoneAction = createIsDoneAction(at: indexPath)
+        let idDoneAction = createIsDoneAction(tableView: tableView, at: indexPath)
         return UISwipeActionsConfiguration(actions: [idDoneAction])
     }
     

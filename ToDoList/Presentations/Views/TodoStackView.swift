@@ -119,6 +119,9 @@ final class TodoStackView: UIStackView {
         radioButton.isSelected = false
         radioButton.setImage(UIImage(named: "defaultImage"), for: .normal)
         titleLabel.attributedText = nil
+        titleLabel.text = ""
+        importanceImageView.isHidden = false
+        dateStackView.isHidden = false
     }
     
     private func addElements() {
