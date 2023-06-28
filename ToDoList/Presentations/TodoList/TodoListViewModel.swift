@@ -38,16 +38,9 @@ final class TodoListViewModel: ObservableObject {
     func deleteItem(with id: String) {
         if let _ = fileCache.deleteItem(with: id) {
             todoItems.removeAll { $0.id == id }
+            uncompletedTodoItems = todoItems.filter { !$0.isDone }
             saveItems()
             loadItems()
-        }
-    }
-    
-    func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
-        if let item = fileCache.moveItem(from: sourceIndex, to: destinationIndex) {
-            todoItems.remove(at: sourceIndex)
-            todoItems.insert(item, at: destinationIndex)
-            saveItems()
         }
     }
     

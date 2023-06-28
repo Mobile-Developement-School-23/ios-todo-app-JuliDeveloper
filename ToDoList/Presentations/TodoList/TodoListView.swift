@@ -51,6 +51,7 @@ final class TodoListView: UIView {
     init(delegate: TodoListViewControllerDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
+        backgroundColor = .tdBackPrimaryColor
         addElements()
         setupConstraints()
     }

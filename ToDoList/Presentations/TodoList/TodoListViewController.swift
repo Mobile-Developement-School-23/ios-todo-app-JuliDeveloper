@@ -8,7 +8,6 @@ protocol TodoListViewControllerDelegate: AnyObject {
 
 class TodoListViewController: UIViewController {
     
-    private var isMoving = false
     private var viewModel: TodoListViewModel
     
     weak var delegate: TodoListViewDelegate?
@@ -33,7 +32,6 @@ class TodoListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .tdBackPrimaryColor
         configureNavBar()
         
         viewModel.$todoItems.bind { [weak self] _ in
@@ -47,14 +45,6 @@ class TodoListViewController: UIViewController {
         bindViewModel()
     }
     
-    // MARK: - Actions
-    @objc private func edit() {
-        isMoving.toggle()
-        delegate?.setEditing(isMoving)
-        
-        navigationItem.rightBarButtonItem?.image = isMoving ? UIImage(systemName: "checkmark.circle.fill") : UIImage(systemName: "gearshape.fill")
-    }
-    
     //MARK: - Private methods
     private func bindViewModel() {
         delegate?.reloadTableView()
@@ -66,22 +56,13 @@ class TodoListViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.layoutMargins.left = 32
         navigationController?.navigationBar.layoutMargins.right = 32
-        
-        let editButton = UIBarButtonItem(
-            image: UIImage(systemName: "gearshape.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(edit)
-        )
-        editButton.tintColor = .tdBlueColor
-        navigationItem.rightBarButtonItem = editButton
     }
     
     private func createIsDoneAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
-
+            
             _ = self.viewModel.updateIsDone(from: todoItem)
             completion(true)
         }
@@ -95,7 +76,7 @@ class TodoListViewController: UIViewController {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
-
+            
             print(todoItem)
             
             completion(true)
@@ -110,7 +91,7 @@ class TodoListViewController: UIViewController {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
-
+            
             self.viewModel.deleteItem(with: todoItem.id)
             completion(true)
         }
@@ -174,31 +155,6 @@ extension TodoListViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [deleteAction, infoAction])
     }
     
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-           if indexPath.row == viewModel.tasksToShow.count {
-               return .none
-           } else {
-               return .delete
-           }
-       }
-       
-       func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-           isMoving && indexPath.row != viewModel.tasksToShow.count
-       }
-       
-       
-       func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
-           if proposedDestinationIndexPath.row >= viewModel.tasksToShow.count {
-               return sourceIndexPath
-           }
-           return proposedDestinationIndexPath
-       }
-       
-       func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-           viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
-           bindViewModel()
-       }
-    
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         
@@ -233,10 +189,10 @@ extension TodoListViewController: UITableViewDelegate {
             }
             
             return UIMenu(children: [
-                    isDoneAction,
-                    editAction,
-                    deleteAction
-                ]
+                isDoneAction,
+                editAction,
+                deleteAction
+            ]
             )
         }
     }

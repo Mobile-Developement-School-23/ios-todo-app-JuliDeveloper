@@ -111,15 +111,6 @@ extension FileCache: FileCacheProtocol {
         return nil
     }
     
-    func moveItem(from sourceIndex: Int, to destinationIndex: Int) -> TodoItem? {
-        if sourceIndex != destinationIndex {
-            let item = todoItems.remove(at: sourceIndex)
-            todoItems.insert(item, at: destinationIndex)
-            return item
-        }
-        return nil
-    }
-    
     func saveToJson(to file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "json") else {
             throw FileCacheError.directoryNotFound
