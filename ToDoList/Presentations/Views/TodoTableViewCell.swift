@@ -6,15 +6,18 @@ protocol UpdateStateButtonCellDelegate: AnyObject {
 
 final class TodoTableViewCell: UITableViewCell {
     
+    //MARK: - Properties
     private let mainStackView = TodoStackView()
     
     weak var delegate: UpdateStateButtonCellDelegate?
     
+    //MARK: - Lifecycle
     override func prepareForReuse() {
         super.prepareForReuse()
         mainStackView.resetRadioButton()
     }
     
+    //MARK: - Helpers
     func configure(from todoItem: TodoItem, at indexPath: IndexPath, _ lastIndex: Int) {
         backgroundColor = .tdBackSecondaryColor
         accessoryType = .disclosureIndicator
@@ -27,6 +30,7 @@ final class TodoTableViewCell: UITableViewCell {
         mainStackView.delegate = self
     }
     
+    //MARK: - Private methods
     private func addElements() {
         contentView.addSubview(mainStackView)
     }
@@ -53,6 +57,7 @@ final class TodoTableViewCell: UITableViewCell {
     }
 }
 
+//MARK: - UpdateStateButtonStackViewDelegate
 extension TodoTableViewCell: UpdateStateButtonStackViewDelegate {
     func stackDidTapButton(_ sender: RadioButton) {
         delegate?.cellDidTapButton(sender, in: self)

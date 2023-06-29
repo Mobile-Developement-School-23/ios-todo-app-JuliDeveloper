@@ -1,6 +1,8 @@
 import UIKit
 
 final class CompletionTasksStackView: UIStackView {
+    
+    //MARK: - Properties
     private let completionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.tdSubhead
@@ -25,6 +27,7 @@ final class CompletionTasksStackView: UIStackView {
     
     weak var delegate: TodoListViewControllerDelegate?
     
+    //MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         axis = .horizontal
@@ -41,19 +44,21 @@ final class CompletionTasksStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setAmountTasks() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            let count = self.delegate?.updateCompletedTasksLabel() ?? 0
-            self.completionLabel.text = "Выполнено — \(count)"
-        }
-    }
-        
+    //MARK: - Actions
     @objc private func showCompletedTasks() {
         isShowCompletedTasks.toggle()
         let title = isShowCompletedTasks ? "Cкрыть" : "Показать"
         showButton.setTitle(title, for: .normal)
         
         delegate?.showCompletionItem()
+    }
+    
+    //MARK: - Private methods
+    private func setAmountTasks() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let count = self.delegate?.updateCompletedTasksLabel() ?? 0
+            self.completionLabel.text = "Выполнено — \(count)"
+        }
     }
 }

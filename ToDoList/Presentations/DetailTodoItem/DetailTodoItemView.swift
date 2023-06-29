@@ -98,6 +98,7 @@ final class DetailTodoItemView: UIView {
             detailViewTopConstraint.constant = 40
         } else {
             titleTextViewHeightConstraint.constant = 120
+            detailViewTopConstraint.constant = 16
         }
         
         layoutIfNeeded()
@@ -107,7 +108,7 @@ final class DetailTodoItemView: UIView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    //MARK: - Method configure view
+    //MARK: - Helpers
     func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?, colorButtonAction: @escaping ((CustomColorPickerViewController) -> Void)) {
         backgroundColor = .tdBackPrimaryColor
         

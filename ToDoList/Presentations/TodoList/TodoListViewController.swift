@@ -1,13 +1,8 @@
 import UIKit
 
-protocol TodoListViewControllerDelegate: AnyObject {
-    func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle)
-    func showCompletionItem()
-    func updateCompletedTasksLabel() -> Int
-}
-
 class TodoListViewController: UIViewController {
     
+    //MARK: - Properties
     private var viewModel: TodoListViewModel
     
     var selectedCell: TodoTableViewCell?
@@ -99,6 +94,7 @@ class TodoListViewController: UIViewController {
     }
 }
 
+//MARK: - UITableViewDataSource
 extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.tasksToShow.count + 1
@@ -125,6 +121,7 @@ extension TodoListViewController: UITableViewDataSource {
     }
 }
 
+//MARK: - UITableViewDelegate
 extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == viewModel.tasksToShow.count {
@@ -210,6 +207,7 @@ extension TodoListViewController: UITableViewDelegate {
     }
 }
 
+//MARK: - TodoListViewControllerDelegate
 extension TodoListViewController: TodoListViewControllerDelegate {
     func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle) {
         let detailVC = DetailTodoItemViewController(viewModel: viewModel)
@@ -230,6 +228,7 @@ extension TodoListViewController: TodoListViewControllerDelegate {
     }
 }
 
+//MARK: - UpdateStateButtonCellDelegate
 extension TodoListViewController: UpdateStateButtonCellDelegate {
     func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell) {
         guard let indexPath = delegate?.getIndexPath(for: cell) else { return }
@@ -250,6 +249,7 @@ extension TodoListViewController: UpdateStateButtonCellDelegate {
     }
 }
 
+//MARK: - UIViewControllerTransitioningDelegate
 extension TodoListViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         CustomTransition()

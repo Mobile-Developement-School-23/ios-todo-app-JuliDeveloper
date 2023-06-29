@@ -2,6 +2,7 @@ import UIKit
 
 final class PreviewView: UIView {
     
+    //MARK: - Properties
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.tdSubhead
@@ -32,6 +33,7 @@ final class PreviewView: UIView {
     
     private let uiMarshallingsColor = UIColorMarshallings()
     
+    //MARK: - Helpers
     func configure(from todoItem: TodoItem?) {
         backgroundColor = .tdBackPrimaryColor
         
@@ -54,6 +56,7 @@ final class PreviewView: UIView {
         }
     }
     
+    //MARK: - Private methods
     private func addElements() {
         addSubview(dateLabel)
         addSubview(importanceImageView)

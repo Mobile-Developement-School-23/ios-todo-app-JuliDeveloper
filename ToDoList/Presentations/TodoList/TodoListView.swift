@@ -1,12 +1,5 @@
 import UIKit
 
-protocol TodoListViewDelegate: AnyObject {
-    func reloadTableView()
-    func setEditing(_ state: Bool)
-    func getIndexPath(for cell: TodoTableViewCell) -> IndexPath?
-    func updateCompletedLabel(count: Int)
-}
-
 final class TodoListView: UIView {
     
     //MARK: - Properties
@@ -48,6 +41,7 @@ final class TodoListView: UIView {
     
     weak var delegate: TodoListViewControllerDelegate?
     
+    //MARK: - Initialization
     init(delegate: TodoListViewControllerDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
@@ -60,12 +54,14 @@ final class TodoListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Helpers
     func configure(delegate: TodoListViewController) {
         tableView.dataSource = delegate
         tableView.delegate = delegate
         completionTasksStackView.delegate = delegate
     }
     
+    //MARK: - Actions
     @objc private func openDetailVC() {
         delegate?.openDetailViewController(
             nil,
@@ -75,6 +71,7 @@ final class TodoListView: UIView {
     }
 }
 
+//MARK: - Private methods
 extension TodoListView {
     private func addElements() {
         addSubview(completionTasksStackView)
@@ -121,6 +118,7 @@ extension TodoListView {
     }
 }
 
+//MARK: - Private methods
 extension TodoListView: TodoListViewDelegate {
     func reloadTableView() {
         tableView.reloadData()
