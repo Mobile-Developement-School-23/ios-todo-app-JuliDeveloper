@@ -41,8 +41,8 @@
 		252B3F5C2A49E7FA006356D4 /* CompletionTasksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */; };
 		25348A9F2A4CA6A6002D10CC /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348A9E2A4CA6A6002D10CC /* PreviewViewController.swift */; };
 		25348AA12A4CACA2002D10CC /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AA02A4CACA2002D10CC /* PreviewView.swift */; };
-		25348AA42A4CCD43002D10CC /* TodoListFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AA32A4CCD43002D10CC /* TodoListFooter.swift */; };
 		25348AA82A4DC681002D10CC /* CustomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AA72A4DC681002D10CC /* CustomTransition.swift */; };
+		25348AAC2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AAB2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -101,8 +101,8 @@
 		252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionTasksStackView.swift; sourceTree = "<group>"; };
 		25348A9E2A4CA6A6002D10CC /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		25348AA02A4CACA2002D10CC /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
-		25348AA32A4CCD43002D10CC /* TodoListFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListFooter.swift; sourceTree = "<group>"; };
 		25348AA72A4DC681002D10CC /* CustomTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTransition.swift; sourceTree = "<group>"; };
+		25348AAB2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoItemTableViewCell.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -160,10 +160,10 @@
 				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
 				2501F7662A4450E000919419 /* DateStackView.swift */,
 				252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */,
+				25348AAB2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift */,
 				252B3F532A49B6C8006356D4 /* RadioButton.swift */,
 				252B3F592A49E54E006356D4 /* TodoStackView.swift */,
 				252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */,
-				25348AA32A4CCD43002D10CC /* TodoListFooter.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -452,6 +452,7 @@
 				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,
 				2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */,
 				2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */,
+				25348AAC2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift in Sources */,
 				25348AA12A4CACA2002D10CC /* PreviewView.swift in Sources */,
 				2501F7542A4220F700919419 /* CustomColorPickerViewController.swift in Sources */,
 				2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */,
@@ -460,7 +461,6 @@
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
-				25348AA42A4CCD43002D10CC /* TodoListFooter.swift in Sources */,
 				252B3F542A49B6C8006356D4 /* RadioButton.swift in Sources */,
 				25348AA82A4DC681002D10CC /* CustomTransition.swift in Sources */,
 				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,

@@ -1,7 +1,6 @@
 import UIKit
 
-final class TodoListFooter: UITableViewHeaderFooterView {
-    
+final class NewTodoItemTableViewCell: UITableViewCell {
     private let mainStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -25,12 +24,13 @@ final class TodoListFooter: UITableViewHeaderFooterView {
     }()
     
     func configure() {
-        contentView.backgroundColor = .tdBackSecondaryColor
-        contentView.layer.cornerRadius = Constants.radius
-        contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        backgroundColor = .tdBackSecondaryColor
+        layer.cornerRadius = Constants.radius
+        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        selectionStyle = .none
         
-        isUserInteractionEnabled = true
-
+        separatorInset = UIEdgeInsets(top: 0, left: bounds.width, bottom: 0, right: 0)
+        
         addElements()
         setupConstraints()
     }

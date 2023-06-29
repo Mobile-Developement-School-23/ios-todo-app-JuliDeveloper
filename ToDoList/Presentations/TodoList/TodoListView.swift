@@ -18,6 +18,10 @@ final class TodoListView: UIView {
             TodoTableViewCell.self,
             forCellReuseIdentifier: Constants.todoCellIdentifier
         )
+        table.register(
+            NewTodoItemTableViewCell.self,
+            forCellReuseIdentifier: Constants.newTodoCellIdentifier
+        )
         
         table.backgroundColor = .clear
         table.translatesAutoresizingMaskIntoConstraints = false
