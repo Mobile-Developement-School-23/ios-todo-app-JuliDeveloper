@@ -42,7 +42,7 @@ final class PreviewView: UIView {
         textView.textColor = uiMarshallingsColor.fromHexString(hex: todoItem?.hexColor ?? "")
         
         if todoItem?.deadline != nil {
-            dateLabel.text = "Сделать до: \(todoItem?.deadline?.dateForLabel ?? "")"
+            dateLabel.text = "Сделать до: \(todoItem?.deadline?.dateForLabelWithoutYear ?? "")"
         } else {
             dateLabel.text = ""
         }

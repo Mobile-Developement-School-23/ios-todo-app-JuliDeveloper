@@ -113,7 +113,7 @@ final class TodoStackView: UIStackView {
         
         if todoItem.deadline != nil {
             dateStackView.isHidden = false
-            subtitleLabel.text = todoItem.deadline?.dateForLabel
+            subtitleLabel.text = todoItem.deadline?.dateForLabelWithoutYear
         } else {
             dateStackView.isHidden = true
         }
