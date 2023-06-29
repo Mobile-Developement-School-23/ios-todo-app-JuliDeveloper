@@ -1,7 +1,7 @@
 import UIKit
 
 protocol TodoListViewControllerDelegate: AnyObject {
-    func openDetailViewController(_ todoItem: TodoItem?)
+    func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle)
     func showCompletionItem()
     func updateCompletedTasksLabel() -> Int
 }
@@ -10,6 +10,8 @@ class TodoListViewController: UIViewController {
     
     private var viewModel: TodoListViewModel
     
+    var selectedCell: TodoTableViewCell?
+
     weak var delegate: TodoListViewDelegate?
     
     //MARK: - Lifecycle
@@ -46,7 +48,11 @@ class TodoListViewController: UIViewController {
     }
     
     @objc private func footerTapped() {
-        openDetailViewController(nil)
+        openDetailViewController(
+            nil,
+            transitioningDelegate: nil,
+            presentationStyle: .automatic
+        )
     }
     
     //MARK: - Private methods
@@ -75,21 +81,6 @@ class TodoListViewController: UIViewController {
         
         action.backgroundColor = .tdGreenColor
         action.image = UIImage(named: "isDoneAction")
-        return action
-    }
-    
-    private func createInfoAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
-        let todoItem = viewModel.tasksToShow[indexPath.row]
-        let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
-            guard let self = self else { return }
-            
-            print(todoItem)
-            
-            completion(true)
-        }
-        
-        action.backgroundColor = .tdGrayLightColor
-        action.image = UIImage(named: "infoAction")
         return action
     }
     
@@ -142,12 +133,15 @@ extension TodoListViewController: UITableViewDataSource {
 
 extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.tasksToShow.count {
-            openDetailViewController(nil)
-        } else {
-            let todoItem = viewModel.tasksToShow[indexPath.row]
-            openDetailViewController(todoItem)
-        }
+        let todoItem = viewModel.tasksToShow[indexPath.row]
+        
+        selectedCell = tableView.cellForRow(at: indexPath) as? TodoTableViewCell
+        
+        openDetailViewController(
+            todoItem,
+            transitioningDelegate: self,
+            presentationStyle: .custom
+        )
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -164,9 +158,8 @@ extension TodoListViewController: UITableViewDelegate {
             return nil
         }
         
-        let infoAction = createInfoAction(tableView: tableView, at: indexPath)
         let deleteAction = createDeleteAction(tableView: tableView, at: indexPath)
-        return UISwipeActionsConfiguration(actions: [deleteAction, infoAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -192,7 +185,11 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Редактировать",
                 image: UIImage(systemName: "pencil")
             ) {  _ in
-                self.openDetailViewController(todoItem)
+                self.openDetailViewController(
+                    todoItem,
+                    transitioningDelegate: nil,
+                    presentationStyle: .automatic
+                )
             }
             
             let deleteAction = UIAction(
@@ -213,10 +210,12 @@ extension TodoListViewController: UITableViewDelegate {
 }
 
 extension TodoListViewController: TodoListViewControllerDelegate {
-    func openDetailViewController(_ todoItem: TodoItem?) {
+    func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle) {
         let detailVC = DetailTodoItemViewController(viewModel: viewModel)
         detailVC.todoItem = todoItem
         let navController = UINavigationController(rootViewController: detailVC)
+        navController.modalPresentationStyle = presentationStyle
+        navController.transitioningDelegate = transitioningDelegate
         present(navController, animated: true)
     }
     
@@ -247,5 +246,15 @@ extension TodoListViewController: UpdateStateButtonCellDelegate {
         sender.setImage(image, for: .normal)
         
         sender.isSelected.toggle()
+    }
+}
+
+extension TodoListViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        CustomTransition()
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        CustomTransition()
     }
 }

@@ -63,7 +63,11 @@ final class TodoListView: UIView {
     }
     
     @objc private func openDetailVC() {
-        delegate?.openDetailViewController(nil)
+        delegate?.openDetailViewController(
+            nil,
+            transitioningDelegate: nil,
+            presentationStyle: .automatic
+        )
     }
 }
 
