@@ -11,14 +11,14 @@ final class TodoListViewModel: ObservableObject {
     
     private let fileCache: FileCacheProtocol
     
+    var tasksToShow: [TodoItem] {
+        return showCompletedTasks ? todoItems : uncompletedTodoItems
+    }
+    
     //MARK: - Initialization
     init(fileCache: FileCacheProtocol = FileCache()) {
         self.fileCache = fileCache
         loadItems()
-    }
-    
-    var tasksToShow: [TodoItem] {
-        return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
     
     //MARK: - Methods

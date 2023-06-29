@@ -8,7 +8,7 @@ final class DetailTodoItemViewController: UIViewController {
     private var currentText = String()
     private var currentImportance = Importance.normal
     private var currentDeadline: Date? = nil
-    private var currentColor: UIColor = .black
+    private var currentColor: UIColor = .tdLabelPrimaryColor
     
     private var viewModel: TodoListViewModel
     

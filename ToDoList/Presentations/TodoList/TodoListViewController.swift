@@ -51,7 +51,9 @@ class TodoListViewController: UIViewController {
     
     //MARK: - Private methods
     private func bindViewModel() {
-        delegate?.reloadTableView()
+        DispatchQueue.main.async {
+            self.delegate?.reloadTableView()
+        }
     }
     
     private func configureNavBar() {
