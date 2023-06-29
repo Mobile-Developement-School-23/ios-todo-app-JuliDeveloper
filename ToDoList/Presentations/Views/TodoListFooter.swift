@@ -1,6 +1,6 @@
 import UIKit
 
-final class NewTodoItemTableViewCell: UITableViewCell {
+final class TodoListFooter: UITableViewHeaderFooterView {
     
     private let mainStackView: UIStackView = {
         let stack = UIStackView()
@@ -25,12 +25,25 @@ final class NewTodoItemTableViewCell: UITableViewCell {
     }()
     
     func configure() {
-        backgroundColor = .tdBackSecondaryColor
-        selectionStyle = .none
+        contentView.backgroundColor = .tdBackSecondaryColor
+        contentView.layer.cornerRadius = Constants.radius
+        contentView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         
+        isUserInteractionEnabled = true
+
+        addElements()
+        setupConstraints()
+    }
+    
+    private func addElements() {
         contentView.addSubview(mainStackView)
-        [plusImageView, titleLabel].forEach { mainStackView.addArrangedSubview($0) }
-        
+        [
+            plusImageView,
+            titleLabel
+        ].forEach { mainStackView.addArrangedSubview($0) }
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             mainStackView.leadingAnchor.constraint(
                 equalTo: contentView.leadingAnchor,
@@ -54,12 +67,5 @@ final class NewTodoItemTableViewCell: UITableViewCell {
                 equalToConstant: 24
             )
         ])
-        
-        separatorInset = UIEdgeInsets(
-            top: 0, left: bounds.size.width + 100, bottom: 0, right: 0
-        )
-        
-        layer.cornerRadius = Constants.radius
-        layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
 }

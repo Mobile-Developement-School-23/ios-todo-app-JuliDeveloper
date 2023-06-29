@@ -45,6 +45,10 @@ class TodoListViewController: UIViewController {
         bindViewModel()
     }
     
+    @objc private func footerTapped() {
+        openDetailViewController(nil)
+    }
+    
     //MARK: - Private methods
     private func bindViewModel() {
         delegate?.reloadTableView()
@@ -104,25 +108,33 @@ class TodoListViewController: UIViewController {
 
 extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.tasksToShow.count + 1
+        viewModel.tasksToShow.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == viewModel.tasksToShow.count {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.newTodoCellIdentifier, for: indexPath) as? NewTodoItemTableViewCell else { return UITableViewCell() }
-            cell.configure()
-            return cell
-        } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.todoCellIdentifier, for: indexPath) as? TodoTableViewCell else { return UITableViewCell() }
-            
-            let todoItem = viewModel.tasksToShow[indexPath.row]
-            let lastIndex = viewModel.tasksToShow.count - 1
-            
-            cell.delegate = self
-            cell.configure(from: todoItem, at: indexPath, lastIndex)
-            
-            return cell
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.todoCellIdentifier, for: indexPath) as? TodoTableViewCell else { return UITableViewCell() }
+        
+        let todoItem = viewModel.tasksToShow[indexPath.row]
+        let lastIndex = viewModel.tasksToShow.count - 1
+        
+        cell.delegate = self
+        cell.configure(from: todoItem, at: indexPath, lastIndex)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = TodoListFooter(frame: tableView.frame)
+        footerView.configure()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
+        footerView.addGestureRecognizer(tapGesture)
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 56
     }
 }
 

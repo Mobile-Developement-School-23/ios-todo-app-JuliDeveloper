@@ -37,7 +37,6 @@
 		252B3F522A49B18E006356D4 /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */; };
 		252B3F542A49B6C8006356D4 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F532A49B6C8006356D4 /* RadioButton.swift */; };
 		252B3F562A49BD52006356D4 /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F552A49BD52006356D4 /* TodoListView.swift */; };
-		252B3F582A49CAB1006356D4 /* NewTodoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */; };
 		252B3F5A2A49E54E006356D4 /* TodoStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F592A49E54E006356D4 /* TodoStackView.swift */; };
 		252B3F5C2A49E7FA006356D4 /* CompletionTasksStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */; };
 		25348A9F2A4CA6A6002D10CC /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348A9E2A4CA6A6002D10CC /* PreviewViewController.swift */; };
@@ -97,7 +96,6 @@
 		252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
 		252B3F532A49B6C8006356D4 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		252B3F552A49BD52006356D4 /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
-		252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoItemTableViewCell.swift; sourceTree = "<group>"; };
 		252B3F592A49E54E006356D4 /* TodoStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoStackView.swift; sourceTree = "<group>"; };
 		252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionTasksStackView.swift; sourceTree = "<group>"; };
 		25348A9E2A4CA6A6002D10CC /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
@@ -160,7 +158,6 @@
 				2501F7512A42150C00919419 /* SelectColorStackView.swift */,
 				2501F7662A4450E000919419 /* DateStackView.swift */,
 				252B3F512A49B18E006356D4 /* TodoTableViewCell.swift */,
-				252B3F572A49CAB1006356D4 /* NewTodoItemTableViewCell.swift */,
 				252B3F532A49B6C8006356D4 /* RadioButton.swift */,
 				252B3F592A49E54E006356D4 /* TodoStackView.swift */,
 				252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */,
@@ -457,7 +454,6 @@
 				2501F7712A4471D200919419 /* DetailMainStackViewDelegate.swift in Sources */,
 				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
-				252B3F582A49CAB1006356D4 /* NewTodoItemTableViewCell.swift in Sources */,
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
