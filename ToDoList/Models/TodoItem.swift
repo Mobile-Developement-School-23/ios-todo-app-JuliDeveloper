@@ -1,4 +1,5 @@
 import Foundation
+import FileCachePackage
 
 private let idKey = "id"
 private let textKey = "text"
@@ -15,7 +16,7 @@ enum Importance: String {
     case important
 }
 
-struct TodoItem {
+struct TodoItem: IdentifiableType {
     let id: String
     let text: String
     let importance: Importance
@@ -46,9 +47,9 @@ struct TodoItem {
     }
 }
 
-//MARK: - Convert TodoItem to/from JSON
-extension TodoItem {
-    var json: Any {
+// MARK: - Convert TodoItem to/from JSON
+extension TodoItem: JSONConvertible {
+    var json: [String: Any] {
         var result: [String: Any] = [:]
         
         result[idKey] = id
@@ -73,6 +74,32 @@ extension TodoItem {
         }
         
         return result
+    }
+    
+    init?(json: [String: Any]) {
+        guard let id = json[idKey] as? String,
+              let text = json[textKey] as? String,
+              let isDone = json[isDoneKey] as? Bool,
+              let hexColor = json[hexColorKey] as? String,
+              let createdAt = (json[createdAtKey] as? Int)?.dateValue
+        else {
+            return nil
+        }
+        
+        let importance = (json[importanceKey] as? String).flatMap(Importance.init(rawValue:)) ?? .normal
+        let deadline = (json[deadlineKey] as? Int)?.dateValue
+        let changesAt = (json[changesAtKey] as? Int)?.dateValue
+        
+        self.init(
+            id: id,
+            text: text,
+            importance: importance,
+            deadline: deadline,
+            isDone: isDone,
+            createdAt: createdAt,
+            changesAt: changesAt,
+            hexColor: hexColor
+        )
     }
     
     static func parse(json: Any) -> TodoItem? {
@@ -103,8 +130,8 @@ extension TodoItem {
     }
 }
 
-//MARK: - Convert TodoItem to/from CSV
-extension TodoItem {
+// MARK: - Convert TodoItem to/from CSV
+extension TodoItem: CSVConvertible {
     var csv: String {
         let textCsv = text.replacingOccurrences(of: ",", with: "|")
         let importanceString = importance != .normal ? importance.rawValue : ""
@@ -114,6 +141,39 @@ extension TodoItem {
         let changesAtString = changesAt != nil ? String(changesAt?.dateIntValue ?? 0) : ""
         
         return "\(id),\(textCsv),\(importanceString),\(deadlineString),\(isDoneString),\(createdAtString),\(changesAtString),\(hexColor)"
+    }
+    
+    init?(csv: String) {
+        let strings = csv.components(separatedBy: ",")
+        
+        guard strings.count == 8 else {
+            return nil
+        }
+        
+        let id = strings[0]
+        let text = strings[1].replacingOccurrences(of: "|", with: ",")
+        let importanceString = strings[2].isEmpty ? Importance.normal.rawValue : strings[2]
+        let deadline = strings[3].isEmpty ? nil : Int(strings[3])?.dateValue
+        let changesAt = strings[6].isEmpty ? nil : Int(strings[6])?.dateValue
+        let hexColor = strings[7]
+        
+        guard let importance = Importance(rawValue: importanceString),
+              let isDone = Bool(strings[4]),
+              let createdAt = Int(strings[5])?.dateValue
+        else {
+            return nil
+        }
+        
+        self.init(
+            id: id,
+            text: text,
+            importance: importance,
+            deadline: deadline,
+            isDone: isDone,
+            createdAt: createdAt,
+            changesAt: changesAt,
+            hexColor: hexColor
+        )
     }
     
     static func parse(csv: String) -> TodoItem? {

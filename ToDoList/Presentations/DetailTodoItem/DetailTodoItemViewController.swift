@@ -2,7 +2,7 @@ import UIKit
 
 final class DetailTodoItemViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let uiColorMarshallings: ColorMarshallingsProtocol
     
     private var currentText = String()
@@ -16,7 +16,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     weak var delegate: DetailTodoItemViewControllerDelegate?
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     init(viewModel: TodoListViewModel, uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
         self.viewModel = viewModel
         self.uiColorMarshallings = uiColorMarshallings
@@ -50,7 +50,7 @@ final class DetailTodoItemViewController: UIViewController {
         view.setNeedsUpdateConstraints()
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func cancel() {
         dismiss(animated: true)
     }
@@ -81,7 +81,7 @@ final class DetailTodoItemViewController: UIViewController {
     }
 }
 
-//MARK: - Private methods
+// MARK: - Private methods
 extension DetailTodoItemViewController {
     private func configureNavBar() {
         title = "Дело"
@@ -123,7 +123,7 @@ extension DetailTodoItemViewController {
     }
 }
 
-//MARK: - UITextViewDelegate
+// MARK: - UITextViewDelegate
 extension DetailTodoItemViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         textView.text = currentText
@@ -160,7 +160,7 @@ extension DetailTodoItemViewController: UITextViewDelegate {
     }
 }
 
-//MARK: - DetailTodoItemViewDelegate
+// MARK: - DetailTodoItemViewDelegate
 extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     func didUpdateText(_ text: String) {
         currentText = text

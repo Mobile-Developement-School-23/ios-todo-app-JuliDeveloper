@@ -6,7 +6,7 @@ protocol UpdateStateButtonStackViewDelegate: AnyObject {
 
 final class TodoStackView: UIStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let titleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -67,7 +67,7 @@ final class TodoStackView: UIStackView {
     
     weak var delegate: UpdateStateButtonStackViewDelegate?
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     init(uiMarshallingsColor: UIColorMarshallings = UIColorMarshallings()) {
         self.uiMarshallingsColor = uiMarshallingsColor
         super.init(frame: .zero)
@@ -86,7 +86,7 @@ final class TodoStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func setupData(todoItem: TodoItem) {
         titleLabel.numberOfLines = 3
         titleLabel.text = todoItem.text
@@ -131,7 +131,7 @@ final class TodoStackView: UIStackView {
         dateStackView.isHidden = false
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         [radioButton, titleStackView].forEach { addArrangedSubview($0) }
         
@@ -150,18 +150,18 @@ final class TodoStackView: UIStackView {
         attributeString.addAttribute(
             NSAttributedString.Key.strikethroughStyle,
             value: NSUnderlineStyle.single.rawValue,
-            range: NSMakeRange(0, attributeString.length)
+            range: NSRange(location: 0, length: attributeString.length)
         )
         attributeString.addAttribute(
             NSAttributedString.Key.foregroundColor,
             value: color,
-            range: NSMakeRange(0, attributeString.length)
+            range: NSRange(location: 0, length: attributeString.length)
         )
         return attributeString
     }
 }
 
-//MARK: - UpdateStateRadioButtonDelegate
+// MARK: - UpdateStateRadioButtonDelegate
 extension TodoStackView: UpdateStateRadioButtonDelegate {
     func buttonDidTap(_ sender: RadioButton) {
         delegate?.stackDidTapButton(sender)

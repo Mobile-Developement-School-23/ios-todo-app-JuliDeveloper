@@ -2,7 +2,7 @@ import UIKit
 
 final class DetailMainStackView: UIStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let importanceStackView = ImportanceStackView()
     private let selectColorStackView = SelectColorStackView()
     private let dateStackView = DateStackView()
@@ -29,7 +29,7 @@ final class DetailMainStackView: UIStackView {
     
     weak var delegate: DetailMainStackViewDelegate?
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
         self.uiColorMarshallings = uiColorMarshallings
         super.init(frame: .zero)
@@ -45,7 +45,7 @@ final class DetailMainStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func passAction(_ action: @escaping (CustomColorPickerViewController) -> Void) {
         selectColorStackView.buttonAction = action
     }
@@ -74,13 +74,13 @@ final class DetailMainStackView: UIStackView {
         }
     }
  
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func datePickerValueChanged() {
         dateStackView.setDateButtonTitle(datePicker.date.dateForLabel)
         delegate?.didUpdateDeadline(datePicker.date)
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func configure() {
         axis = .vertical
         distribution = .fill

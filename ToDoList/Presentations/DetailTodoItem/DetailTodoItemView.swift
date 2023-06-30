@@ -2,7 +2,7 @@ import UIKit
 
 final class DetailTodoItemView: UIView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -77,7 +77,7 @@ final class DetailTodoItemView: UIView {
     
     weak var delegate: DetailTodoItemViewDelegate?
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
         self.uiColorMarshallings = uiColorMarshallings
         super.init(frame: .zero)
@@ -109,7 +109,7 @@ final class DetailTodoItemView: UIView {
         NotificationCenter.default.removeObserver(self)
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?, colorButtonAction: @escaping ((CustomColorPickerViewController) -> Void)) {
         backgroundColor = .tdBackPrimaryColor
         
@@ -129,7 +129,7 @@ final class DetailTodoItemView: UIView {
     }
 }
 
-//MARK: - Actions
+// MARK: - Actions
 extension DetailTodoItemView {
     @objc private func deleteItem() {
         delegate?.deleteItem()
@@ -148,18 +148,11 @@ extension DetailTodoItemView {
     
     @objc private func handleKeyboardDidShow() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOnScrollView))
+        tapGesture.cancelsTouchesInView = false
         scrollView.addGestureRecognizer(tapGesture)
     }
 
     @objc private func handleKeyboardWillHide() {
-        if let gestures = scrollView.gestureRecognizers {
-            for gesture in gestures {
-                if gesture is UITapGestureRecognizer {
-                    scrollView.removeGestureRecognizer(gesture)
-                }
-            }
-        }
-        
         scrollView.contentInset = UIEdgeInsets.zero
     }
 
@@ -168,7 +161,7 @@ extension DetailTodoItemView {
     }
 }
 
-//MARK: - Private methods
+// MARK: - Private methods
 extension DetailTodoItemView {
     private func addElements() {
         addSubview(scrollView)
@@ -323,7 +316,7 @@ extension DetailTodoItemView {
     }
 }
 
-//MARK: - DetailTodoItemViewControllerDelegate
+// MARK: - DetailTodoItemViewControllerDelegate
 extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     func setupStateDeleteButton(from state: Bool) {
         deleteButton.isEnabled = state
@@ -335,7 +328,7 @@ extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     }
 }
 
-//MARK: - DetailMainStackViewDelegate
+// MARK: - DetailMainStackViewDelegate
 extension DetailTodoItemView: DetailMainStackViewDelegate {
     func didUpdateImportance(_ importance: Importance) {
         delegate?.didUpdateImportance(importance)

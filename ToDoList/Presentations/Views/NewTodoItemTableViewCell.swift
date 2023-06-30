@@ -2,7 +2,7 @@ import UIKit
 
 final class NewTodoItemTableViewCell: UITableViewCell {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let mainStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
@@ -25,7 +25,7 @@ final class NewTodoItemTableViewCell: UITableViewCell {
         return label
     }()
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func configure() {
         backgroundColor = .tdBackSecondaryColor
         layer.cornerRadius = Constants.radius
@@ -38,7 +38,7 @@ final class NewTodoItemTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         contentView.addSubview(mainStackView)
         [

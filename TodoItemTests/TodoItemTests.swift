@@ -2,8 +2,7 @@ import XCTest
 @testable import ToDoList
 
 final class TodoItemTests: XCTestCase {
-    
-    //MARK: - Tests - Private properties
+    // MARK: - Tests - Private properties
     private let id = "1111"
     private let text = "Полить цветы"
     private let isDone = false
@@ -28,7 +27,6 @@ final class TodoItemTests: XCTestCase {
             changesAt: changesAt
         )
     }
-    
     //MARK: - Tests - Creation TodoItem
     func testCreateTodoItemWithValidValues() {
         XCTAssertEqual(item.id, id)

@@ -2,7 +2,7 @@ import UIKit
 
 final class ColorStackViewColorPicker: UIStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let hexCurrentColorLabel = CustomLabel(text: "")
     
     private let currentColorView: UIView = {
@@ -17,7 +17,7 @@ final class ColorStackViewColorPicker: UIStackView {
         return view
     }()
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -29,13 +29,13 @@ final class ColorStackViewColorPicker: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func setColor(_ color: UIColor, hexColor: String) {
         currentColorView.backgroundColor = color
         hexCurrentColorLabel.text = hexColor
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func configure() {
         axis = .horizontal
         distribution = .fill

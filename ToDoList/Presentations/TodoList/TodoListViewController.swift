@@ -2,14 +2,14 @@ import UIKit
 
 class TodoListViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private var viewModel: TodoListViewModel
     
     var selectedCell: TodoTableViewCell?
 
     weak var delegate: TodoListViewDelegate?
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -50,7 +50,7 @@ class TodoListViewController: UIViewController {
         )
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func bindViewModel() {
         DispatchQueue.main.async {
             self.delegate?.reloadTableView()
@@ -94,7 +94,7 @@ class TodoListViewController: UIViewController {
     }
 }
 
-//MARK: - UITableViewDataSource
+// MARK: - UITableViewDataSource
 extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.tasksToShow.count + 1
@@ -121,7 +121,7 @@ extension TodoListViewController: UITableViewDataSource {
     }
 }
 
-//MARK: - UITableViewDelegate
+// MARK: - UITableViewDelegate
 extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == viewModel.tasksToShow.count {
@@ -207,7 +207,7 @@ extension TodoListViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - TodoListViewControllerDelegate
+// MARK: - TodoListViewControllerDelegate
 extension TodoListViewController: TodoListViewControllerDelegate {
     func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle) {
         let detailVC = DetailTodoItemViewController(viewModel: viewModel)
@@ -228,7 +228,7 @@ extension TodoListViewController: TodoListViewControllerDelegate {
     }
 }
 
-//MARK: - UpdateStateButtonCellDelegate
+// MARK: - UpdateStateButtonCellDelegate
 extension TodoListViewController: UpdateStateButtonCellDelegate {
     func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell) {
         guard let indexPath = delegate?.getIndexPath(for: cell) else { return }
@@ -249,7 +249,7 @@ extension TodoListViewController: UpdateStateButtonCellDelegate {
     }
 }
 
-//MARK: - UIViewControllerTransitioningDelegate
+// MARK: - UIViewControllerTransitioningDelegate
 extension TodoListViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         CustomTransition()

@@ -6,10 +6,10 @@ protocol UpdateStateRadioButtonDelegate: AnyObject {
 
 class RadioButton: UIButton {
     
-    //MARK: - Properties
+    // MARK: - Properties
     weak var delegate: UpdateStateRadioButtonDelegate?
 
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -20,7 +20,7 @@ class RadioButton: UIButton {
         setup()
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func setup(from todoItem: TodoItem) {
         var imagePriority = UIImage()
         switch todoItem.importance {
@@ -37,12 +37,12 @@ class RadioButton: UIButton {
         isSelected = todoItem.isDone
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func buttonTapped() {
         delegate?.buttonDidTap(self)
     }
 
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: 24).isActive = true

@@ -2,10 +2,10 @@ import UIKit
 
 final class PreviewViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: - Properties
     var todoItem: TodoItem?
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func loadView() {
         super.loadView()
         let customView = PreviewView()
