@@ -21,6 +21,7 @@ final class DetailTodoItemView: UIView {
         )
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
+        textView.keyboardType = .asciiCapable
         return textView
     }()
     
@@ -69,6 +70,9 @@ final class DetailTodoItemView: UIView {
     
     private let uiColorMarshallings: ColorMarshallingsProtocol
     
+    private var titleTextViewHeightConstraint: NSLayoutConstraint?
+    private var detailViewTopConstraint: NSLayoutConstraint?
+    
     private var isSelectedDeadline = false
     
     weak var delegate: DetailTodoItemViewDelegate?
@@ -83,11 +87,29 @@ final class DetailTodoItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if frame.width > frame.height {
+            let navigationBarHeight: CGFloat = 44
+            let topInset: CGFloat = 16
+            let bottomInset: CGFloat = 16
+            
+            titleTextViewHeightConstraint?.constant = frame.height - navigationBarHeight - topInset - bottomInset
+            detailViewTopConstraint?.constant = 40
+        } else {
+            titleTextViewHeightConstraint?.constant = 120
+            detailViewTopConstraint?.constant = 16
+        }
+        
+        layoutIfNeeded()
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    //MARK: - Method configure view
+    //MARK: - Helpers
     func configureView(delegate: DetailTodoItemViewController, _ item: TodoItem?, colorButtonAction: @escaping ((CustomColorPickerViewController) -> Void)) {
         backgroundColor = .tdBackPrimaryColor
         
@@ -165,6 +187,17 @@ extension DetailTodoItemView {
     }
     
     private func setupConstraints() {
+        titleTextViewHeightConstraint = titleTextView.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: 120
+        )
+        titleTextViewHeightConstraint?.isActive = true
+        
+        detailViewTopConstraint = detailView.topAnchor.constraint(
+            equalTo: titleTextView.bottomAnchor,
+            constant: 16
+        )
+        detailViewTopConstraint?.isActive = true
+        
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor
@@ -205,16 +238,9 @@ extension DetailTodoItemView {
             titleTextView.trailingAnchor.constraint(
                 equalTo: containerView.trailingAnchor
             ),
-            titleTextView.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: 120
-            ),
             
             detailView.leadingAnchor.constraint(
                 equalTo: containerView.leadingAnchor
-            ),
-            detailView.topAnchor.constraint(
-                equalTo: titleTextView.bottomAnchor,
-                constant: 16
             ),
             detailView.trailingAnchor.constraint(
                 equalTo: containerView.trailingAnchor

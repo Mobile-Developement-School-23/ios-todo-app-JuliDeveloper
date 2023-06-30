@@ -13,8 +13,16 @@ private let dateFormatter: DateFormatter = {
     return dateFormatter
 }()
 
+private let dateFormatterWithoutYear: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.locale = Locale(identifier: "Ru_ru")
+    dateFormatter.dateFormat = "dd MMMM"
+    return dateFormatter
+}()
+
 extension Date {
     var dateForLabel: String { dateFormatter.string(from: self) }
+    var dateForLabelWithoutYear: String { dateFormatterWithoutYear.string(from: self) }
     var dateTimeString: String { dateTimeDefaultFormatter.string(from: self) }
     
     var dateIntValue: Int? {

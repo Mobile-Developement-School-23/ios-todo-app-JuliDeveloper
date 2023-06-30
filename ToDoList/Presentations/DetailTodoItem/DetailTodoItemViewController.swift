@@ -8,7 +8,7 @@ final class DetailTodoItemViewController: UIViewController {
     private var currentText = String()
     private var currentImportance = Importance.normal
     private var currentDeadline: Date? = nil
-    private var currentColor: UIColor = .black
+    private var currentColor: UIColor = .tdLabelPrimaryColor
     
     private var viewModel: TodoListViewModel
     
@@ -180,9 +180,12 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     }
     
     func deleteItem() {
-        if todoItem != nil {
-            viewModel.deleteItem(with: todoItem?.id ?? "")
+        showAlert { [weak self] _ in
+            guard let self = self else { return }
+            if self.todoItem != nil {
+                self.viewModel.deleteItem(with: self.todoItem?.id ?? "")
+            }
+            dismiss(animated: true)
         }
-        dismiss(animated: true)
     }
 }

@@ -19,4 +19,5 @@ extension UIColor {
     static var tdBackIOSPrimaryColor: UIColor { UIColor(named: "tdBackIOSPrimaryColor") ?? UIColor() }
     static var tdBackPrimaryColor: UIColor { UIColor(named: "tdBackPrimaryColor") ?? UIColor() }
     static var tdBackSecondaryColor: UIColor { UIColor(named: "tdBackSecondaryColor") ?? UIColor() }
+    static var tdShadowColor: UIColor { UIColor(named: "tdShadowColor") ?? UIColor()}
 }

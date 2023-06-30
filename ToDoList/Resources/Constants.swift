@@ -7,6 +7,10 @@ struct Constants {
     static let heightStackView: CGFloat = 58
     static let heightRoundButton: CGFloat = 34
     static let widthSegmentedControl: CGFloat = 150
+    static let heightRadioButton: CGFloat = 24
     
     static let sizeIndicator: Int = 30
+    
+    static let todoCellIdentifier = "todoCell"
+    static let newTodoCellIdentifier = "newTodoCell"
 }
