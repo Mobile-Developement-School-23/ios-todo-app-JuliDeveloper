@@ -21,6 +21,7 @@ final class DetailTodoItemView: UIView {
         )
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.isScrollEnabled = false
+        textView.keyboardType = .asciiCapable
         return textView
     }()
     
@@ -68,9 +69,9 @@ final class DetailTodoItemView: UIView {
     }()
     
     private let uiColorMarshallings: ColorMarshallingsProtocol
-    private var titleTextViewHeightConstraint: NSLayoutConstraint!
-    private var detailViewTopConstraint: NSLayoutConstraint!
-    private var heightKeyboard: CGFloat = 0
+    
+    private var titleTextViewHeightConstraint: NSLayoutConstraint?
+    private var detailViewTopConstraint: NSLayoutConstraint?
     
     private var isSelectedDeadline = false
     
@@ -94,11 +95,11 @@ final class DetailTodoItemView: UIView {
             let topInset: CGFloat = 16
             let bottomInset: CGFloat = 16
             
-            titleTextViewHeightConstraint.constant = frame.height - navigationBarHeight - topInset - bottomInset
-            detailViewTopConstraint.constant = 40
+            titleTextViewHeightConstraint?.constant = frame.height - navigationBarHeight - topInset - bottomInset
+            detailViewTopConstraint?.constant = 40
         } else {
-            titleTextViewHeightConstraint.constant = 120
-            detailViewTopConstraint.constant = 16
+            titleTextViewHeightConstraint?.constant = 120
+            detailViewTopConstraint?.constant = 16
         }
         
         layoutIfNeeded()
@@ -186,17 +187,16 @@ extension DetailTodoItemView {
     }
     
     private func setupConstraints() {
-        
         titleTextViewHeightConstraint = titleTextView.heightAnchor.constraint(
             greaterThanOrEqualToConstant: 120
         )
-        titleTextViewHeightConstraint.isActive = true
+        titleTextViewHeightConstraint?.isActive = true
         
         detailViewTopConstraint = detailView.topAnchor.constraint(
             equalTo: titleTextView.bottomAnchor,
             constant: 16
         )
-        detailViewTopConstraint.isActive = true
+        detailViewTopConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(
