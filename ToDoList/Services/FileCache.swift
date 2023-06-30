@@ -12,9 +12,16 @@ final class FileCache {
     // MARK: - Properties
     private(set) var todoItems: [TodoItem] = []
     
+    private let logger: LoggerProtocol
+     
+     init(logger: LoggerProtocol = Logger.shared) {
+         self.logger = logger
+     }
+    
     // MARK: - Methods for .csv
     func saveToCsv(to file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "csv") else {
+            logger.logError("Ошибка: Не удалось получить путь к файлу")
             throw FileCacheError.directoryNotFound
         }
         
@@ -23,12 +30,14 @@ final class FileCache {
             let data = csvString?.data(using: .utf8)
             try data?.write(to: filePath)
         } catch {
+            logger.logError("Ошибка: Не удалось сохранить в CSV файл")
             throw FileCacheError.failedConvertToCsv
         }
     }
     
     func loadFromCsv(from file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "csv") else {
+            logger.logError("Ошибка: Не удалось получить путь к файлу")
             throw FileCacheError.directoryNotFound
         }
         
@@ -36,8 +45,10 @@ final class FileCache {
             let data = try Data(contentsOf: filePath)
             if let csvString = String(data: data, encoding: .utf8) {
                 todoItems = fetchItemsFromCsv(csvString) ?? []
+                logger.logInfo("Успешно загружено из CSV файл")
             }
         } catch {
+            logger.logError("Ошибка: Не удалось загрузить из CSV файла")
             throw FileCacheError.dataNotReceived
         }
     }
@@ -48,8 +59,10 @@ final class FileCache {
         
         do {
             let data = try JSONSerialization.data(withJSONObject: array)
+            logger.logInfo("Успешно cконвертированно в JSON")
             return data
         } catch {
+            logger.logError(" Не удалось конвертировать в JSON")
             throw FileCacheError.failedConvertToJson
         }
     }
@@ -64,6 +77,8 @@ final class FileCache {
                 csvString += item.csv
             }
         }
+        
+        logger.logInfo("Успешно cконвертированно в СSV")
         
         return csvString
     }
@@ -80,6 +95,7 @@ final class FileCache {
     
     private func fetchFilePath(_ file: String, extensionPath: String) throws -> URL? {
         guard let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+            logger.logError("Ошибка: Не удалось получить путь к директории")
             throw FileCacheError.directoryNotFound
         }
         
@@ -113,20 +129,24 @@ extension FileCache: FileCacheProtocol {
     
     func saveToJson(to file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "json") else {
+            logger.logError("Ошибка: Не удалось получить путь к файлу")
             throw FileCacheError.directoryNotFound
         }
         
         do {
             if let data = try convertToJson(from: todoItems) {
                 try data.write(to: filePath)
+                logger.logInfo("Успешно сохранено в JSON файл")
             }
         } catch {
+            logger.logError("Ошибка: не удалось загрузить в JSON файла")
             throw FileCacheError.failedConvertToJson
         }
     }
     
     func loadFromJson(from file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "json") else {
+            logger.logError("Ошибка: Не удалось получить путь к файлу")
             throw FileCacheError.directoryNotFound
         }
         
@@ -134,8 +154,10 @@ extension FileCache: FileCacheProtocol {
             let data = try Data(contentsOf: filePath)
             if let json = try JSONSerialization.jsonObject(with: data) as? [Any] {
                 todoItems = fetchItemsFromJson(json) ?? []
+                logger.logInfo("Успешно загружено из JSON файл")
             }
         } catch {
+            logger.logError("Ошибка: не удалось загрузить из JSON файла")
             throw FileCacheError.dataNotReceived
         }
     }
