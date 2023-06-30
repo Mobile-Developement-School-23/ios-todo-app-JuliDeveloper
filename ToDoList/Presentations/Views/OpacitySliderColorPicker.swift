@@ -2,7 +2,7 @@ import UIKit
 
 final class OpacitySliderColorPicker: UISlider {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
@@ -12,7 +12,7 @@ final class OpacitySliderColorPicker: UISlider {
     
     private let thumbImageView = UIImageView()
         
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSlider()
@@ -25,7 +25,7 @@ final class OpacitySliderColorPicker: UISlider {
         layer.insertSublayer(gradientLayer, at: 0)
     }
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func layoutSubviews() {
         gradientLayer.frame = bounds
         
@@ -39,7 +39,7 @@ final class OpacitySliderColorPicker: UISlider {
         thumbImageView.center = CGPoint(x: thumbRect.midX, y: thumbRect.midY)
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func setupColorsGradient(color: UIColor) {
         layer.insertSublayer(gradientLayer, at: 0)
         gradientLayer.colors = [
@@ -50,7 +50,7 @@ final class OpacitySliderColorPicker: UISlider {
         value = Float(color.cgColor.alpha)
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func setupSlider() {
         minimumValue = 0
         maximumValue = 1

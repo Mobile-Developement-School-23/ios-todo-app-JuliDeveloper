@@ -2,7 +2,7 @@ import UIKit
 
 final class CustomColorPickerViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let currentColorStackView = ColorStackViewColorPicker()
     private let gradientView = GradientView()
     
@@ -43,7 +43,7 @@ final class CustomColorPickerViewController: UIViewController {
     
     weak var delegate: DetailTodoItemViewDelegate?
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     init(uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
         self.uiColorMarshallings = uiColorMarshallings
         super.init(nibName: nil, bundle: nil)
@@ -87,7 +87,7 @@ final class CustomColorPickerViewController: UIViewController {
         passColor()
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
         var point = gestureRecognizer.location(in: gradientView)
         let color = gradientView.getColor(from: point)
@@ -134,7 +134,7 @@ final class CustomColorPickerViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         [
             closeButton,

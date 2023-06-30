@@ -2,7 +2,7 @@ import UIKit
 
 final class ImportanceStackView: CustomStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let titleLabelImportance = CustomLabel(text: "Важность")
     
     private lazy var importanceSegmentedControl: UISegmentedControl = {
@@ -24,7 +24,7 @@ final class ImportanceStackView: CustomStackView {
     
     weak var delegate: ImportanceStackViewDelegate?
 
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init() {
         super.init()
         addElements()
@@ -34,7 +34,7 @@ final class ImportanceStackView: CustomStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func selectedImportance() {
         var importance = Importance.normal
         
@@ -47,7 +47,7 @@ final class ImportanceStackView: CustomStackView {
         delegate?.updateImportance(importance)
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func setSelectedSegmentIndex(from importance: Importance) {
         switch importance {
         case .important: importanceSegmentedControl.selectedSegmentIndex = 2
@@ -61,7 +61,7 @@ final class ImportanceStackView: CustomStackView {
 
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         [
             titleLabelImportance,

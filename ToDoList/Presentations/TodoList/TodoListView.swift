@@ -2,7 +2,7 @@ import UIKit
 
 final class TodoListView: UIView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let completionTasksStackView = CompletionTasksStackView()
     
     private lazy var tableView: UITableView = {
@@ -41,7 +41,7 @@ final class TodoListView: UIView {
     
     weak var delegate: TodoListViewControllerDelegate?
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     init(delegate: TodoListViewControllerDelegate) {
         self.delegate = delegate
         super.init(frame: .zero)
@@ -54,14 +54,14 @@ final class TodoListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func configure(delegate: TodoListViewController) {
         tableView.dataSource = delegate
         tableView.delegate = delegate
         completionTasksStackView.delegate = delegate
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func openDetailVC() {
         delegate?.openDetailViewController(
             nil,
@@ -71,7 +71,7 @@ final class TodoListView: UIView {
     }
 }
 
-//MARK: - Private methods
+// MARK: - Private methods
 extension TodoListView {
     private func addElements() {
         addSubview(completionTasksStackView)
@@ -118,7 +118,7 @@ extension TodoListView {
     }
 }
 
-//MARK: - Private methods
+// MARK: - Private methods
 extension TodoListView: TodoListViewDelegate {
     func reloadTableView() {
         tableView.reloadData()

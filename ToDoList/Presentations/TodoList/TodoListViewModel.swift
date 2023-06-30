@@ -2,7 +2,7 @@ import Foundation
 
 final class TodoListViewModel: ObservableObject {
     
-    //MARK: - Properties
+    // MARK: - Properties
     @Observable var todoItems: [TodoItem] = []
     @Observable var showCompletedTasks: Bool = false
     @Observable var completedTasksCount: Int = 0
@@ -15,13 +15,13 @@ final class TodoListViewModel: ObservableObject {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     init(fileCache: FileCacheProtocol = FileCache()) {
         self.fileCache = fileCache
         loadItems()
     }
     
-    //MARK: - Methods
+    // MARK: - Methods
     func toggleShowCompletedTasks() {
         showCompletedTasks.toggle()
         loadItems()

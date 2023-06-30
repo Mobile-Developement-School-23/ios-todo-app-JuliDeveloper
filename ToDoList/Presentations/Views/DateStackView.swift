@@ -2,7 +2,7 @@ import UIKit
 
 final class DateStackView: CustomStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let titleLabelDate = CustomLabel(text: "Сделать до")
     
     private let deadlineStackView: UIStackView = {
@@ -43,7 +43,7 @@ final class DateStackView: CustomStackView {
     
     weak var delegate: DateStackViewDelegate?
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init() {
         super.init()
         addElements()
@@ -53,7 +53,7 @@ final class DateStackView: CustomStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func checkItemDeadline(from item: TodoItem?, _ datePicker: UIDatePicker) {
         if item?.deadline != nil {
             switchControl.isOn = true
@@ -71,7 +71,7 @@ final class DateStackView: CustomStackView {
         selectDateButton.setTitle(title, for: .normal)
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func switchDeadline() {
         UIView.animate(withDuration: 0.5, animations: { [weak self] in
             guard let self = self else { return }
@@ -120,7 +120,7 @@ final class DateStackView: CustomStackView {
         })
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         [
             deadlineStackView,

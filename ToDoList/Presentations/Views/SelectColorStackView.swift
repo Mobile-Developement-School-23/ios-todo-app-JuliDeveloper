@@ -2,7 +2,7 @@ import UIKit
 
 final class SelectColorStackView: CustomStackView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private let titleLabelColor = CustomLabel(text: "Цвет текста")
     
     private lazy var colorButton: UIButton = {
@@ -24,7 +24,7 @@ final class SelectColorStackView: CustomStackView {
     
     var buttonAction: ((CustomColorPickerViewController) -> Void)?
         
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init() {
         super.init()
         addElements()
@@ -34,7 +34,7 @@ final class SelectColorStackView: CustomStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     @objc private func openColorPicker() {
         let colorPickerVC = CustomColorPickerViewController()
 
@@ -45,11 +45,10 @@ final class SelectColorStackView: CustomStackView {
         buttonAction?(colorPickerVC)
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func addElements() {
         [titleLabelColor, colorButton].forEach {
             addArrangedSubview($0)
         }
     }
 }
-

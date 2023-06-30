@@ -46,7 +46,7 @@ struct TodoItem {
     }
 }
 
-//MARK: - Convert TodoItem to/from JSON
+// MARK: - Convert TodoItem to/from JSON
 extension TodoItem {
     var json: Any {
         var result: [String: Any] = [:]
@@ -103,7 +103,7 @@ extension TodoItem {
     }
 }
 
-//MARK: - Convert TodoItem to/from CSV
+// MARK: - Convert TodoItem to/from CSV
 extension TodoItem {
     var csv: String {
         let textCsv = text.replacingOccurrences(of: ",", with: "|")

@@ -9,10 +9,10 @@ enum FileCacheError: Error {
 
 final class FileCache {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private(set) var todoItems: [TodoItem] = []
     
-    //MARK: - Methods for .csv
+    // MARK: - Methods for .csv
     func saveToCsv(to file: String) throws {
         guard let filePath = try? fetchFilePath(file, extensionPath: "csv") else {
             throw FileCacheError.directoryNotFound
@@ -42,7 +42,7 @@ final class FileCache {
         }
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     private func convertToJson(from items: [TodoItem]) throws -> Data? {
         let array = items.map { $0.json as? [String: Any] }.compactMap { $0 }
         

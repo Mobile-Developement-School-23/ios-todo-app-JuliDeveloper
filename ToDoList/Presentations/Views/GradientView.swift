@@ -2,7 +2,7 @@ import UIKit
 
 final class GradientView: UIView {
     
-    //MARK: - Properties
+    // MARK: - Properties
     private var gradientLayer: CAGradientLayer = {
         let gradientLayer = CAGradientLayer()
         gradientLayer.colors = [
@@ -21,7 +21,7 @@ final class GradientView: UIView {
         return gradientLayer
     }()
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -31,17 +31,17 @@ final class GradientView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func layoutSubviews() {
         gradientLayer.frame = bounds
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     func getColor(from point: CGPoint) -> UIColor {
         gradientLayer.pickColor(at: point)
     }
     
-    //MARK: - Private methods
+    // MARK: - Private methods
     private func configure() {
         backgroundColor = .clear
         translatesAutoresizingMaskIntoConstraints = false
