@@ -180,9 +180,12 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
     }
     
     func deleteItem() {
-        if todoItem != nil {
-            viewModel.deleteItem(with: todoItem?.id ?? "")
+        showAlert { [weak self] _ in
+            guard let self = self else { return }
+            if self.todoItem != nil {
+                self.viewModel.deleteItem(with: self.todoItem?.id ?? "")
+            }
+            dismiss(animated: true)
         }
-        dismiss(animated: true)
     }
 }

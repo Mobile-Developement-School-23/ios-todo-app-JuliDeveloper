@@ -45,6 +45,7 @@
 		25348AAC2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AAB2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift */; };
 		25348AB02A4E15F6002D10CC /* TodoListViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AAF2A4E15F6002D10CC /* TodoListViewControllerDelegate.swift */; };
 		25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */; };
+		25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -107,6 +108,7 @@
 		25348AAB2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoItemTableViewCell.swift; sourceTree = "<group>"; };
 		25348AAF2A4E15F6002D10CC /* TodoListViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewControllerDelegate.swift; sourceTree = "<group>"; };
 		25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewDelegate.swift; sourceTree = "<group>"; };
+		25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				2501F7392A41B9A000919419 /* UIColor+Extension.swift */,
 				2501F73B2A41B9B800919419 /* UIFont+Extension.swift */,
 				2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */,
+				25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				25348AB02A4E15F6002D10CC /* TodoListViewControllerDelegate.swift in Sources */,
 				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
+				25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */,
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
