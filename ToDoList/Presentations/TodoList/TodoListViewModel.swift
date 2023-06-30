@@ -1,4 +1,5 @@
 import Foundation
+import FileCachePackage
 
 final class TodoListViewModel: ObservableObject {
     
@@ -9,14 +10,14 @@ final class TodoListViewModel: ObservableObject {
     
     private var uncompletedTodoItems: [TodoItem] = []
     
-    private let fileCache: FileCacheProtocol
+    private let fileCache: FileCache<TodoItem>
     
     var tasksToShow: [TodoItem] {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
     
     // MARK: - Initialization
-    init(fileCache: FileCacheProtocol = FileCache()) {
+    init(fileCache: FileCache<TodoItem> = FileCache<TodoItem>()) {
         self.fileCache = fileCache
         loadItems()
     }

@@ -17,7 +17,6 @@
 		2501F7422A41BAF300919419 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7412A41BAF300919419 /* Constants.swift */; };
 		2501F7442A41D8BE00919419 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7432A41D8BE00919419 /* TodoListViewModel.swift */; };
 		2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7482A41D93400919419 /* ObservableWrapper.swift */; };
-		2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74B2A41D98100919419 /* FileCacheProtocol.swift */; };
 		2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */; };
 		2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */; };
 		2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2501F7512A42150C00919419 /* SelectColorStackView.swift */; };
@@ -48,7 +47,7 @@
 		25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */; };
 		25348AE72A4F74EA002D10CC /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AE62A4F74EA002D10CC /* CocoaLumberjack */; };
 		25348AE92A4F74EA002D10CC /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AE82A4F74EA002D10CC /* CocoaLumberjackSwift */; };
-		25348AEB2A4F74FB002D10CC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AEA2A4F74FB002D10CC /* Logger.swift */; };
+		25348AF32A4F8D8F002D10CC /* FileCachePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AF22A4F8D8F002D10CC /* FileCachePackage */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -57,7 +56,6 @@
 		25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634942A3CACA900AC6AD7 /* TodoItem.swift */; };
 		25B634982A3CAE0A00AC6AD7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634972A3CAE0A00AC6AD7 /* Date+Extension.swift */; };
 		25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634992A3CAE2D00AC6AD7 /* Int+Extension.swift */; };
-		25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6349C2A3CAF4600AC6AD7 /* FileCache.swift */; };
 		25B634A52A3CB40900AC6AD7 /* TodoItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634A42A3CB40900AC6AD7 /* TodoItemTests.swift */; };
 		25B634AC2A3CB47D00AC6AD7 /* FileCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634AB2A3CB47D00AC6AD7 /* FileCacheTests.swift */; };
 		3E3BDD2ECEA1766EDDE7E011 /* Pods_ToDoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB4BEC8716D844C2A5CAEEE /* Pods_ToDoList.framework */; };
@@ -84,7 +82,6 @@
 		2501F7412A41BAF300919419 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2501F7432A41D8BE00919419 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
 		2501F7482A41D93400919419 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
-		2501F74B2A41D98100919419 /* FileCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCacheProtocol.swift; sourceTree = "<group>"; };
 		2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewDelegate.swift; sourceTree = "<group>"; };
 		2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTodoItemViewControllerDelegate.swift; sourceTree = "<group>"; };
 		2501F7512A42150C00919419 /* SelectColorStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectColorStackView.swift; sourceTree = "<group>"; };
@@ -114,7 +111,8 @@
 		25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewDelegate.swift; sourceTree = "<group>"; };
 		25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		25348AB62A4F321B002D10CC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		25348AEA2A4F74FB002D10CC /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		25348AEC2A4F7AD6002D10CC /* FileCachePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FileCachePackage; path = ../../../Desktop/FileCachePackage; sourceTree = "<group>"; };
+		25348AF12A4F8D87002D10CC /* FileCachePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FileCachePackage; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -125,7 +123,6 @@
 		25B634942A3CACA900AC6AD7 /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		25B634972A3CAE0A00AC6AD7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		25B634992A3CAE2D00AC6AD7 /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
-		25B6349C2A3CAF4600AC6AD7 /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		25B634A22A3CB40800AC6AD7 /* TodoItemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoItemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B634A42A3CB40900AC6AD7 /* TodoItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemTests.swift; sourceTree = "<group>"; };
 		25B634AB2A3CB47D00AC6AD7 /* FileCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCacheTests.swift; sourceTree = "<group>"; };
@@ -139,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25348AF32A4F8D8F002D10CC /* FileCachePackage in Frameworks */,
 				25348AE72A4F74EA002D10CC /* CocoaLumberjack in Frameworks */,
 				3E3BDD2ECEA1766EDDE7E011 /* Pods_ToDoList.framework in Frameworks */,
 				25348AE92A4F74EA002D10CC /* CocoaLumberjackSwift in Frameworks */,
@@ -218,7 +216,6 @@
 		2501F74A2A41D96600919419 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				2501F74B2A41D98100919419 /* FileCacheProtocol.swift */,
 				2501F74D2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift */,
 				2501F74F2A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift */,
 				2501F7682A44647100919419 /* DateStackViewDelegate.swift */,
@@ -251,6 +248,7 @@
 		25B634702A3CA0DD00AC6AD7 = {
 			isa = PBXGroup;
 			children = (
+				25348AEC2A4F7AD6002D10CC /* FileCachePackage */,
 				25348AB62A4F321B002D10CC /* .swiftlint.yml */,
 				25B6347B2A3CA0DD00AC6AD7 /* ToDoList */,
 				25B634A32A3CB40900AC6AD7 /* TodoItemTests */,
@@ -339,8 +337,6 @@
 		25B6349B2A3CAF2900AC6AD7 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				25B6349C2A3CAF4600AC6AD7 /* FileCache.swift */,
-				25348AEA2A4F74FB002D10CC /* Logger.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -366,6 +362,7 @@
 		E09C56513D9652001DE1BD60 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25348AF12A4F8D87002D10CC /* FileCachePackage */,
 				9FB4BEC8716D844C2A5CAEEE /* Pods_ToDoList.framework */,
 			);
 			name = Frameworks;
@@ -392,6 +389,7 @@
 			packageProductDependencies = (
 				25348AE62A4F74EA002D10CC /* CocoaLumberjack */,
 				25348AE82A4F74EA002D10CC /* CocoaLumberjackSwift */,
+				25348AF22A4F8D8F002D10CC /* FileCachePackage */,
 			);
 			productName = ToDoList;
 			productReference = 25B634792A3CA0DD00AC6AD7 /* ToDoList.app */;
@@ -528,7 +526,6 @@
 				2501F7672A4450E000919419 /* DateStackView.swift in Sources */,
 				2501F7442A41D8BE00919419 /* TodoListViewModel.swift in Sources */,
 				2501F76B2A4464BD00919419 /* ImportanceStackView.swift in Sources */,
-				25348AEB2A4F74FB002D10CC /* Logger.swift in Sources */,
 				25B634982A3CAE0A00AC6AD7 /* Date+Extension.swift in Sources */,
 				25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */,
 				252B3F5C2A49E7FA006356D4 /* CompletionTasksStackView.swift in Sources */,
@@ -545,7 +542,6 @@
 				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
 				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
 				252B3F562A49BD52006356D4 /* TodoListView.swift in Sources */,
-				25B6349D2A3CAF4600AC6AD7 /* FileCache.swift in Sources */,
 				2501F76D2A44698700919419 /* DetailMainStackView.swift in Sources */,
 				2501F73C2A41B9B800919419 /* UIFont+Extension.swift in Sources */,
 				25348AAC2A4E0F16002D10CC /* NewTodoItemTableViewCell.swift in Sources */,
@@ -567,7 +563,6 @@
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
 				2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
-				2501F74C2A41D98100919419 /* FileCacheProtocol.swift in Sources */,
 				2501F7582A42446A00919419 /* OpacitySliderColorPicker.swift in Sources */,
 				25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */,
 				25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */,
@@ -881,6 +876,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 25348AE52A4F74EA002D10CC /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
 			productName = CocoaLumberjackSwift;
+		};
+		25348AF22A4F8D8F002D10CC /* FileCachePackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FileCachePackage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
