@@ -111,7 +111,6 @@
 		25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewDelegate.swift; sourceTree = "<group>"; };
 		25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		25348AB62A4F321B002D10CC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		25348AEC2A4F7AD6002D10CC /* FileCachePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FileCachePackage; path = ../../../Desktop/FileCachePackage; sourceTree = "<group>"; };
 		25348AF12A4F8D87002D10CC /* FileCachePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FileCachePackage; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -248,7 +247,6 @@
 		25B634702A3CA0DD00AC6AD7 = {
 			isa = PBXGroup;
 			children = (
-				25348AEC2A4F7AD6002D10CC /* FileCachePackage */,
 				25348AB62A4F321B002D10CC /* .swiftlint.yml */,
 				25B6347B2A3CA0DD00AC6AD7 /* ToDoList */,
 				25B634A32A3CB40900AC6AD7 /* TodoItemTests */,
