@@ -23,6 +23,7 @@ final class PreviewView: UIView {
         textView.font = UIFont.tdBody
         textView.isEditable = false
         textView.isScrollEnabled = true
+        textView.showsVerticalScrollIndicator = false
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .left
         textView.backgroundColor = .tdBackSecondaryColor
@@ -66,10 +67,10 @@ final class PreviewView: UIView {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             dateLabel.topAnchor.constraint(
-                equalTo: topAnchor, constant: 20
+                equalTo: safeAreaLayoutGuide.topAnchor, constant: 20
             ),
             dateLabel.leadingAnchor.constraint(
-                equalTo: leadingAnchor, constant: 32
+                equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 32
             ),
 
             importanceImageView.heightAnchor.constraint(
@@ -82,20 +83,20 @@ final class PreviewView: UIView {
                 equalTo: dateLabel.centerYAnchor
             ),
             importanceImageView.trailingAnchor.constraint(
-                equalTo: trailingAnchor, constant: -32
+                equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -32
             ),
             
             textView.leadingAnchor.constraint(
-                equalTo: leadingAnchor, constant: 20
+                equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20
             ),
             textView.topAnchor.constraint(
                 equalTo: dateLabel.bottomAnchor, constant: 20
             ),
             textView.trailingAnchor.constraint(
-                equalTo: trailingAnchor, constant: -20
+                equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20
             ),
             textView.bottomAnchor.constraint(
-                equalTo: bottomAnchor, constant: -20
+                equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20
             )
         ])
     }

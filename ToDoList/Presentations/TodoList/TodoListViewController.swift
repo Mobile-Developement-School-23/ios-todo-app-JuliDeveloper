@@ -160,6 +160,16 @@ extension TodoListViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
     
+    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+        guard let destinationViewController = animator.previewViewController else {
+            return
+        }
+        
+        animator.addAnimations {
+            self.show(destinationViewController, sender: self)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         
