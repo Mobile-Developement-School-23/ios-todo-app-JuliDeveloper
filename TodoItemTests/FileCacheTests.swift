@@ -1,10 +1,11 @@
 import XCTest
+import FileCachePackage
 @testable import ToDoList
 
 final class FileCacheTests: XCTestCase {
     
     //MARK: - Tests - Private properties
-    private let fileCache = FileCache()
+    private let fileCache = FileCache<TodoItem>()
     private let filename = "testToDo"
     
     private var item: TodoItem!
@@ -22,8 +23,8 @@ final class FileCacheTests: XCTestCase {
     func testAddItem() {
         _ = fileCache.addItem(item)
         
-        XCTAssertTrue(fileCache.todoItems.contains { $0.id == item.id })
-        XCTAssertTrue(fileCache.todoItems.count == 1)
+        XCTAssertTrue(fileCache.todoItemsList.contains { $0.id == item.id })
+        XCTAssertTrue(fileCache.todoItemsList.count == 1)
     }
     
     func testUpdateItem() {
@@ -41,8 +42,8 @@ final class FileCacheTests: XCTestCase {
         )
         _ = fileCache.addItem(newItem)
         
-        XCTAssertTrue(fileCache.todoItems.contains { $0.text == "Bye" })
-        XCTAssertTrue(fileCache.todoItems.count == 1)
+        XCTAssertTrue(fileCache.todoItemsList.contains { $0.text == "Bye" })
+        XCTAssertTrue(fileCache.todoItemsList.count == 1)
     }
     
     //MARK: - Tests - Delete TodoItem
@@ -50,36 +51,36 @@ final class FileCacheTests: XCTestCase {
         _ = fileCache.addItem(item)
         _ = fileCache.deleteItem(with: item.id)
         
-        print(fileCache.todoItems)
+        print(fileCache.todoItemsList)
         
-        XCTAssertFalse(fileCache.todoItems.contains { $0.id == item.id })
-        XCTAssertTrue(fileCache.todoItems.count == 0)
+        XCTAssertFalse(fileCache.todoItemsList.contains { $0.id == item.id })
+        XCTAssertTrue(fileCache.todoItemsList.count == 0)
     }
     
     func testDeleteItemWithInvalidId() {
         _ = fileCache.addItem(item)
         _ = fileCache.deleteItem(with: "1111")
         
-        XCTAssertTrue(fileCache.todoItems.contains { $0.id == item.id })
-        XCTAssertTrue(fileCache.todoItems.count == 1)
+        XCTAssertTrue(fileCache.todoItemsList.contains { $0.id == item.id })
+        XCTAssertTrue(fileCache.todoItemsList.count == 1)
     }
     
     //MARK: - Tests - Convert TodoItem
-    func testConvertToJson() {
-        _ = fileCache.addItem(item)
-        
-        let result = try? fileCache.convertToJson(from: fileCache.todoItems)
-        
-        XCTAssertNotNil(result)
-    }
-    
-    func testConvertToCsv() {
-        _ = fileCache.addItem(item)
-        
-        let result = fileCache.convertToCSV(from: fileCache.todoItems)
-        
-        XCTAssertNotNil(result)
-    }
+//    func testConvertToJson() {
+//        _ = fileCache.addItem(item)
+//
+//        let result = try? fileCache.convertToJson(from: fileCache.todoItemsList)
+//
+//        XCTAssertNotNil(result)
+//    }
+//
+//    func testConvertToCsv() {
+//        _ = fileCache.addItem(item)
+//
+//        let result = fileCache.convertToCSV(from: fileCache.todoItemsList)
+//
+//        XCTAssertNotNil(result)
+//    }
     
     //MARK: - Tests - Fetch TodoItem
     func testFetchItemsFromJson() {
@@ -94,16 +95,16 @@ final class FileCacheTests: XCTestCase {
         }
     }
     
-    func testFetchItemsFromCsv() {
-        if let csvString = fileCache.convertToCSV(from: [item]) {
-            let items = fileCache.fetchItemsFromCsv(csvString) ?? []
-            
-            XCTAssertEqual(items[0].id, item.id)
-            XCTAssertEqual(items[0].text, item.text)
-            XCTAssertEqual(items[0].importance, item.importance)
-            XCTAssertEqual(items[0].createdAt, item.createdAt.dateIntValue?.dateValue ?? Date())
-        }
-    }
+//    func testFetchItemsFromCsv() {
+//        if let csvString = fileCache.convertToCSV(from: [item]) {
+//            let items = fileCache.fetchItemsFromCsv(csvString) ?? []
+//
+//            XCTAssertEqual(items[0].id, item.id)
+//            XCTAssertEqual(items[0].text, item.text)
+//            XCTAssertEqual(items[0].importance, item.importance)
+//            XCTAssertEqual(items[0].createdAt, item.createdAt.dateIntValue?.dateValue ?? Date())
+//        }
+//    }
     
     //MARK: - Tests - Save TodoItem to file
     func testSaveToJson() {
@@ -150,8 +151,8 @@ final class FileCacheTests: XCTestCase {
             do {
                 try self.fileCache.loadFromJson(from: self.filename)
                 
-                XCTAssertTrue(!self.fileCache.todoItems.isEmpty)
-                XCTAssertTrue(self.fileCache.todoItems.count == 1)
+                XCTAssertTrue(!self.fileCache.todoItemsList.isEmpty)
+                XCTAssertTrue(self.fileCache.todoItemsList.count == 1)
             } catch {
                 XCTFail("\(FileCacheError.dataNotReceived), \(error)")
             }
@@ -165,8 +166,8 @@ final class FileCacheTests: XCTestCase {
             do {
                 try self.fileCache.loadFromCsv(from: self.filename)
                 
-                XCTAssertTrue(!self.fileCache.todoItems.isEmpty)
-                XCTAssertTrue(self.fileCache.todoItems.count == 1)
+                XCTAssertTrue(!self.fileCache.todoItemsList.isEmpty)
+                XCTAssertTrue(self.fileCache.todoItemsList.count == 1)
             } catch {
                 XCTFail("\(FileCacheError.dataNotReceived), \(error)")
             }

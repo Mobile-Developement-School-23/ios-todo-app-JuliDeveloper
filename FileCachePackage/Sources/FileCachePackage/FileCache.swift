@@ -27,7 +27,7 @@ public protocol FileCacheProtocol {
     func loadFromJson(from file: String) throws
 }
 
-enum FileCacheError: Error {
+public enum FileCacheError: Error {
     case failedConvertToJson
     case failedConvertToCsv
     case directoryNotFound
@@ -85,7 +85,7 @@ public class FileCache<TypeItem: JSONConvertible & CSVConvertible & Identifiable
     }
 
     // MARK: - Helpers
-    private func convertToJson(from items: [TypeItem]) throws -> Data? {
+    public func convertToJson(from items: [TypeItem]) throws -> Data? {
         let array = items.map { $0.json }.compactMap { $0 }
 
         do {
@@ -114,7 +114,7 @@ public class FileCache<TypeItem: JSONConvertible & CSVConvertible & Identifiable
         return csvString
     }
 
-    private func fetchItemsFromJson(_ json: [Any]) -> [TypeItem]? {
+    public func fetchItemsFromJson(_ json: [Any]) -> [TypeItem]? {
         return json.compactMap { TypeItem.parse(json: $0) as? TypeItem }
     }
 

@@ -45,9 +45,10 @@
 		25348AB02A4E15F6002D10CC /* TodoListViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AAF2A4E15F6002D10CC /* TodoListViewControllerDelegate.swift */; };
 		25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */; };
 		25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */; };
-		25348AE72A4F74EA002D10CC /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AE62A4F74EA002D10CC /* CocoaLumberjack */; };
-		25348AE92A4F74EA002D10CC /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AE82A4F74EA002D10CC /* CocoaLumberjackSwift */; };
 		25348AF32A4F8D8F002D10CC /* FileCachePackage in Frameworks */ = {isa = PBXBuildFile; productRef = 25348AF22A4F8D8F002D10CC /* FileCachePackage */; };
+		25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722B2A54148500BCD954 /* CocoaLumberjack */; };
+		25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */; };
+		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -135,10 +136,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */,
 				25348AF32A4F8D8F002D10CC /* FileCachePackage in Frameworks */,
-				25348AE72A4F74EA002D10CC /* CocoaLumberjack in Frameworks */,
 				3E3BDD2ECEA1766EDDE7E011 /* Pods_ToDoList.framework in Frameworks */,
-				25348AE92A4F74EA002D10CC /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +146,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */,
+				25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,9 +387,8 @@
 			);
 			name = ToDoList;
 			packageProductDependencies = (
-				25348AE62A4F74EA002D10CC /* CocoaLumberjack */,
-				25348AE82A4F74EA002D10CC /* CocoaLumberjackSwift */,
 				25348AF22A4F8D8F002D10CC /* FileCachePackage */,
+				25AF722B2A54148500BCD954 /* CocoaLumberjack */,
 			);
 			productName = ToDoList;
 			productReference = 25B634792A3CA0DD00AC6AD7 /* ToDoList.app */;
@@ -407,6 +408,10 @@
 				25B634A72A3CB40900AC6AD7 /* PBXTargetDependency */,
 			);
 			name = TodoItemTests;
+			packageProductDependencies = (
+				25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */,
+				25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */,
+			);
 			productName = TodoItemTests;
 			productReference = 25B634A22A3CB40800AC6AD7 /* TodoItemTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -440,7 +445,7 @@
 			);
 			mainGroup = 25B634702A3CA0DD00AC6AD7;
 			packageReferences = (
-				25348AE52A4F74EA002D10CC /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				25AF722A2A54148500BCD954 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			productRefGroup = 25B6347A2A3CA0DD00AC6AD7 /* Products */;
 			projectDirPath = "";
@@ -853,31 +858,35 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		25348AE52A4F74EA002D10CC /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+		25AF722A2A54148500BCD954 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack.git";
 			requirement = {
-				kind = versionRange;
-				maximumVersion = 4.0.0;
+				kind = upToNextMajorVersion;
 				minimumVersion = 3.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		25348AE62A4F74EA002D10CC /* CocoaLumberjack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 25348AE52A4F74EA002D10CC /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjack;
-		};
-		25348AE82A4F74EA002D10CC /* CocoaLumberjackSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 25348AE52A4F74EA002D10CC /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjackSwift;
-		};
 		25348AF22A4F8D8F002D10CC /* FileCachePackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FileCachePackage;
+		};
+		25AF722B2A54148500BCD954 /* CocoaLumberjack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25AF722A2A54148500BCD954 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjack;
+		};
+		25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25AF722A2A54148500BCD954 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 25AF722A2A54148500BCD954 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwiftLogBackend;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

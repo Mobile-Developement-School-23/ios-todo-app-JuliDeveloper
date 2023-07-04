@@ -7,6 +7,7 @@ final class TodoItemTests: XCTestCase {
     private let text = "Полить цветы"
     private let isDone = false
     private let createdAt = Date()
+    private let hexColor = "#000000"
     
     private var importance = Importance.important
     private var deadline: Date? = Date()
@@ -66,7 +67,8 @@ final class TodoItemTests: XCTestCase {
             deadline: nil,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: nil
+            changesAt: nil,
+            hexColor: hexColor
         )
         
         XCTAssertNil(item.deadline)
@@ -75,10 +77,7 @@ final class TodoItemTests: XCTestCase {
     
     //MARK: - Tests - Convert TodoItem to JSON
     func testTodoItemToJson() {
-        guard let result = item.json as? [String: Any] else {
-            XCTFail("Failed to convert TodoItem to JSON")
-            return
-        }
+        let result = item.json as [String: Any]
         
         XCTAssertEqual(result["id"] as? String, id)
         XCTAssertEqual(result["text"] as? String, text)
@@ -90,10 +89,7 @@ final class TodoItemTests: XCTestCase {
     }
     
     func testTodoItemToJsonWithDates() {
-        guard let result = item.json as? [String: Any] else {
-            XCTFail("Failed to convert TodoItem to JSON")
-            return
-        }
+        let result = item.json as [String: Any]
         
         XCTAssertNotNil(result["deadline"])
         XCTAssertNotNil(result["changesAt"])
@@ -115,10 +111,7 @@ final class TodoItemTests: XCTestCase {
             changesAt: changesAt
         )
         
-        guard let result = item.json as? [String: Any] else {
-            XCTFail("Failed to convert TodoItem to JSON")
-            return
-        }
+        let result = item.json as [String: Any]
         
         XCTAssertEqual(result["deadline"] as? Int, nil)
         XCTAssertEqual(result["changesAt"] as? Int, nil)
@@ -137,19 +130,13 @@ final class TodoItemTests: XCTestCase {
             changesAt: Date()
         )
         
-        guard let result = item.json as? [String: Any] else {
-            XCTFail("Failed to convert TodoItem to JSON")
-            return
-        }
+        let result = item.json as [String: Any]
         
         XCTAssertNil(result["importance"])
     }
     
     func testTodoItemToJsonWithImportanceNotNormal() {
-        guard let result = item.json as? [String: Any] else {
-            XCTFail("Failed to convert TodoItem to JSON")
-            return
-        }
+        let result = item.json as [String: Any]
         
         XCTAssertNotNil(result["importance"])
         XCTAssertEqual(result["importance"] as? String, importance.rawValue)
@@ -171,7 +158,8 @@ final class TodoItemTests: XCTestCase {
             "deadline": deadline?.dateIntValue ?? 0 as Any,
             "isDone": isDone,
             "createdAt": createdAt.dateIntValue ?? 0,
-            "changesAt": changesAt?.dateIntValue ?? 0 as Any
+            "changesAt": changesAt?.dateIntValue ?? 0 as Any,
+            "hexColor": hexColor
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -199,7 +187,8 @@ final class TodoItemTests: XCTestCase {
             "deadline": deadline as Any ,
             "isDone": isDone,
             "createdAt": 1686614400,
-            "changesAt": changesAt as Any
+            "changesAt": changesAt as Any,
+            "hexColor": "#000000"
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -224,7 +213,8 @@ final class TodoItemTests: XCTestCase {
             "deadline": deadline as Any,
             "isDone": isDone,
             "createdAt": 1686614400,
-            "changesAt": changesAt as Any
+            "changesAt": changesAt as Any,
+            "hexColor": hexColor
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -248,7 +238,8 @@ final class TodoItemTests: XCTestCase {
             "deadline": 1686614400,
             "isDone": isDone,
             "createdAt": 1686614400,
-            "changesAt": 1686614400
+            "changesAt": 1686614400,
+            "hexColor": hexColor
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -270,7 +261,8 @@ final class TodoItemTests: XCTestCase {
             "deadline": 1686614400,
             "isDone": isDone,
             "createdAt": 1686614400,
-            "changesAt": 1686614400
+            "changesAt": 1686614400,
+            "hexColor": hexColor
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -288,7 +280,7 @@ final class TodoItemTests: XCTestCase {
         let createdAtString = String(createdAt.dateIntValue ?? 0)
         let changesAtString = String(changesAt?.dateIntValue ?? 0)
         
-        let sampleString = "\(id),\(text),\(importance.rawValue),\(deadlineString),\(isDone),\(createdAtString),\(changesAtString)"
+        let sampleString = "\(id),\(text),\(importance.rawValue),\(deadlineString),\(isDone),\(createdAtString),\(changesAtString),\(hexColor)"
         let csvString = item.csv
         
         XCTAssertEqual(csvString, sampleString)
