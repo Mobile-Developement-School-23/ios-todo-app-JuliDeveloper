@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 protocol DateStackViewDelegate: AnyObject {
     func updateDeadline(_ deadline: Date?)
     func updateDatePicker(opacity: Float, hidden: Bool)

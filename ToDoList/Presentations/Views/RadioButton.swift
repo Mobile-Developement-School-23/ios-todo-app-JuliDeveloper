@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 protocol UpdateStateRadioButtonDelegate: AnyObject {
     func buttonDidTap(_ sender: RadioButton)
 }

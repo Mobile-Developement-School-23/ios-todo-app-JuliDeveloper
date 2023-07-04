@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 protocol UpdateStateButtonStackViewDelegate: AnyObject {
     func stackDidTapButton(_ sender: RadioButton)
 }

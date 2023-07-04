@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 protocol UpdateStateButtonCellDelegate: AnyObject {
     func cellDidTapButton(_ sender: RadioButton, in cell: TodoTableViewCell)
 }
