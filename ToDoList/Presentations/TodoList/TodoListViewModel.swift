@@ -1,11 +1,6 @@
 import Foundation
 import FileCachePackage
 
-protocol TodoListViewModelNetwork {
-    func fetchTodoItems()
-    func addNewTodoItem(_ item: TodoItem)
-}
-
 final class TodoListViewModel: ObservableObject {
     
     // MARK: - Properties
@@ -16,7 +11,9 @@ final class TodoListViewModel: ObservableObject {
     private var uncompletedTodoItems: [TodoItem] = []
     
     private let fileCache: FileCache<TodoItem>
-    private let networkingService: NetworkingServiceProtocol
+    private let dataProvider: NetworkingService
+    
+    weak var updateDelegate: TodoListViewModelDelegate?
     
     var tasksToShow: [TodoItem] {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
@@ -25,12 +22,18 @@ final class TodoListViewModel: ObservableObject {
     // MARK: - Initialization
     init(
         fileCache: FileCache<TodoItem> = FileCache<TodoItem>(),
-        networkingService: NetworkingServiceProtocol = DefaultNetworkingService.shared
+        dataProvider: NetworkingService = DefaultNetworkingService.shared
     ) {
         self.fileCache = fileCache
-        self.networkingService = networkingService
-        //loadItems()
-        fetchTodoItems()
+        self.dataProvider = dataProvider
+        
+        Task.init { [weak self] in
+            do {
+                try await self?.fetchTodoItems()
+            } catch {
+                print("Error !!!")
+            }
+        }
     }
     
     // MARK: - Methods
@@ -90,49 +93,36 @@ final class TodoListViewModel: ObservableObject {
     }
 }
 
-extension TodoListViewModel: TodoListViewModelNetwork {
-    func fetchTodoItems() {
-        do {
-            networkingService.getTodoItemList { [weak self] result in
-                switch result {
-                case .success(let todoItems):
-                    DispatchQueue.main.async {
-                        self?.todoItems = todoItems
-                        self?.uncompletedTodoItems = todoItems.filter { !$0.isDone }
-                        self?.completedTasksCount = todoItems.filter { $0.isDone }.count
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
+extension TodoListViewModel {
+    func fetchTodoItems() async throws {
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                let items = try await self.dataProvider.fetchTodoItems()
+                DispatchQueue.main.async {
+                    self.todoItems = items
+                    self.uncompletedTodoItems = self.todoItems.filter { !$0.isDone }
+                    self.completedTasksCount = self.todoItems.filter { $0.isDone }.count
+                    self.updateDelegate?.didUpdateTodoItems()
                 }
-            }
-        }
-    }
-    
-    func updateTodoItemList(from list: [TodoItem]) {
-        do {
-            networkingService.updateTodoItemList(list) { result in
-                switch result {
-                case .success(_):
-                    print("Success")
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
+            } catch {
+                print("Error fetching todo items: \(error)")
             }
         }
     }
     
     func addNewTodoItem(_ item: TodoItem) {
-        do {
-            networkingService.putTodoItemList(item) { result in
-                switch result {
-                case .success(_):
-                    print("Success")
-                case .failure(let error):
-                    print(error.localizedDescription)
+        Task {  [weak self] in
+            guard let self = self else { return }
+            do {
+                let addedItem = try await self.dataProvider.addTodoItem(item)
+                DispatchQueue.main.async {
+                    self.todoItems.append(addedItem)
+                    self.updateDelegate?.didUpdateTodoItems()
                 }
+            } catch {
+                print("Error adding new item: \(error)")
             }
         }
-        
-        updateTodoItemList(from: [item])        
     }
 }

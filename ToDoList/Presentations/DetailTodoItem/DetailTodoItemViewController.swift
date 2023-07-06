@@ -1,6 +1,5 @@
 import UIKit
 
-@MainActor
 final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Properties
@@ -73,9 +72,9 @@ final class DetailTodoItemViewController: UIViewController {
                 text: currentText,
                 importance: currentImportance,
                 deadline: currentDeadline,
+                isDone: false,
                 hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
-            //viewModel.addItem(newItem)
             viewModel.addNewTodoItem(newItem)
         }
         

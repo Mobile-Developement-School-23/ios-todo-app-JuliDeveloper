@@ -1,5 +1,9 @@
 import UIKit
 
+protocol TodoListViewModelDelegate: AnyObject {
+    func didUpdateTodoItems()
+}
+
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
@@ -13,6 +17,8 @@ class TodoListViewController: UIViewController {
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        
+        viewModel.updateDelegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -52,8 +58,8 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Private methods
     private func bindViewModel() {
-        DispatchQueue.main.async {
-            self.delegate?.reloadTableView()
+        DispatchQueue.main.async { [weak self] in
+            self?.didUpdateTodoItems()
         }
     }
     
@@ -267,5 +273,11 @@ extension TodoListViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         CustomTransition()
+    }
+}
+
+extension TodoListViewController: TodoListViewModelDelegate {
+    func didUpdateTodoItems() {
+        delegate?.reloadTableView()
     }
 }
