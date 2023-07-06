@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 protocol DetailTodoItemViewDelegate: AnyObject {
     func didUpdateText(_ text: String)
     func didUpdateImportance(_ importance: Importance)
