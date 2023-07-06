@@ -5,6 +5,7 @@ private enum HttpMethod: String {
     case post = "POST"
     case put = "PUT"
     case delete = "DELETE"
+    case patch = "PATCH"
 }
 
 private enum NetworkError: Error {
@@ -17,6 +18,7 @@ private enum NetworkError: Error {
 protocol NetworkingService {
     func fetchTodoItems() async throws -> [TodoItem]
     func addTodoItem(_ item: TodoItem) async throws -> TodoItem
+    func updateTodoItems(_ items: [TodoItem]) async throws -> [TodoItem]
 }
 
 final class DefaultNetworkingService {
@@ -24,7 +26,7 @@ final class DefaultNetworkingService {
     
     private let urlSession = URLSession.shared
 
-    var revision = RevisionStorage().latestKnownRevision
+    private var revision = RevisionStorage().latestKnownRevision
     
     private init() {}
     
@@ -100,6 +102,29 @@ extension DefaultNetworkingService: NetworkingService {
 
         let (data, response) = try await urlSession.fetchData(for: request)
 
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.codeError
+        }
+        
+        guard !data.isEmpty else {
+            throw NetworkError.notData
+        }
+        
+        return try await obtainTodoItems(from: data)
+    }
+    
+    func updateTodoItems(_ items: [TodoItem]) async throws -> [TodoItem] {
+        var request = try makeRequest(
+            endPoint: "/list",
+            httpMethod: .patch,
+            isRevision: true
+        )
+        
+        let json = items.map { $0.json }
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["list": json])
+        
+        let (data, response) = try await urlSession.fetchData(for: request)
+        
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             throw NetworkError.codeError
         }

@@ -9,6 +9,7 @@ final class TodoListViewModel: ObservableObject {
     @Observable var completedTasksCount: Int = 0
     
     private var uncompletedTodoItems: [TodoItem] = []
+    private var isDirty = false
     
     private let fileCache: FileCache<TodoItem>
     private let dataProvider: NetworkingService
@@ -116,8 +117,14 @@ extension TodoListViewModel {
             guard let self = self else { return }
             do {
                 let addedItem = try await self.dataProvider.addTodoItem(item)
+                todoItems.append(addedItem)
+                isDirty = true
+                if isDirty {
+                    let updateItems = try await dataProvider.updateTodoItems(todoItems)
+                    todoItems = updateItems
+                    isDirty = false
+                }
                 DispatchQueue.main.async {
-                    self.todoItems.append(addedItem)
                     self.updateDelegate?.didUpdateTodoItems()
                 }
             } catch {
