@@ -74,7 +74,8 @@ final class DetailTodoItemViewController: UIViewController {
                 deadline: currentDeadline,
                 hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
-            viewModel.addItem(newItem)
+            //viewModel.addItem(newItem)
+            viewModel.addNewTodoItem(newItem)
         }
         
         dismiss(animated: true)

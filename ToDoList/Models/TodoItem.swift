@@ -209,3 +209,30 @@ extension TodoItem: CSVConvertible {
         )
     }
 }
+
+extension TodoItem {
+    func convert() -> TodoItemResult {
+        let importanceResult: ImportanceResult
+        
+        switch self.importance {
+        case .important:
+            importanceResult = .important
+        case .normal:
+            importanceResult = .basic
+        case .unimportant:
+            importanceResult = .low
+        }
+        
+        return TodoItemResult(
+            id: UUID(uuidString: self.id) ?? UUID(),
+            text: self.text,
+            importance: importanceResult,
+            deadline: Int64(self.deadline?.dateIntValue ?? 0),
+            done: self.isDone,
+            color: self.hexColor,
+            createdAt: Int64(self.createdAt.dateIntValue ?? 0),
+            changeAt: Int64(self.changesAt?.dateIntValue ?? 0),
+            lastUpdatedBy: ""
+        )
+    }
+}

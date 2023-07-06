@@ -1,6 +1,11 @@
 import Foundation
 import FileCachePackage
 
+protocol TodoListViewModelNetwork {
+    func fetchTodoItems()
+    func addNewTodoItem(_ item: TodoItem)
+}
+
 final class TodoListViewModel: ObservableObject {
     
     // MARK: - Properties
@@ -11,15 +16,21 @@ final class TodoListViewModel: ObservableObject {
     private var uncompletedTodoItems: [TodoItem] = []
     
     private let fileCache: FileCache<TodoItem>
+    private let networkingService: NetworkingServiceProtocol
     
     var tasksToShow: [TodoItem] {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
     
     // MARK: - Initialization
-    init(fileCache: FileCache<TodoItem> = FileCache<TodoItem>()) {
+    init(
+        fileCache: FileCache<TodoItem> = FileCache<TodoItem>(),
+        networkingService: NetworkingServiceProtocol = DefaultNetworkingService.shared
+    ) {
         self.fileCache = fileCache
-        loadItems()
+        self.networkingService = networkingService
+        //loadItems()
+        fetchTodoItems()
     }
     
     // MARK: - Methods
@@ -76,5 +87,52 @@ final class TodoListViewModel: ObservableObject {
         } catch {
             print("Failed to load to JSON")
         }
+    }
+}
+
+extension TodoListViewModel: TodoListViewModelNetwork {
+    func fetchTodoItems() {
+        do {
+            networkingService.getTodoItemList { [weak self] result in
+                switch result {
+                case .success(let todoItems):
+                    DispatchQueue.main.async {
+                        self?.todoItems = todoItems
+                        self?.uncompletedTodoItems = todoItems.filter { !$0.isDone }
+                        self?.completedTasksCount = todoItems.filter { $0.isDone }.count
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func updateTodoItemList(from list: [TodoItem]) {
+        do {
+            networkingService.updateTodoItemList(list) { result in
+                switch result {
+                case .success(_):
+                    print("Success")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func addNewTodoItem(_ item: TodoItem) {
+        do {
+            networkingService.putTodoItemList(item) { result in
+                switch result {
+                case .success(_):
+                    print("Success")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+        updateTodoItemList(from: [item])        
     }
 }
