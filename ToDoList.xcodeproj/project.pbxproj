@@ -52,6 +52,8 @@
 		25AF72362A5443B700BCD954 /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72352A5443B700BCD954 /* NetworkingService.swift */; };
 		25AF723A2A54497F00BCD954 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72392A54497F00BCD954 /* TokenStorage.swift */; };
 		25AF72442A557C1300BCD954 /* TodoItemResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72432A557C1300BCD954 /* TodoItemResult.swift */; };
+		25AF72322A5418E400BCD954 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72312A5418E400BCD954 /* URLSession+Extension.swift */; };
+		25AF72342A5418F900BCD954 /* URLSessionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72332A5418F900BCD954 /* URLSessionsTests.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -116,6 +118,8 @@
 		25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		25348AB62A4F321B002D10CC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		25348AF12A4F8D87002D10CC /* FileCachePackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FileCachePackage; sourceTree = "<group>"; };
+		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
+		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
 		25AF72352A5443B700BCD954 /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
 		25AF72392A54497F00BCD954 /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		25AF72432A557C1300BCD954 /* TodoItemResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemResult.swift; sourceTree = "<group>"; };
@@ -337,6 +341,7 @@
 				2501F73B2A41B9B800919419 /* UIFont+Extension.swift */,
 				2501F75A2A4251BC00919419 /* CAGradientLayer+Extension.swift */,
 				25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */,
+				25AF72312A5418E400BCD954 /* URLSession+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -355,6 +360,7 @@
 			children = (
 				25B634A42A3CB40900AC6AD7 /* TodoItemTests.swift */,
 				25B634AB2A3CB47D00AC6AD7 /* FileCacheTests.swift */,
+				25AF72332A5418F900BCD954 /* URLSessionsTests.swift */,
 			);
 			path = TodoItemTests;
 			sourceTree = "<group>";
@@ -578,6 +584,7 @@
 				25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */,
 				2501F7612A43811000919419 /* ColorStackViewColorPicker.swift in Sources */,
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
+				25AF72322A5418E400BCD954 /* URLSession+Extension.swift in Sources */,
 				2501F7582A42446A00919419 /* OpacitySliderColorPicker.swift in Sources */,
 				25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */,
 				25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */,
@@ -589,6 +596,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25B634AC2A3CB47D00AC6AD7 /* FileCacheTests.swift in Sources */,
+				25AF72342A5418F900BCD954 /* URLSessionsTests.swift in Sources */,
 				25B634A52A3CB40900AC6AD7 /* TodoItemTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -755,6 +763,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -786,6 +795,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

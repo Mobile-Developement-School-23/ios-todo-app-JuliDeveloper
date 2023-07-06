@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 protocol TodoListViewDelegate: AnyObject {
     func reloadTableView()
     func setEditing(_ state: Bool)
