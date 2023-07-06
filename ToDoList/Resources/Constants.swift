@@ -14,5 +14,5 @@ struct Constants {
     static let todoCellIdentifier = "todoCell"
     static let newTodoCellIdentifier = "newTodoCell"
     
-    static let baseUrl = "https://beta.mrdekk.ru/todobackend/list"
+    static let baseUrl = "https://beta.mrdekk.ru/todobackend"
 }
