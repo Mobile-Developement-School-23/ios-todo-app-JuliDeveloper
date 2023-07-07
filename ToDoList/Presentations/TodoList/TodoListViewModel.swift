@@ -7,15 +7,14 @@ final class TodoListViewModel: ObservableObject {
     @Observable var todoItems: [TodoItem] = []
     @Observable var showCompletedTasks: Bool = false
     @Observable var completedTasksCount: Int = 0
+    @Observable var isLoading: Bool = false
     
     private var uncompletedTodoItems: [TodoItem] = []
     private var isDirty = false
     
     private let fileCache: FileCache<TodoItem>
     private let dataProvider: NetworkingService
-    
-    weak var updateDelegate: TodoListViewModelDelegate?
-    
+        
     var tasksToShow: [TodoItem] {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
@@ -39,8 +38,18 @@ final class TodoListViewModel: ObservableObject {
     
     // MARK: - Methods
     func toggleShowCompletedTasks() {
-        showCompletedTasks.toggle()
-        loadItems()
+        self.showCompletedTasks.toggle()
+        
+        Task { [weak self] in
+            guard let self = self else { return }
+            isLoading = true
+            do {
+                try await self.fetchTodoItems()
+            } catch {
+                loadItems()
+            }
+            isLoading = false
+        }
     }
     
     func addItem(_ item: TodoItem) {
@@ -69,8 +78,6 @@ final class TodoListViewModel: ObservableObject {
             isDone: !todoItem.isDone,
             hexColor: todoItem.hexColor
         )
-        addItem(updateTodoItem)
-        loadItems()
         return updateTodoItem
     }
     
@@ -98,15 +105,20 @@ extension TodoListViewModel {
     func fetchTodoItems() async throws {
         Task { [weak self] in
             guard let self = self else { return }
+            isLoading = true
             do {
                 let items = try await self.dataProvider.fetchTodoItems()
+                items.forEach { self.addItem($0) }
+                
                 DispatchQueue.main.async {
                     self.todoItems = items
                     self.uncompletedTodoItems = self.todoItems.filter { !$0.isDone }
                     self.completedTasksCount = self.todoItems.filter { $0.isDone }.count
-                    self.updateDelegate?.didUpdateTodoItems()
                 }
+                
+                isLoading = false
             } catch {
+                isLoading = false
                 loadItems()
             }
         }
@@ -115,33 +127,61 @@ extension TodoListViewModel {
     func addNewTodoItem(_ item: TodoItem) async throws {
         Task { [weak self] in
             guard let self = self else { return }
+            isLoading = true
             do {
                 let addedItem = try await self.dataProvider.addTodoItem(item)
                 DispatchQueue.main.async {
-                    self.todoItems.append(addedItem)
-                    self.updateDelegate?.didUpdateTodoItems()
+                    self.addItem(addedItem)
                 }
                 
+                isLoading = false
                 if isDirty {
                     try await syncDataWithServer()
                 }
             } catch {
+                isLoading = false
                 isDirty = true
                 addItem(item)
             }
         }
     }
     
+    func editTodoItem(_ item: TodoItem) async throws {
+        Task { [weak self] in
+            guard let self = self else { return }
+            isLoading = true
+            do {
+                let editedItem = try await self.dataProvider.editTodoItem(item)
+                DispatchQueue.main.async {
+                    self.addItem(editedItem)
+                }
+                
+                isLoading = false
+                if isDirty {
+                    try await syncDataWithServer()
+                }
+            } catch {
+                isLoading = false
+                isDirty = true
+                let updatedItem = updateIsDone(from: item)
+                addItem(updatedItem)
+            }
+        }
+    }
+    
     private func syncDataWithServer() async throws {
         guard isDirty else { return }
-        
+        isLoading = true
         do {
-            let todoList = try await dataProvider.syncTodoItems(todoItems)
+            let todoList = try await dataProvider.syncTodoItems(fileCache.todoItemsList)
+            todoList.forEach { addItem($0) }
+            
             DispatchQueue.main.async { [weak self] in
                 self?.todoItems = todoList
                 self?.isDirty = false
-                self?.updateDelegate?.didUpdateTodoItems()
             }
+            
+            isLoading = false
         } catch {
             print("Failed to sync data with server")
         }

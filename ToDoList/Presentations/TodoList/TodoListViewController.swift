@@ -1,12 +1,10 @@
 import UIKit
 
-protocol TodoListViewModelDelegate: AnyObject {
-    func didUpdateTodoItems()
-}
-
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
+    private let activityIndicator = UIActivityIndicatorView()
+
     private var viewModel: TodoListViewModel
     
     var selectedCell: TodoTableViewCell?
@@ -16,9 +14,7 @@ class TodoListViewController: UIViewController {
     // MARK: - Lifecycle
     init(viewModel: TodoListViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-        
-        viewModel.updateDelegate = self
+        super.init(nibName: nil, bundle: nil)        
     }
     
     required init?(coder: NSCoder) {
@@ -59,7 +55,10 @@ class TodoListViewController: UIViewController {
     // MARK: - Private methods
     private func bindViewModel() {
         DispatchQueue.main.async { [weak self] in
-            self?.didUpdateTodoItems()
+            guard let self = self else { return }
+            if !self.viewModel.isLoading {
+                self.delegate?.reloadTableView()
+            }
         }
     }
     
@@ -76,7 +75,8 @@ class TodoListViewController: UIViewController {
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
             
-            _ = self.viewModel.updateIsDone(from: todoItem)
+            changeIsDone(for: todoItem)
+            
             completion(true)
         }
         
@@ -97,6 +97,36 @@ class TodoListViewController: UIViewController {
         action.backgroundColor = .tdRedColor
         action.image = UIImage(named: "deleteAction")
         return action
+    }
+    
+    private func startLoadingAnimation() {
+        activityIndicator.style = .medium
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        navigationItem.setRightBarButton(barButton, animated: true)
+        activityIndicator.startAnimating()
+    }
+    
+    private func stopLoadingAnimation() {
+        activityIndicator.stopAnimating()
+        navigationItem.rightBarButtonItem = nil
+    }
+    
+    private func changeIsDone(for item: TodoItem) {
+        startLoadingAnimation()
+        
+        let updateTodoItem = viewModel.updateIsDone(from: item)
+
+        Task { [weak self] in
+            do {
+                try await self?.viewModel.editTodoItem(updateTodoItem)
+            } catch {
+                print("Error added new item", error)
+            }
+            
+            DispatchQueue.main.async {
+                self?.stopLoadingAnimation()
+            }
+        }
     }
 }
 
@@ -250,15 +280,16 @@ extension TodoListViewController: UpdateStateButtonCellDelegate {
         guard let indexPath = delegate?.getIndexPath(for: cell) else { return }
         
         let todoItem = viewModel.tasksToShow[indexPath.row]
-        let updateTodoItem = viewModel.updateIsDone(from: todoItem)
+        
+        changeIsDone(for: todoItem)
         
         var imagePriority = UIImage()
-        switch updateTodoItem.importance {
+        switch todoItem.importance {
         case .important: imagePriority = UIImage(named: "buttonHighPriority") ?? UIImage()
         default: imagePriority = UIImage(named: "buttonOff") ?? UIImage()
         }
         
-        let image = updateTodoItem.isDone ? UIImage(named: "buttonOn") : imagePriority
+        let image = todoItem.isDone ? UIImage(named: "buttonOn") : imagePriority
         sender.setImage(image, for: .normal)
         
         sender.isSelected.toggle()
@@ -273,11 +304,5 @@ extension TodoListViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         CustomTransition()
-    }
-}
-
-extension TodoListViewController: TodoListViewModelDelegate {
-    func didUpdateTodoItems() {
-        delegate?.reloadTableView()
     }
 }
