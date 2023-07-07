@@ -160,6 +160,30 @@ extension TodoListViewModel: @unchecked Sendable {
         }
     }
     
+    // этот метод работает, но нигде не используется, он просто реализует метод из NetworkService
+    func fetchTodoItem(_ item: TodoItem) {
+        Task { [weak self] in
+            guard let self = self else { return }
+            isLoading = true
+            do {
+                let currentItem = try await self.networkingService.fetchTodoItem(item)
+                DispatchQueue.main.async {
+                    print(currentItem)
+                }
+                
+                isLoading = false
+                
+                if isDirty {
+                    try await syncDataWithServer()
+                }
+            } catch {
+                isLoading = false
+                isDirty = true
+                deleteItem(with: item.id)
+            }
+        }
+    }
+    
     private func syncDataWithServer() async throws {
         guard isDirty else { return }
         isLoading = true

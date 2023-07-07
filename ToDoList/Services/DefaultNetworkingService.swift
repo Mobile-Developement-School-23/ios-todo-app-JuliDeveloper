@@ -19,9 +19,9 @@ protocol NetworkingService {
     func fetchTodoItems() async throws -> [TodoItem]
     func addTodoItem(_ item: TodoItem) async throws -> TodoItem
     func syncTodoItems(_ items: [TodoItem]) async throws -> [TodoItem]
-    // func fetchTodoItem(_ item: TodoItem) async throws -> TodoItem
     func editTodoItem(_ item: TodoItem) async throws -> TodoItem
     func deleteTodoItem(_ item: TodoItem) async throws -> TodoItem
+    func fetchTodoItem(_ item: TodoItem) async throws -> TodoItem
 }
 
 final class DefaultNetworkingService {
@@ -157,6 +157,18 @@ extension DefaultNetworkingService: NetworkingService {
         
         request.httpBody = try JSONSerialization.data(withJSONObject: ["element": item.json])
         
+        let (data, _) = try await urlSession.fetchData(for: request)
+        return try await obtainTodoItem(from: data)
+    }
+    
+    // этот метод работает, но нигде не используется, он просто реализует метод из API
+    func fetchTodoItem(_ item: TodoItem) async throws -> TodoItem {
+        var request = try makeRequest(
+            endPoint: "/list/\(item.id)",
+            httpMethod: .get,
+            isRevision: true
+        )
+                
         let (data, _) = try await urlSession.fetchData(for: request)
         return try await obtainTodoItem(from: data)
     }
