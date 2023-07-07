@@ -41,6 +41,7 @@ class TodoListViewController: UIViewController {
             self?.delegate?.updateCompletedLabel(count: self?.viewModel.completedTasksCount ?? 0)
         }
         
+        delegate?.startLoading()
         bindViewModel()
     }
     
@@ -58,6 +59,7 @@ class TodoListViewController: UIViewController {
             guard let self = self else { return }
             if !self.viewModel.isLoading {
                 self.delegate?.reloadTableView()
+                self.delegate?.finishLoading()
             }
         }
     }
@@ -224,7 +226,8 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Выполнить",
                 image: UIImage(systemName: "checkmark.circle.fill")
             ) { _ in
-                _ = self.viewModel.updateIsDone(from: todoItem)
+                let updateTodoItem = self.viewModel.updateIsDone(from: todoItem)
+                self.viewModel.editTodoItem(updateTodoItem)
             }
             
             let editAction = UIAction(
@@ -249,8 +252,7 @@ extension TodoListViewController: UITableViewDelegate {
                 isDoneAction,
                 editAction,
                 deleteAction
-            ]
-            )
+            ])
         }
     }
 }
@@ -260,6 +262,7 @@ extension TodoListViewController: TodoListViewControllerDelegate {
     func openDetailViewController(_ todoItem: TodoItem?, transitioningDelegate: UIViewControllerTransitioningDelegate?, presentationStyle: UIModalPresentationStyle) {
         let detailVC = DetailTodoItemViewController(viewModel: viewModel)
         detailVC.todoItem = todoItem
+        detailVC.loadDelegate = self
         let navController = UINavigationController(rootViewController: detailVC)
         navController.modalPresentationStyle = presentationStyle
         navController.transitioningDelegate = transitioningDelegate
@@ -273,6 +276,14 @@ extension TodoListViewController: TodoListViewControllerDelegate {
     
     func updateCompletedTasksLabel() -> Int {
         viewModel.completedTasksCount
+    }
+    
+    func startLargeIndicatorAnimation() {
+        delegate?.startLoading()
+    }
+    
+    func finishLargeIndicatorAnimation() {
+        delegate?.finishLoading()
     }
 }
 

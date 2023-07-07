@@ -15,6 +15,7 @@ final class DetailTodoItemViewController: UIViewController {
     var todoItem: TodoItem?
     
     weak var delegate: DetailTodoItemViewControllerDelegate?
+    weak var loadDelegate: TodoListViewControllerDelegate?
     
     // MARK: - Lifecycle
     init(viewModel: TodoListViewModel, uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
@@ -52,6 +53,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func cancel() {
+        loadDelegate?.finishLargeIndicatorAnimation()
         dismiss(animated: true)
     }
     
@@ -82,6 +84,7 @@ final class DetailTodoItemViewController: UIViewController {
             viewModel.addNewTodoItem(newItem)
         }
         
+        loadDelegate?.startLargeIndicatorAnimation()
         dismiss(animated: true)
     }
 }
