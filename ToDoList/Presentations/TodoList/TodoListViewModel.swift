@@ -13,7 +13,7 @@ final class TodoListViewModel: ObservableObject {
     private var isDirty = false
     
     private let fileCache: FileCache<TodoItem>
-    private let dataProvider: NetworkingService
+    private let networkingService: NetworkingService
         
     var tasksToShow: [TodoItem] {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
@@ -25,7 +25,7 @@ final class TodoListViewModel: ObservableObject {
         dataProvider: NetworkingService = DefaultNetworkingService.shared
     ) {
         self.fileCache = fileCache
-        self.dataProvider = dataProvider
+        self.networkingService = dataProvider
         
         fetchTodoItems()
     }
@@ -75,7 +75,7 @@ extension TodoListViewModel: @unchecked Sendable {
             guard let self = self else { return }
             isLoading = true
             do {
-                let items = try await self.dataProvider.fetchTodoItems()
+                let items = try await self.networkingService.fetchTodoItems()
                 items.forEach { self.addItem($0) }
                 
                 DispatchQueue.main.async {
@@ -97,7 +97,7 @@ extension TodoListViewModel: @unchecked Sendable {
             guard let self = self else { return }
             isLoading = true
             do {
-                let addedItem = try await self.dataProvider.addTodoItem(item)
+                let addedItem = try await self.networkingService.addTodoItem(item)
                 DispatchQueue.main.async {
                     self.addItem(addedItem)
                 }
@@ -119,7 +119,7 @@ extension TodoListViewModel: @unchecked Sendable {
             guard let self = self else { return }
             isLoading = true
             do {
-                let editedItem = try await self.dataProvider.editTodoItem(item)
+                let editedItem = try await self.networkingService.editTodoItem(item)
                 DispatchQueue.main.async {
                     self.addItem(editedItem)
                 }
@@ -142,7 +142,7 @@ extension TodoListViewModel: @unchecked Sendable {
             guard let self = self else { return }
             isLoading = true
             do {
-                let deleteItem = try await self.dataProvider.deleteTodoItem(item)
+                let deleteItem = try await self.networkingService.deleteTodoItem(item)
                 DispatchQueue.main.async {
                     self.deleteItem(with: deleteItem.id)
                 }
@@ -164,7 +164,7 @@ extension TodoListViewModel: @unchecked Sendable {
         guard isDirty else { return }
         isLoading = true
         do {
-            let todoList = try await dataProvider.syncTodoItems(fileCache.todoItemsList)
+            let todoList = try await networkingService.syncTodoItems(fileCache.todoItemsList)
             todoList.forEach { addItem($0) }
             
             DispatchQueue.main.async { [weak self] in
