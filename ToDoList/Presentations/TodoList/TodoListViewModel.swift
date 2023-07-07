@@ -27,32 +27,11 @@ final class TodoListViewModel: ObservableObject {
         self.fileCache = fileCache
         self.dataProvider = dataProvider
         
-        Task.init { [weak self] in
-            do {
-                try await self?.fetchTodoItems()
-            } catch {
-                print("Error loaded data")
-            }
-        }
+        fetchTodoItems()
     }
     
-    // MARK: - Methods
-    func toggleShowCompletedTasks() {
-        self.showCompletedTasks.toggle()
-        
-        Task { [weak self] in
-            guard let self = self else { return }
-            isLoading = true
-            do {
-                try await self.fetchTodoItems()
-            } catch {
-                loadItems()
-            }
-            isLoading = false
-        }
-    }
-    
-    func addItem(_ item: TodoItem) {
+    // MARK: - Private methods
+    private func addItem(_ item: TodoItem) {
         if let newItem = fileCache.addItem(item) {
             todoItems.append(newItem)
             saveItems()
@@ -60,7 +39,7 @@ final class TodoListViewModel: ObservableObject {
         }
     }
     
-    func deleteItem(with id: String) {
+    private func deleteItem(with id: String) {
         if let _ = fileCache.deleteItem(with: id) {
             todoItems.removeAll { $0.id == id }
             uncompletedTodoItems = todoItems.filter { !$0.isDone }
@@ -69,19 +48,7 @@ final class TodoListViewModel: ObservableObject {
         }
     }
     
-    func updateIsDone(from todoItem: TodoItem) -> TodoItem {
-        let updateTodoItem = TodoItem(
-            id: todoItem.id,
-            text: todoItem.text,
-            importance: todoItem.importance,
-            deadline: todoItem.deadline,
-            isDone: !todoItem.isDone,
-            hexColor: todoItem.hexColor
-        )
-        return updateTodoItem
-    }
-    
-    func saveItems() {
+    private func saveItems() {
         do {
             try fileCache.saveToJson(to: "todoItems")
         } catch {
@@ -89,7 +56,7 @@ final class TodoListViewModel: ObservableObject {
         }
     }
     
-    func loadItems() {
+    private func loadItems() {
         do {
             try fileCache.loadFromJson(from: "todoItems")
             todoItems = fileCache.todoItemsList
@@ -101,8 +68,9 @@ final class TodoListViewModel: ObservableObject {
     }
 }
 
-extension TodoListViewModel {
-    func fetchTodoItems() async throws {
+// MARK: - Helper methods for Networking
+extension TodoListViewModel: @unchecked Sendable {
+    func fetchTodoItems() {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -124,7 +92,7 @@ extension TodoListViewModel {
         }
     }
     
-    func addNewTodoItem(_ item: TodoItem) async throws {
+    func addNewTodoItem(_ item: TodoItem) {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -146,7 +114,7 @@ extension TodoListViewModel {
         }
     }
     
-    func editTodoItem(_ item: TodoItem) async throws {
+    func editTodoItem(_ item: TodoItem) {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -169,7 +137,7 @@ extension TodoListViewModel {
         }
     }
     
-    func deleteTodoItem(_ item: TodoItem) async throws {
+    func deleteTodoItem(_ item: TodoItem) {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -208,5 +176,23 @@ extension TodoListViewModel {
         } catch {
             print("Failed to sync data with server")
         }
+    }
+    
+    func updateIsDone(from todoItem: TodoItem) -> TodoItem {
+        let updateTodoItem = TodoItem(
+            id: todoItem.id,
+            text: todoItem.text,
+            importance: todoItem.importance,
+            deadline: todoItem.deadline,
+            isDone: !todoItem.isDone,
+            hexColor: todoItem.hexColor,
+            lastUpdatedBy: todoItem.lastUpdatedBy
+        )
+        return updateTodoItem
+    }
+    
+    func toggleShowCompletedTasks() {
+        self.showCompletedTasks.toggle()
+        fetchTodoItems()
     }
 }

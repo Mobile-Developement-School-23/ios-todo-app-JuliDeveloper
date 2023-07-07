@@ -58,24 +58,28 @@ final class DetailTodoItemViewController: UIViewController {
     @objc private func save() {
         view.endEditing(true)
         
+        let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        
         if todoItem != nil {
             let oldItem = TodoItem(
                 id: todoItem?.id ?? "",
                 text: currentText,
                 importance: currentImportance,
                 deadline: currentDeadline,
-                hexColor: uiColorMarshallings.toHexString(color: currentColor)
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
             )
-            editTodoItem(oldItem)
+            viewModel.editTodoItem(oldItem)
         } else {
             let newItem = TodoItem(
                 text: currentText,
                 importance: currentImportance,
                 deadline: currentDeadline,
                 isDone: false,
-                hexColor: uiColorMarshallings.toHexString(color: currentColor)
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
             )
-            addTodoItem(newItem)
+            viewModel.addNewTodoItem(newItem)
         }
         
         dismiss(animated: true)
@@ -120,26 +124,6 @@ extension DetailTodoItemViewController {
             )
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
-        }
-    }
-    
-    private func editTodoItem(_ todoItem: TodoItem) {
-        Task { [weak self] in
-            do {
-                try await self?.viewModel.editTodoItem(todoItem)
-            } catch {
-                print("Error edited new item", error)
-            }
-        }
-    }
-    
-    private func addTodoItem(_ todoItem: TodoItem) {
-        Task { [weak self] in
-            do {
-                try await self?.viewModel.addNewTodoItem(todoItem)
-            } catch {
-                print("Error added new item", error)
-            }
         }
     }
 }
@@ -204,7 +188,8 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
         showAlert { [weak self] _ in
             guard let self = self else { return }
             if self.todoItem != nil {
-                self.viewModel.deleteItem(with: self.todoItem?.id ?? "")
+                guard let item = todoItem else { return }
+                self.viewModel.deleteTodoItem(item)
             }
             dismiss(animated: true)
         }

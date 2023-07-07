@@ -115,37 +115,20 @@ class TodoListViewController: UIViewController {
         startLoadingAnimation()
         
         let updateTodoItem = viewModel.updateIsDone(from: item)
-
-        Task { [weak self] in
-            do {
-                try await self?.viewModel.editTodoItem(updateTodoItem)
-            } catch {
-                print("Error added new item", error)
-            }
-            
-            DispatchQueue.main.async {
-                self?.stopLoadingAnimation()
-            }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.viewModel.editTodoItem(updateTodoItem)
+            self?.stopLoadingAnimation()
         }
     }
     
     private func deleteItem(_ todoItem: TodoItem) {
         startLoadingAnimation()
         
-        Task { [weak self] in
-            guard let self = self else { return }
-            
-            do {
-                try await self.viewModel.deleteTodoItem(todoItem)
-            } catch {
-                print("Error added new item", error)
-            }
-            
-            DispatchQueue.main.async {
-                self.stopLoadingAnimation()
-            }
+        DispatchQueue.main.async { [weak self] in
+            self?.viewModel.deleteTodoItem(todoItem)
+            self?.stopLoadingAnimation()
         }
-        
     }
 }
 
@@ -259,7 +242,7 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Удалить",
                 image: UIImage(systemName: "trash.fill")
             ) {  _ in
-                self.viewModel.deleteItem(with: todoItem.id)
+                self.viewModel.deleteTodoItem(todoItem)
             }
             
             return UIMenu(children: [

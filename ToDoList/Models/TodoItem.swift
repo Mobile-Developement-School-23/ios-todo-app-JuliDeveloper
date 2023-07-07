@@ -38,7 +38,7 @@ struct TodoItem: IdentifiableType {
         createdAt: Date = Date(),
         changesAt: Date? = nil,
         hexColor: String = "#000000",
-        lastUpdatedBy: String = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        lastUpdatedBy: String
     ) {
         self.id = id
         self.text = text
@@ -62,7 +62,7 @@ extension TodoItem: JSONConvertible {
         result[isDoneKey] = isDone
         result[hexColorKey] = hexColor
         result[importanceKey] = importance.rawValue
-        result[lastUpdatedByKey] = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        result[lastUpdatedByKey] = lastUpdatedBy
 
         if let deadlineInt = deadline?.dateIntValue {
             result[deadlineKey] = Int64(deadlineInt)
@@ -182,7 +182,8 @@ extension TodoItem: CSVConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: ""
         )
     }
     
@@ -215,7 +216,8 @@ extension TodoItem: CSVConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: ""
         )
     }
 }
