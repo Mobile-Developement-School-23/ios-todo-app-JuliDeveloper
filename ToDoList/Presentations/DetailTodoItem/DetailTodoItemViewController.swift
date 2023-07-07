@@ -66,7 +66,7 @@ final class DetailTodoItemViewController: UIViewController {
                 deadline: currentDeadline,
                 hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
-            viewModel.addItem(oldItem)
+            editTodoItem(oldItem)
         } else {
             let newItem = TodoItem(
                 text: currentText,
@@ -75,14 +75,7 @@ final class DetailTodoItemViewController: UIViewController {
                 isDone: false,
                 hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
-            
-            Task.init { [weak self] in
-                do {
-                    try await self?.viewModel.addNewTodoItem(newItem)
-                } catch {
-                    print("Error added new item", error)
-                }
-            }
+            addTodoItem(newItem)
         }
         
         dismiss(animated: true)
@@ -127,6 +120,26 @@ extension DetailTodoItemViewController {
             )
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
+    
+    private func editTodoItem(_ todoItem: TodoItem) {
+        Task { [weak self] in
+            do {
+                try await self?.viewModel.editTodoItem(todoItem)
+            } catch {
+                print("Error edited new item", error)
+            }
+        }
+    }
+    
+    private func addTodoItem(_ todoItem: TodoItem) {
+        Task { [weak self] in
+            do {
+                try await self?.viewModel.addNewTodoItem(todoItem)
+            } catch {
+                print("Error added new item", error)
+            }
         }
     }
 }
