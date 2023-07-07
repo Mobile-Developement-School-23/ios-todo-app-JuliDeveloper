@@ -90,7 +90,7 @@ class TodoListViewController: UIViewController {
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
             
-            self.viewModel.deleteItem(with: todoItem.id)
+            deleteItem(todoItem)
             completion(true)
         }
         
@@ -127,6 +127,25 @@ class TodoListViewController: UIViewController {
                 self?.stopLoadingAnimation()
             }
         }
+    }
+    
+    private func deleteItem(_ todoItem: TodoItem) {
+        startLoadingAnimation()
+        
+        Task { [weak self] in
+            guard let self = self else { return }
+            
+            do {
+                try await self.viewModel.deleteTodoItem(todoItem)
+            } catch {
+                print("Error added new item", error)
+            }
+            
+            DispatchQueue.main.async {
+                self.stopLoadingAnimation()
+            }
+        }
+        
     }
 }
 

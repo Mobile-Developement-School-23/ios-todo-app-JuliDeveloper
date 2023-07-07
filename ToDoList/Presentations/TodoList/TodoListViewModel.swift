@@ -169,6 +169,29 @@ extension TodoListViewModel {
         }
     }
     
+    func deleteTodoItem(_ item: TodoItem) async throws {
+        Task { [weak self] in
+            guard let self = self else { return }
+            isLoading = true
+            do {
+                let deleteItem = try await self.dataProvider.deleteTodoItem(item)
+                DispatchQueue.main.async {
+                    self.deleteItem(with: deleteItem.id)
+                }
+                
+                isLoading = false
+                
+                if isDirty {
+                    try await syncDataWithServer()
+                }
+            } catch {
+                isLoading = false
+                isDirty = true
+                deleteItem(with: item.id)
+            }
+        }
+    }
+    
     private func syncDataWithServer() async throws {
         guard isDirty else { return }
         isLoading = true

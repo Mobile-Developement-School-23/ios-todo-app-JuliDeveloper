@@ -21,6 +21,7 @@ protocol NetworkingService {
     func syncTodoItems(_ items: [TodoItem]) async throws -> [TodoItem]
     // func fetchTodoItem(_ item: TodoItem) async throws -> TodoItem
     func editTodoItem(_ item: TodoItem) async throws -> TodoItem
+    func deleteTodoItem(_ item: TodoItem) async throws -> TodoItem
 }
 
 final class DefaultNetworkingService {
@@ -141,6 +142,19 @@ extension DefaultNetworkingService: NetworkingService {
             isRevision: true
         )
 
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["element": item.json])
+        
+        let (data, _) = try await urlSession.fetchData(for: request)
+        return try await obtainTodoItem(from: data)
+    }
+    
+    func deleteTodoItem(_ item: TodoItem) async throws -> TodoItem {
+        var request = try makeRequest(
+            endPoint: "/list/\(item.id)",
+            httpMethod: .delete,
+            isRevision: true
+        )
+        
         request.httpBody = try JSONSerialization.data(withJSONObject: ["element": item.json])
         
         let (data, _) = try await urlSession.fetchData(for: request)
