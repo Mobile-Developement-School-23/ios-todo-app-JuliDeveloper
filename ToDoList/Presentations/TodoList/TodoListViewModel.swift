@@ -32,7 +32,7 @@ final class TodoListViewModel: ObservableObject {
             do {
                 try await self?.fetchTodoItems()
             } catch {
-                print("Error !!!")
+                print("Error loaded data")
             }
         }
     }
@@ -107,29 +107,43 @@ extension TodoListViewModel {
                     self.updateDelegate?.didUpdateTodoItems()
                 }
             } catch {
-                print("Error fetching todo items: \(error)")
+                loadItems()
             }
         }
     }
     
-    func addNewTodoItem(_ item: TodoItem) {
-        Task {  [weak self] in
+    func addNewTodoItem(_ item: TodoItem) async throws {
+        Task { [weak self] in
             guard let self = self else { return }
             do {
                 let addedItem = try await self.dataProvider.addTodoItem(item)
-                todoItems.append(addedItem)
-                isDirty = true
-                if isDirty {
-                    let updateItems = try await dataProvider.updateTodoItems(todoItems)
-                    todoItems = updateItems
-                    isDirty = false
-                }
                 DispatchQueue.main.async {
+                    self.todoItems.append(addedItem)
                     self.updateDelegate?.didUpdateTodoItems()
                 }
+                
+                if isDirty {
+                    try await syncDataWithServer()
+                }
             } catch {
-                print("Error adding new item: \(error)")
+                isDirty = true
+                addItem(item)
             }
+        }
+    }
+    
+    private func syncDataWithServer() async throws {
+        guard isDirty else { return }
+        
+        do {
+            let todoList = try await dataProvider.syncTodoItems(todoItems)
+            DispatchQueue.main.async { [weak self] in
+                self?.todoItems = todoList
+                self?.isDirty = false
+                self?.updateDelegate?.didUpdateTodoItems()
+            }
+        } catch {
+            print("Failed to sync data with server")
         }
     }
 }

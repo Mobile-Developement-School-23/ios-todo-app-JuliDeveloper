@@ -1,5 +1,12 @@
 import Foundation
 
+private enum NetworkServiceError: Error {
+    case codeError
+    case notData
+    case invalidURL
+    case parseError
+}
+
 private enum HttpMethod: String {
     case get = "GET"
     case post = "POST"
@@ -8,24 +15,19 @@ private enum HttpMethod: String {
     case patch = "PATCH"
 }
 
-private enum NetworkError: Error {
-    case codeError
-    case notData
-    case invalidURL
-    case parseError
-}
-
 protocol NetworkingService {
     func fetchTodoItems() async throws -> [TodoItem]
     func addTodoItem(_ item: TodoItem) async throws -> TodoItem
-    func updateTodoItems(_ items: [TodoItem]) async throws -> [TodoItem]
+    func syncTodoItems(_ items: [TodoItem]) async throws -> [TodoItem]
+    // func fetchTodoItem(_ item: TodoItem) async throws -> TodoItem
+    // func editTodoItem(_ item: TodoItem) async throws -> TodoItem
 }
 
 final class DefaultNetworkingService {
     static let shared = DefaultNetworkingService()
     
     private let urlSession = URLSession.shared
-
+    
     private var revision = RevisionStorage().latestKnownRevision
     
     private init() {}
@@ -58,7 +60,7 @@ final class DefaultNetworkingService {
             let todoItemList = mapJsonArray["list"] as? [[String: Any]],
             let revision = mapJsonArray["revision"] as? Int
         else {
-            throw NetworkError.notData
+            throw NetworkServiceError.notData
         }
         
         var itemsArray: [TodoItem] = []
@@ -83,7 +85,7 @@ final class DefaultNetworkingService {
             let revision = jsonArray["revision"] as? Int,
             let todoItem = TodoItem.parse(json: element)
         else {
-            throw NetworkError.parseError
+            throw NetworkServiceError.parseError
         }
         
         self.revision = revision
@@ -99,21 +101,12 @@ extension DefaultNetworkingService: NetworkingService {
             httpMethod: HttpMethod.get,
             isRevision: false
         )
-
-        let (data, response) = try await urlSession.fetchData(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.codeError
-        }
         
-        guard !data.isEmpty else {
-            throw NetworkError.notData
-        }
-        
+        let (data, _) = try await urlSession.fetchData(for: request)
         return try await obtainTodoItems(from: data)
     }
     
-    func updateTodoItems(_ items: [TodoItem]) async throws -> [TodoItem] {
+    func syncTodoItems(_ items: [TodoItem]) async throws -> [TodoItem] {
         var request = try makeRequest(
             endPoint: "/list",
             httpMethod: .patch,
@@ -121,44 +114,34 @@ extension DefaultNetworkingService: NetworkingService {
         )
         
         let json = items.map { $0.json }
-        request.httpBody = try JSONSerialization.data(withJSONObject: ["list": json])
+        request.httpBody = try JSONSerialization.data(withJSONObject: ["list": json], options: .fragmentsAllowed)
         
-        let (data, response) = try await urlSession.fetchData(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.codeError
-        }
-        
-        guard !data.isEmpty else {
-            throw NetworkError.notData
-        }
-        
+        let (data, _) = try await urlSession.fetchData(for: request)
         return try await obtainTodoItems(from: data)
     }
     
     func addTodoItem(_ item: TodoItem) async throws -> TodoItem {
-        guard let url = URL(string: "https://beta.mrdekk.ru/todobackend/list") else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(TokenStorage.token)", forHTTPHeaderField: "Authorization")
-        request.setValue("\(revision)", forHTTPHeaderField: "X-Last-Known-Revision")
+        var request = try makeRequest(
+            endPoint: "/list",
+            httpMethod: .post,
+            isRevision: true
+        )
         
         let requestBody = try JSONSerialization.data(withJSONObject: ["element": item.json])
         request.httpBody = requestBody
         
-        let (data, response) = try await urlSession.fetchData(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.codeError
-        }
-        
-        guard !data.isEmpty else {
-            throw NetworkError.notData
-        }
-        
+        let (data, _) = try await urlSession.fetchData(for: request)
         return try await obtainTodoItem(from: data)
     }
+    
+//    func editTodoItem(_ item: TodoItem) async throws -> TodoItem {
+//        var request = try makeRequest(
+//            endPoint: "/list/\(item.id)",
+//            httpMethod: .put,
+//            isRevision: true
+//        )
+//
+//        let (data, _) = try await urlSession.fetchData(for: request)
+//        return try await obtainTodoItem(from: data)
+//    }
 }

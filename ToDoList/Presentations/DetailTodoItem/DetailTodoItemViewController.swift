@@ -75,7 +75,14 @@ final class DetailTodoItemViewController: UIViewController {
                 isDone: false,
                 hexColor: uiColorMarshallings.toHexString(color: currentColor)
             )
-            viewModel.addNewTodoItem(newItem)
+            
+            Task.init { [weak self] in
+                do {
+                    try await self?.viewModel.addNewTodoItem(newItem)
+                } catch {
+                    print("Error added new item", error)
+                }
+            }
         }
         
         dismiss(animated: true)

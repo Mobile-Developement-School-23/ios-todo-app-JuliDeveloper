@@ -132,7 +132,7 @@ extension TodoListView: TodoListViewDelegate {
         tableView.indexPath(for: cell)
     }
     
-    func updateCompletedLabel(count: Int) {
+    func updateCompletedLabel(count: Int) { // вывести на main
         if let label = completionTasksStackView.subviews.first as? UILabel {
             label.text = "Выполнено — \(count)"
         }
