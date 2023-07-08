@@ -1,6 +1,5 @@
 import UIKit
 
-@MainActor
 final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Properties
@@ -16,9 +15,13 @@ final class DetailTodoItemViewController: UIViewController {
     var todoItem: TodoItem?
     
     weak var delegate: DetailTodoItemViewControllerDelegate?
+    weak var loadDelegate: TodoListViewControllerDelegate?
     
     // MARK: - Lifecycle
-    init(viewModel: TodoListViewModel, uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
+    init(
+        viewModel: TodoListViewModel,
+        uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()
+    ) {
         self.viewModel = viewModel
         self.uiColorMarshallings = uiColorMarshallings
         super.init(nibName: nil, bundle: nil)
@@ -53,11 +56,14 @@ final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func cancel() {
+        loadDelegate?.finishLargeIndicatorAnimation()
         dismiss(animated: true)
     }
     
     @objc private func save() {
         view.endEditing(true)
+        
+        let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
         
         if todoItem != nil {
             let oldItem = TodoItem(
@@ -65,19 +71,23 @@ final class DetailTodoItemViewController: UIViewController {
                 text: currentText,
                 importance: currentImportance,
                 deadline: currentDeadline,
-                hexColor: uiColorMarshallings.toHexString(color: currentColor)
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
             )
-            viewModel.addItem(oldItem)
+            updateTodoItem(oldItem)
         } else {
             let newItem = TodoItem(
                 text: currentText,
                 importance: currentImportance,
                 deadline: currentDeadline,
-                hexColor: uiColorMarshallings.toHexString(color: currentColor)
+                isDone: false,
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
             )
-            viewModel.addItem(newItem)
+            addTodoItem(newItem)
         }
         
+        loadDelegate?.startLargeIndicatorAnimation()
         dismiss(animated: true)
     }
 }
@@ -120,6 +130,36 @@ extension DetailTodoItemViewController {
             )
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
+    
+    private func addTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.addNewTodoItem(item)
+            } catch {
+                print("Error added item", error)
+            }
+        }
+    }
+    
+    func updateTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.editTodoItem(item)
+            } catch {
+                print("Error updated item", error)
+            }
+        }
+    }
+    
+    private func deleteTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.deleteTodoItem(item)
+            } catch {
+                print("Error deleted item", error)
+            }
         }
     }
 }
@@ -184,7 +224,8 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
         showAlert { [weak self] _ in
             guard let self = self else { return }
             if self.todoItem != nil {
-                self.viewModel.deleteItem(with: self.todoItem?.id ?? "")
+                guard let item = todoItem else { return }
+                self.deleteTodoItem(item)
             }
             dismiss(animated: true)
         }

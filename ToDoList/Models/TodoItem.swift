@@ -1,19 +1,21 @@
 import Foundation
+import UIKit
 import FileCachePackage
 
 private let idKey = "id"
 private let textKey = "text"
 private let importanceKey = "importance"
 private let deadlineKey = "deadline"
-private let isDoneKey = "isDone"
-private let createdAtKey = "createdAt"
-private let changesAtKey = "changesAt"
-private let hexColorKey = "hexColor"
+private let isDoneKey = "done"
+private let createdAtKey = "created_at"
+private let changesAtKey = "changed_at"
+private let hexColorKey = "color"
+private let lastUpdatedByKey = "last_updated_by"
 
 enum Importance: String {
-    case unimportant
-    case normal
-    case important
+    case unimportant = "low"
+    case normal = "basic"
+    case important = "important"
 }
 
 struct TodoItem: IdentifiableType {
@@ -25,6 +27,7 @@ struct TodoItem: IdentifiableType {
     let createdAt: Date
     let changesAt: Date?
     let hexColor: String
+    let lastUpdatedBy: String
     
     init(
         id: String = UUID().uuidString,
@@ -34,7 +37,8 @@ struct TodoItem: IdentifiableType {
         isDone: Bool = false,
         createdAt: Date = Date(),
         changesAt: Date? = nil,
-        hexColor: String = "#000000"
+        hexColor: String = "#000000",
+        lastUpdatedBy: String
     ) {
         self.id = id
         self.text = text
@@ -44,6 +48,7 @@ struct TodoItem: IdentifiableType {
         self.createdAt = createdAt
         self.changesAt = changesAt
         self.hexColor = hexColor
+        self.lastUpdatedBy = lastUpdatedBy
     }
 }
 
@@ -51,26 +56,27 @@ struct TodoItem: IdentifiableType {
 extension TodoItem: JSONConvertible {
     var json: [String: Any] {
         var result: [String: Any] = [:]
-        
+
         result[idKey] = id
         result[textKey] = text
         result[isDoneKey] = isDone
         result[hexColorKey] = hexColor
-        
-        if importance != Importance.normal {
-            result[importanceKey] = importance.rawValue
-        }
-        
+        result[importanceKey] = importance.rawValue
+        result[lastUpdatedByKey] = lastUpdatedBy
+
         if let deadlineInt = deadline?.dateIntValue {
-            result[deadlineKey] = deadlineInt
+            result[deadlineKey] = Int64(deadlineInt)
         }
-        
+
         if let createdInt = createdAt.dateIntValue {
-            result[createdAtKey] = createdInt
+            result[createdAtKey] = Int64(createdInt)
         }
-        
-        if let changesInt = changesAt?.dateIntValue {
-            result[changesAtKey] = changesInt
+
+        if changesAt == nil {
+            let changesInt = Date().dateIntValue
+            result[changesAtKey] = Int64(changesInt ?? 0)
+        } else {
+            result[changesAtKey] = Int(changesAt?.dateIntValue ?? 0)
         }
         
         return result
@@ -81,7 +87,8 @@ extension TodoItem: JSONConvertible {
               let text = json[textKey] as? String,
               let isDone = json[isDoneKey] as? Bool,
               let hexColor = json[hexColorKey] as? String,
-              let createdAt = (json[createdAtKey] as? Int)?.dateValue
+              let createdAt = (json[createdAtKey] as? Int)?.dateValue,
+              let lastUpdatedBy = json[lastUpdatedByKey] as? String
         else {
             return nil
         }
@@ -98,24 +105,26 @@ extension TodoItem: JSONConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: lastUpdatedBy
         )
     }
     
     static func parse(json: Any) -> TodoItem? {
         guard let json = json as? [String: Any],
-              let id = json["id"] as? String,
-              let text = json["text"] as? String,
-              let isDone = json["isDone"] as? Bool,
-              let hexColor = json["hexColor"] as? String,
-              let createdAt = (json["createdAt"] as? Int)?.dateValue
+              let id = json[idKey] as? String,
+              let text = json[textKey] as? String,
+              let isDone = json[isDoneKey] as? Bool,
+              let createdAt = (json[createdAtKey] as? Int)?.dateValue,
+              let lastUpdatedBy = json[lastUpdatedByKey] as? String
         else {
             return nil
         }
-        
-        let importance = (json["importance"] as? String).flatMap(Importance.init(rawValue:)) ?? .normal
-        let deadline = (json["deadline"] as? Int)?.dateValue
-        let changesAt = (json["changesAt"] as? Int)?.dateValue
+
+        let importance = (json[importanceKey] as? String).flatMap(Importance.init(rawValue:)) ?? .normal
+        let deadline = (json[deadlineKey] as? Int)?.dateValue
+        let changesAt = (json[changesAtKey] as? Int)?.dateValue
+        let hexColor = json[hexColorKey] as? String ?? "#000000"
         
         return TodoItem(
             id: id,
@@ -125,7 +134,8 @@ extension TodoItem: JSONConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: lastUpdatedBy
         )
     }
 }
@@ -172,7 +182,8 @@ extension TodoItem: CSVConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: ""
         )
     }
     
@@ -205,7 +216,8 @@ extension TodoItem: CSVConvertible {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: changesAt,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: ""
         )
     }
 }

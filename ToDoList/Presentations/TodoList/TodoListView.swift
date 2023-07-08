@@ -3,6 +3,14 @@ import UIKit
 final class TodoListView: UIView {
     
     // MARK: - Properties
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.layer.zPosition = 1
+        return activityIndicator
+    }()
+    
     private let completionTasksStackView = CompletionTasksStackView()
     
     private lazy var tableView: UITableView = {
@@ -74,6 +82,7 @@ final class TodoListView: UIView {
 // MARK: - Private methods
 extension TodoListView {
     private func addElements() {
+        addSubview(activityIndicator)
         addSubview(completionTasksStackView)
         addSubview(tableView)
         addSubview(openButton)
@@ -81,6 +90,13 @@ extension TodoListView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(
+                equalTo: centerXAnchor
+            ),
+            activityIndicator.centerYAnchor.constraint(
+                equalTo: centerYAnchor
+            ),
+            
             completionTasksStackView.topAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.topAnchor, constant: 8
             ),
@@ -120,6 +136,14 @@ extension TodoListView {
 
 // MARK: - Private methods
 extension TodoListView: TodoListViewDelegate {
+    func startLoading() {
+        activityIndicator.startAnimating()
+    }
+    
+    func finishLoading() {
+        activityIndicator.stopAnimating()
+    }
+    
     func reloadTableView() {
         tableView.reloadData()
     }
@@ -133,8 +157,10 @@ extension TodoListView: TodoListViewDelegate {
     }
     
     func updateCompletedLabel(count: Int) {
-        if let label = completionTasksStackView.subviews.first as? UILabel {
-            label.text = "Выполнено — \(count)"
+        DispatchQueue.main.async {
+            if let label = self.completionTasksStackView.subviews.first as? UILabel {
+                label.text = "Выполнено — \(count)"
+            }
         }
     }
 }
