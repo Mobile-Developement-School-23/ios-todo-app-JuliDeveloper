@@ -4,7 +4,6 @@ final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Properties
     private let uiColorMarshallings: ColorMarshallingsProtocol
-    private let todoItemManager: TodoItemManager
     
     private var currentText = String()
     private var currentImportance = Importance.normal
@@ -21,12 +20,10 @@ final class DetailTodoItemViewController: UIViewController {
     // MARK: - Lifecycle
     init(
         viewModel: TodoListViewModel,
-        uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings(),
-        todoItemManager: TodoItemManager = TodoItemManager()
+        uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()
     ) {
         self.viewModel = viewModel
         self.uiColorMarshallings = uiColorMarshallings
-        self.todoItemManager = todoItemManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -77,7 +74,7 @@ final class DetailTodoItemViewController: UIViewController {
                 hexColor: uiColorMarshallings.toHexString(color: currentColor),
                 lastUpdatedBy: deviceId
             )
-            todoItemManager.updateTodoItem(oldItem, viewModel: viewModel)
+            updateTodoItem(oldItem)
         } else {
             let newItem = TodoItem(
                 text: currentText,
@@ -87,7 +84,7 @@ final class DetailTodoItemViewController: UIViewController {
                 hexColor: uiColorMarshallings.toHexString(color: currentColor),
                 lastUpdatedBy: deviceId
             )
-            todoItemManager.addTodoItem(newItem, viewModel: viewModel)
+            addTodoItem(newItem)
         }
         
         loadDelegate?.startLargeIndicatorAnimation()
@@ -133,6 +130,36 @@ extension DetailTodoItemViewController {
             )
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+    }
+    
+    private func addTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.addNewTodoItem(item)
+            } catch {
+                print("Error added item", error)
+            }
+        }
+    }
+    
+    func updateTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.editTodoItem(item)
+            } catch {
+                print("Error updated item", error)
+            }
+        }
+    }
+    
+    private func deleteTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.deleteTodoItem(item)
+            } catch {
+                print("Error deleted item", error)
+            }
         }
     }
 }
@@ -198,7 +225,7 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
             guard let self = self else { return }
             if self.todoItem != nil {
                 guard let item = todoItem else { return }
-                self.todoItemManager.deleteTodoItem(item, viewModel: viewModel)
+                self.deleteTodoItem(item)
             }
             dismiss(animated: true)
         }

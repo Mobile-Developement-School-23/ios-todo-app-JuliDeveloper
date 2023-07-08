@@ -5,8 +5,16 @@ class TodoListViewController: UIViewController {
     // MARK: - Properties
     private let activityIndicator = UIActivityIndicatorView()
 
-    private let todoItemManager: TodoItemManager
     private var viewModel: TodoListViewModel
+    
+    private var window: UIWindow? {
+        return UIApplication.shared.connectedScenes
+            .filter { $0.activationState == .foregroundActive }
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows
+            .filter { $0.isKeyWindow }
+            .first
+    }
     
     var selectedCell: TodoTableViewCell?
 
@@ -14,12 +22,10 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(
-        viewModel: TodoListViewModel,
-        todoItemManager: TodoItemManager = TodoItemManager()
+        viewModel: TodoListViewModel
     ) {
         self.viewModel = viewModel
-        self.todoItemManager = todoItemManager
-        super.init(nibName: nil, bundle: nil)        
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -53,6 +59,14 @@ class TodoListViewController: UIViewController {
                 } else {
                     self?.stopLoadingAnimation()
                 }
+            }
+        }
+        
+        viewModel.errorHandler = { [weak self] _ in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.window?.isUserInteractionEnabled = true
+                self.showAttentionAlert()
             }
         }
         
@@ -107,7 +121,7 @@ class TodoListViewController: UIViewController {
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
             
-            self.todoItemManager.deleteTodoItem(todoItem, viewModel: viewModel)
+            deleteTodoItem(todoItem)
             completion(true)
         }
         
@@ -130,7 +144,27 @@ class TodoListViewController: UIViewController {
     
     private func changeIsDone(for item: TodoItem) {
         let updateTodoItem = viewModel.updateIsDone(from: item)
-        todoItemManager.updateTodoItem(updateTodoItem, viewModel: viewModel)
+        editTodoItem(updateTodoItem)
+    }
+    
+    private func editTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.editTodoItem(item)
+            } catch {
+                print("Error updated item", error)
+            }
+        }
+    }
+    
+    private func deleteTodoItem(_ item: TodoItem) {
+        Task {
+            do {
+                try await viewModel.deleteTodoItem(item)
+            } catch {
+                print("Error deleted item", error)
+            }
+        }
     }
 }
 
@@ -227,7 +261,7 @@ extension TodoListViewController: UITableViewDelegate {
                 image: UIImage(systemName: "checkmark.circle.fill")
             ) { _ in
                 let updateTodoItem = self.viewModel.updateIsDone(from: todoItem)
-                self.todoItemManager.updateTodoItem(updateTodoItem, viewModel: self.viewModel)
+                self.editTodoItem(updateTodoItem)
             }
             
             let editAction = UIAction(
@@ -245,7 +279,7 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Удалить",
                 image: UIImage(systemName: "trash.fill")
             ) {  _ in
-                self.todoItemManager.deleteTodoItem(todoItem, viewModel: self.viewModel)
+                self.deleteTodoItem(todoItem)
             }
             
             return UIMenu(children: [

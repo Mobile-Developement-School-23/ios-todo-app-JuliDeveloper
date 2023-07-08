@@ -12,4 +12,14 @@ extension UIViewController {
         
         present(alert, animated: true)
     }
+    
+    func showAttentionAlert() {
+        let alert = UIAlertController(title: "Данные загружены не из сети", message: "Все новые данные не сохраняться. Проверьте интернет соединение.", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "OК", style: .cancel)
+        
+        alert.addAction(okAction)
+        
+        present(alert, animated: true)
+    }
 }

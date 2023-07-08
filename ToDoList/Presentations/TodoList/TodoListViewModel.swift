@@ -19,6 +19,8 @@ final class TodoListViewModel: ObservableObject {
         return showCompletedTasks ? todoItems : uncompletedTodoItems
     }
     
+    var errorHandler: ((APIError) -> Void)?
+        
     // MARK: - Initialization
     init(
         fileCache: FileCache<TodoItem> = FileCache<TodoItem>(),
@@ -27,9 +29,9 @@ final class TodoListViewModel: ObservableObject {
         self.fileCache = fileCache
         self.networkingService = dataProvider
         
-        Task {
+        Task.detached { [weak self] in
             do {
-                try await fetchTodoItems()
+                try await self?.fetchTodoItems()
             } catch {
                 print("Error load data", error)
             }
@@ -38,11 +40,16 @@ final class TodoListViewModel: ObservableObject {
     
     // MARK: - Private methods
     private func addItem(_ item: TodoItem) {
-        if let newItem = fileCache.addItem(item) {
-            todoItems.append(newItem)
-            saveItems()
-            loadItems()
+        if let indexOldItem = todoItems.firstIndex(where: { $0.id == item.id }) {
+            todoItems[indexOldItem] = item
+            fileCache.todoItems = todoItems
+        } else {
+            todoItems.append(item)
+            fileCache.todoItems = todoItems
         }
+        
+        saveItems()
+        loadItems()
     }
     
     private func deleteItem(with id: String) {
@@ -77,12 +84,11 @@ final class TodoListViewModel: ObservableObject {
 // MARK: - Helper methods for Networking
 extension TodoListViewModel: @unchecked Sendable {
     func fetchTodoItems() async throws {
-        Task { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             isLoading = true
             do {
                 let items = try await self.networkingService.fetchTodoItems()
-                items.forEach { self.addItem($0) }
                 
                 DispatchQueue.main.async {
                     self.todoItems = items
@@ -91,17 +97,22 @@ extension TodoListViewModel: @unchecked Sendable {
                     self.isLoading = false
                 }
                 
-            } catch {
+            } catch let error {
                 DispatchQueue.main.async {
                     self.isLoading = false
-                    self.loadItems()
+                    if let error = error as? APIError {
+                        self.loadItems()
+                        self.errorHandler?(error)
+                    } else {
+                        self.loadItems()
+                    }
                 }
             }
         }
     }
     
     func addNewTodoItem(_ item: TodoItem) async throws {
-        Task { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             isLoading = true
             do {
@@ -125,14 +136,14 @@ extension TodoListViewModel: @unchecked Sendable {
     }
     
     func editTodoItem(_ item: TodoItem) async throws {
-        Task { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             isLoading = true
             do {
                 let editedItem = try await self.networkingService.editTodoItem(item)
                 DispatchQueue.main.async {
-                    self.addItem(editedItem)
                     self.isLoading = false
+                    self.addItem(editedItem)
                 }
                 
                 if isDirty {
@@ -149,7 +160,7 @@ extension TodoListViewModel: @unchecked Sendable {
     }
     
     func deleteTodoItem(_ item: TodoItem) async throws {
-        Task { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             isLoading = true
             do {
@@ -174,7 +185,7 @@ extension TodoListViewModel: @unchecked Sendable {
     
     // этот метод работает, но нигде не используется, он просто реализует метод из NetworkService
     func fetchTodoItem(_ item: TodoItem) {
-        Task { [weak self] in
+        Task.detached { [weak self] in
             guard let self = self else { return }
             isLoading = true
             do {
@@ -227,9 +238,9 @@ extension TodoListViewModel: @unchecked Sendable {
     
     func toggleShowCompletedTasks() {
         self.showCompletedTasks.toggle()
-        Task {
+        Task.detached { [weak self] in
             do {
-                try await fetchTodoItems()
+                try await self?.fetchTodoItems()
             } catch {
                 print("Error load data", error)
             }

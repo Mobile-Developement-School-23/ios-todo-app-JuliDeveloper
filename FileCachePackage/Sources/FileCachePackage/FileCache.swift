@@ -37,7 +37,7 @@ public enum FileCacheError: Error {
 public class FileCache<TypeItem: JSONConvertible & CSVConvertible & IdentifiableType> {
 
     // MARK: - Properties
-    private(set) var todoItems: [TypeItem] = []
+    public var todoItems: [TypeItem] = []
 
     private let logger: LoggerProtocol
     
