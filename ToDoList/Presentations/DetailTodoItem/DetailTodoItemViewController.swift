@@ -4,6 +4,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Properties
     private let uiColorMarshallings: ColorMarshallingsProtocol
+    private let todoItemManager: TodoItemManager
     
     private var currentText = String()
     private var currentImportance = Importance.normal
@@ -18,9 +19,14 @@ final class DetailTodoItemViewController: UIViewController {
     weak var loadDelegate: TodoListViewControllerDelegate?
     
     // MARK: - Lifecycle
-    init(viewModel: TodoListViewModel, uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()) {
+    init(
+        viewModel: TodoListViewModel,
+        uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings(),
+        todoItemManager: TodoItemManager = TodoItemManager()
+    ) {
         self.viewModel = viewModel
         self.uiColorMarshallings = uiColorMarshallings
+        self.todoItemManager = todoItemManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -71,7 +77,7 @@ final class DetailTodoItemViewController: UIViewController {
                 hexColor: uiColorMarshallings.toHexString(color: currentColor),
                 lastUpdatedBy: deviceId
             )
-            viewModel.editTodoItem(oldItem)
+            todoItemManager.updateTodoItem(oldItem, viewModel: viewModel)
         } else {
             let newItem = TodoItem(
                 text: currentText,
@@ -81,7 +87,7 @@ final class DetailTodoItemViewController: UIViewController {
                 hexColor: uiColorMarshallings.toHexString(color: currentColor),
                 lastUpdatedBy: deviceId
             )
-            viewModel.addNewTodoItem(newItem)
+            todoItemManager.addTodoItem(newItem, viewModel: viewModel)
         }
         
         loadDelegate?.startLargeIndicatorAnimation()
@@ -192,7 +198,7 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
             guard let self = self else { return }
             if self.todoItem != nil {
                 guard let item = todoItem else { return }
-                self.viewModel.deleteTodoItem(item)
+                self.todoItemManager.deleteTodoItem(item, viewModel: viewModel)
             }
             dismiss(animated: true)
         }

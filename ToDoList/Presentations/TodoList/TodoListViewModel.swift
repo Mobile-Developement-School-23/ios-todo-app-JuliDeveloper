@@ -27,7 +27,13 @@ final class TodoListViewModel: ObservableObject {
         self.fileCache = fileCache
         self.networkingService = dataProvider
         
-        fetchTodoItems()
+        Task {
+            do {
+                try await fetchTodoItems()
+            } catch {
+                print("Error load data", error)
+            }
+        }
     }
     
     // MARK: - Private methods
@@ -70,7 +76,7 @@ final class TodoListViewModel: ObservableObject {
 
 // MARK: - Helper methods for Networking
 extension TodoListViewModel: @unchecked Sendable {
-    func fetchTodoItems() {
+    func fetchTodoItems() async throws {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -82,17 +88,19 @@ extension TodoListViewModel: @unchecked Sendable {
                     self.todoItems = items
                     self.uncompletedTodoItems = self.todoItems.filter { !$0.isDone }
                     self.completedTasksCount = self.todoItems.filter { $0.isDone }.count
+                    self.isLoading = false
                 }
                 
-                isLoading = false
             } catch {
-                isLoading = false
-                loadItems()
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.loadItems()
+                }
             }
         }
     }
     
-    func addNewTodoItem(_ item: TodoItem) {
+    func addNewTodoItem(_ item: TodoItem) async throws {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -100,21 +108,23 @@ extension TodoListViewModel: @unchecked Sendable {
                 let addedItem = try await self.networkingService.addTodoItem(item)
                 DispatchQueue.main.async {
                     self.addItem(addedItem)
+                    self.isLoading = false
                 }
                 
-                isLoading = false
                 if isDirty {
                     try await syncDataWithServer()
                 }
             } catch {
-                isLoading = false
-                isDirty = true
-                addItem(item)
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.isDirty = true
+                    self.addItem(item)
+                }
             }
         }
     }
     
-    func editTodoItem(_ item: TodoItem) {
+    func editTodoItem(_ item: TodoItem) async throws {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -122,22 +132,23 @@ extension TodoListViewModel: @unchecked Sendable {
                 let editedItem = try await self.networkingService.editTodoItem(item)
                 DispatchQueue.main.async {
                     self.addItem(editedItem)
+                    self.isLoading = false
                 }
                 
-                isLoading = false
                 if isDirty {
                     try await syncDataWithServer()
                 }
             } catch {
-                isLoading = false
-                isDirty = true
-                let updatedItem = updateIsDone(from: item)
-                addItem(updatedItem)
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.isDirty = true
+                    self.addItem(item)
+                }
             }
         }
     }
     
-    func deleteTodoItem(_ item: TodoItem) {
+    func deleteTodoItem(_ item: TodoItem) async throws {
         Task { [weak self] in
             guard let self = self else { return }
             isLoading = true
@@ -145,17 +156,18 @@ extension TodoListViewModel: @unchecked Sendable {
                 let deleteItem = try await self.networkingService.deleteTodoItem(item)
                 DispatchQueue.main.async {
                     self.deleteItem(with: deleteItem.id)
+                    self.isLoading = false
                 }
-                
-                isLoading = false
-                
+                                
                 if isDirty {
                     try await syncDataWithServer()
                 }
             } catch {
-                isLoading = false
-                isDirty = true
-                deleteItem(with: item.id)
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.isDirty = true
+                    self.deleteItem(with: item.id)
+                }
             }
         }
     }
@@ -169,17 +181,15 @@ extension TodoListViewModel: @unchecked Sendable {
                 let currentItem = try await self.networkingService.fetchTodoItem(item)
                 DispatchQueue.main.async {
                     print(currentItem)
+                    self.isLoading = false
                 }
-                
-                isLoading = false
-                
+                                
                 if isDirty {
                     try await syncDataWithServer()
                 }
             } catch {
                 isLoading = false
                 isDirty = true
-                deleteItem(with: item.id)
             }
         }
     }
@@ -188,15 +198,15 @@ extension TodoListViewModel: @unchecked Sendable {
         guard isDirty else { return }
         isLoading = true
         do {
-            let todoList = try await networkingService.syncTodoItems(fileCache.todoItemsList)
-            todoList.forEach { addItem($0) }
+            let networkItems = try await networkingService.fetchTodoItems()
+            let todoList = try await networkingService.syncTodoItems(networkItems)
             
             DispatchQueue.main.async { [weak self] in
                 self?.todoItems = todoList
                 self?.isDirty = false
+                self?.isLoading = false
             }
             
-            isLoading = false
         } catch {
             print("Failed to sync data with server")
         }
@@ -217,6 +227,12 @@ extension TodoListViewModel: @unchecked Sendable {
     
     func toggleShowCompletedTasks() {
         self.showCompletedTasks.toggle()
-        fetchTodoItems()
+        Task {
+            do {
+                try await fetchTodoItems()
+            } catch {
+                print("Error load data", error)
+            }
+        }
     }
 }
