@@ -40,16 +40,11 @@ final class TodoListViewModel: ObservableObject {
     
     // MARK: - Private methods
     private func addItem(_ item: TodoItem) {
-        if let indexOldItem = todoItems.firstIndex(where: { $0.id == item.id }) {
-            todoItems[indexOldItem] = item
-            fileCache.todoItems = todoItems
-        } else {
-            todoItems.append(item)
-            fileCache.todoItems = todoItems
+        if let newItem = fileCache.addItem(item) {
+            todoItems.append(newItem)
+            saveItems()
+            loadItems()
         }
-        
-        saveItems()
-        loadItems()
     }
     
     private func deleteItem(with id: String) {
@@ -91,6 +86,7 @@ extension TodoListViewModel: @unchecked Sendable {
                 let items = try await self.networkingService.fetchTodoItems()
                 
                 DispatchQueue.main.async {
+                    items.forEach { self.addItem($0) }
                     self.todoItems = items
                     self.uncompletedTodoItems = self.todoItems.filter { !$0.isDone }
                     self.completedTasksCount = self.todoItems.filter { $0.isDone }.count
