@@ -76,7 +76,7 @@ extension TodoItem: JSONConvertible {
             let changesInt = Date().dateIntValue
             result[changesAtKey] = Int64(changesInt ?? 0)
         } else {
-            result[changesAtKey] = Int(changesAt?.dateIntValue ?? 0)
+            result[changesAtKey] = Int64(changesAt?.dateIntValue ?? 0)
         }
         
         return result
