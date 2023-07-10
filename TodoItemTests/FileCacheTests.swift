@@ -15,7 +15,8 @@ final class FileCacheTests: XCTestCase {
         super.setUp()
         item = TodoItem(
             text: "Test",
-            importance: Importance.important
+            importance: Importance.important,
+            lastUpdatedBy: "1"
         )
     }
     
@@ -31,14 +32,16 @@ final class FileCacheTests: XCTestCase {
         item = TodoItem(
             id: "111",
             text: "Hi",
-            importance: Importance.important
+            importance: Importance.important,
+            lastUpdatedBy: "1"
         )
         _ = fileCache.addItem(item)
         
         let newItem = TodoItem(
             id: "111",
             text: "Bye",
-            importance: Importance.important
+            importance: Importance.important,
+            lastUpdatedBy: "1"
         )
         _ = fileCache.addItem(newItem)
         

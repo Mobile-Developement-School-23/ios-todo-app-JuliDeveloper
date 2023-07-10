@@ -8,10 +8,11 @@ final class TodoItemTests: XCTestCase {
     private let isDone = false
     private let createdAt = Date()
     private let hexColor = "#000000"
+    private let lastUpdatedBy = "1"
     
     private var importance = Importance.important
-    private var deadline: Date? = Date()
-    private var changesAt: Date? = Date()
+    private var deadline: Date? = Date(timeIntervalSince1970: TimeInterval(1688947200))
+    private var changesAt: Date? = Date(timeIntervalSince1970: TimeInterval(1688947200))
     
     private var item: TodoItem!
     
@@ -25,7 +26,8 @@ final class TodoItemTests: XCTestCase {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            lastUpdatedBy: lastUpdatedBy
         )
     }
     //MARK: - Tests - Creation TodoItem
@@ -47,7 +49,8 @@ final class TodoItemTests: XCTestCase {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         XCTAssertFalse(item.id == id)
@@ -68,7 +71,8 @@ final class TodoItemTests: XCTestCase {
             isDone: isDone,
             createdAt: createdAt,
             changesAt: nil,
-            hexColor: hexColor
+            hexColor: hexColor,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         XCTAssertNil(item.deadline)
@@ -82,19 +86,21 @@ final class TodoItemTests: XCTestCase {
         XCTAssertEqual(result["id"] as? String, id)
         XCTAssertEqual(result["text"] as? String, text)
         XCTAssertEqual(result["importance"] as? String, importance.rawValue)
-        XCTAssertEqual(result["isDone"] as? Bool, isDone)
-        XCTAssertEqual(result["deadline"] as? Int, deadline?.dateIntValue)
-        XCTAssertEqual(result["createdAt"] as? Int, createdAt.dateIntValue)
-        XCTAssertEqual(result["changesAt"] as? Int, changesAt?.dateIntValue)
+        XCTAssertEqual(result["done"] as? Bool, isDone)
+        XCTAssertEqual(result["deadline"] as? Int64, Int64(deadline?.dateIntValue ?? 0))
+        XCTAssertEqual(result["created_at"] as? Int64, Int64(createdAt.dateIntValue ?? 0))
+        XCTAssertEqual(result["changed_at"] as? Int64, Int64(changesAt?.dateIntValue ?? 0))
+        XCTAssertEqual(result["color"] as? String, hexColor)
+        XCTAssertEqual(result["last_updated_by"] as? String, lastUpdatedBy)
     }
     
     func testTodoItemToJsonWithDates() {
         let result = item.json as [String: Any]
         
         XCTAssertNotNil(result["deadline"])
-        XCTAssertNotNil(result["changesAt"])
-        XCTAssertEqual(result["deadline"] as? Int, deadline?.dateIntValue)
-        XCTAssertEqual(result["changesAt"] as? Int, changesAt?.dateIntValue)
+        XCTAssertNotNil(result["changed_at"])
+        XCTAssertEqual(result["deadline"] as? Int64, Int64(deadline?.dateIntValue ?? 0))
+        XCTAssertEqual(result["changed_at"] as? Int64, Int64(changesAt?.dateIntValue ?? 0))
     }
     
     func testTodoItemToJsonWithNilDates() {
@@ -108,13 +114,14 @@ final class TodoItemTests: XCTestCase {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         let result = item.json as [String: Any]
         
         XCTAssertEqual(result["deadline"] as? Int, nil)
-        XCTAssertEqual(result["changesAt"] as? Int, nil)
+        XCTAssertEqual(result["changed_at"] as? Int, nil)
     }
     
     func testTodoItemToJsonWithImportanceNormal() {
@@ -127,12 +134,13 @@ final class TodoItemTests: XCTestCase {
             deadline: Date(),
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: Date()
+            changesAt: Date(),
+            lastUpdatedBy: lastUpdatedBy
         )
         
         let result = item.json as [String: Any]
         
-        XCTAssertNil(result["importance"])
+        XCTAssertEqual(result["importance"] as? String, "basic")
     }
     
     func testTodoItemToJsonWithImportanceNotNormal() {
@@ -156,10 +164,11 @@ final class TodoItemTests: XCTestCase {
             "text": text,
             "importance": importance.rawValue,
             "deadline": deadline?.dateIntValue ?? 0 as Any,
-            "isDone": isDone,
-            "createdAt": createdAt.dateIntValue ?? 0,
-            "changesAt": changesAt?.dateIntValue ?? 0 as Any,
-            "hexColor": hexColor
+            "done": isDone,
+            "created_at": createdAt.dateIntValue ?? 0,
+            "changed_at": changesAt?.dateIntValue ?? 0 as Any,
+            "hexColor": hexColor,
+            "last_updated_by": lastUpdatedBy
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -185,10 +194,11 @@ final class TodoItemTests: XCTestCase {
             "text": text,
             "importance": importance.rawValue,
             "deadline": deadline as Any ,
-            "isDone": isDone,
-            "createdAt": 1686614400,
-            "changesAt": changesAt as Any,
-            "hexColor": "#000000"
+            "done": isDone,
+            "created_at": 1686614400,
+            "changed_at": changesAt as Any,
+            "hexColor": "#000000",
+            "last_updated_by": lastUpdatedBy
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -211,10 +221,11 @@ final class TodoItemTests: XCTestCase {
             "text": text,
             "importance": importance,
             "deadline": deadline as Any,
-            "isDone": isDone,
-            "createdAt": 1686614400,
-            "changesAt": changesAt as Any,
-            "hexColor": hexColor
+            "done": isDone,
+            "created_at": 1686614400,
+            "changed_at": changesAt as Any,
+            "hexColor": hexColor,
+            "last_updated_by": lastUpdatedBy
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -236,10 +247,11 @@ final class TodoItemTests: XCTestCase {
             "text": text,
             "importance": importance.rawValue,
             "deadline": 1686614400,
-            "isDone": isDone,
-            "createdAt": 1686614400,
-            "changesAt": 1686614400,
-            "hexColor": hexColor
+            "done": isDone,
+            "created_at": 1686614400,
+            "changed_at": 1686614400,
+            "hexColor": hexColor,
+            "last_updated_by": lastUpdatedBy
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -259,10 +271,11 @@ final class TodoItemTests: XCTestCase {
             "text": text,
             "importance": importance.rawValue,
             "deadline": 1686614400,
-            "isDone": isDone,
-            "createdAt": 1686614400,
-            "changesAt": 1686614400,
-            "hexColor": hexColor
+            "done": isDone,
+            "created_at": 1686614400,
+            "changed_at": 1686614400,
+            "hexColor": hexColor,
+            "last_updated_by": lastUpdatedBy
         ]
         
         guard let item = TodoItem.parse(json: json) else {
@@ -299,7 +312,8 @@ final class TodoItemTests: XCTestCase {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         let csvString = item.csv
@@ -325,7 +339,8 @@ final class TodoItemTests: XCTestCase {
             deadline: nil,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: nil
+            changesAt: nil,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         let csvString = item.csv
@@ -345,7 +360,8 @@ final class TodoItemTests: XCTestCase {
             deadline: deadline,
             isDone: isDone,
             createdAt: createdAt,
-            changesAt: changesAt
+            changesAt: changesAt,
+            lastUpdatedBy: lastUpdatedBy
         )
         
         let csvString = item.csv
