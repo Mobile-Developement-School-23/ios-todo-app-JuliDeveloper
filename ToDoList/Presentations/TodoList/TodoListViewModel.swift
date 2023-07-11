@@ -1,6 +1,21 @@
 import Foundation
 import FileCachePackage
 
+protocol TodoListViewModelNetworkingProtocol {
+    func fetchTodoItems() async throws
+    func addNewTodoItem(_ item: TodoItem) async throws
+    func editTodoItem(_ item: TodoItem) async throws
+    func deleteTodoItem(_ item: TodoItem) async throws
+    func fetchTodoItem(_ item: TodoItem)
+    func syncDataWithServer() async throws
+    func toggleShowCompletedTasks()
+}
+
+protocol TodoListViewModelDataBaseProtocol {
+    func loadData()
+    func saveData()
+}
+
 final class TodoListViewModel: ObservableObject {
     
     // MARK: - Properties
@@ -12,7 +27,7 @@ final class TodoListViewModel: ObservableObject {
     private var uncompletedTodoItems: [TodoItem] = []
     private var isDirty = false
     
-    private let fileCache: FileCache<TodoItem>
+    private let fileCache: FileCacheJsonProtocol
     private let networkingService: NetworkingService
         
     var tasksToShow: [TodoItem] {
@@ -23,7 +38,7 @@ final class TodoListViewModel: ObservableObject {
         
     // MARK: - Initialization
     init(
-        fileCache: FileCache<TodoItem> = FileCache<TodoItem>(),
+        fileCache: FileCacheJsonProtocol = FileCache(),
         dataProvider: NetworkingService = DefaultNetworkingService.shared
     ) {
         self.fileCache = fileCache
@@ -77,7 +92,7 @@ final class TodoListViewModel: ObservableObject {
 }
 
 // MARK: - Helper methods for Networking
-extension TodoListViewModel: @unchecked Sendable {
+extension TodoListViewModel: @unchecked Sendable, TodoListViewModelNetworkingProtocol {
     func fetchTodoItems() async throws {
         Task.detached { [weak self] in
             guard let self = self else { return }
@@ -201,7 +216,7 @@ extension TodoListViewModel: @unchecked Sendable {
         }
     }
     
-    private func syncDataWithServer() async throws {
+    func syncDataWithServer() async throws {
         guard isDirty else { return }
         isLoading = true
         do {
@@ -241,5 +256,16 @@ extension TodoListViewModel: @unchecked Sendable {
                 print("Error load data", error)
             }
         }
+    }
+}
+
+// Methods for work with SQLite3
+extension TodoListViewModel: TodoListViewModelDataBaseProtocol {
+    func loadData() {
+        
+    }
+    
+    func saveData() {
+        
     }
 }
