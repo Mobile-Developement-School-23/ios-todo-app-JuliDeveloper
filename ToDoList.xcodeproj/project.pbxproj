@@ -45,7 +45,7 @@
 		25348AB02A4E15F6002D10CC /* TodoListViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AAF2A4E15F6002D10CC /* TodoListViewControllerDelegate.swift */; };
 		25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */; };
 		25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */; };
-		25751B8A2A5D8DB50022230D /* DataBaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B892A5D8DB50022230D /* DataBaseHelper.swift */; };
+		25751B8A2A5D8DB50022230D /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B892A5D8DB50022230D /* DataBaseManager.swift */; };
 		25751B8D2A5D905C0022230D /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B8C2A5D905C0022230D /* FileCache.swift */; };
 		25751B912A5D91EA0022230D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B902A5D91EA0022230D /* Logger.swift */; };
 		25751B932A5D93D50022230D /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25751B922A5D93D50022230D /* CocoaLumberjackSwift */; };
@@ -54,8 +54,6 @@
 		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
 		25AF72322A5418E400BCD954 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72312A5418E400BCD954 /* URLSession+Extension.swift */; };
 		25AF72342A5418F900BCD954 /* URLSessionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72332A5418F900BCD954 /* URLSessionsTests.swift */; };
-		25AF72362A5443B700BCD954 /* DefaultNetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72352A5443B700BCD954 /* DefaultNetworkingService.swift */; };
-		25AF723A2A54497F00BCD954 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF72392A54497F00BCD954 /* TokenStorage.swift */; };
 		25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */; };
 		25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */; };
 		25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634802A3CA0DD00AC6AD7 /* TodoListViewController.swift */; };
@@ -66,7 +64,6 @@
 		25B6349A2A3CAE2D00AC6AD7 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634992A3CAE2D00AC6AD7 /* Int+Extension.swift */; };
 		25B634A52A3CB40900AC6AD7 /* TodoItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634A42A3CB40900AC6AD7 /* TodoItemTests.swift */; };
 		25B634AC2A3CB47D00AC6AD7 /* FileCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B634AB2A3CB47D00AC6AD7 /* FileCacheTests.swift */; };
-		25F89A9E2A571BA800AB1254 /* RevisionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F89A9D2A571BA800AB1254 /* RevisionStorage.swift */; };
 		3E3BDD2ECEA1766EDDE7E011 /* Pods_ToDoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FB4BEC8716D844C2A5CAEEE /* Pods_ToDoList.framework */; };
 /* End PBXBuildFile section */
 
@@ -120,13 +117,11 @@
 		25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewDelegate.swift; sourceTree = "<group>"; };
 		25348AB32A4F29E5002D10CC /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		25348AB62A4F321B002D10CC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		25751B892A5D8DB50022230D /* DataBaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBaseHelper.swift; sourceTree = "<group>"; };
+		25751B892A5D8DB50022230D /* DataBaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
 		25751B8C2A5D905C0022230D /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		25751B902A5D91EA0022230D /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = FileCache/Logger.swift; sourceTree = "<group>"; };
 		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
-		25AF72352A5443B700BCD954 /* DefaultNetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNetworkingService.swift; sourceTree = "<group>"; };
-		25AF72392A54497F00BCD954 /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B6347C2A3CA0DD00AC6AD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		25B6347E2A3CA0DD00AC6AD7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -140,7 +135,6 @@
 		25B634A22A3CB40800AC6AD7 /* TodoItemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoItemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B634A42A3CB40900AC6AD7 /* TodoItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemTests.swift; sourceTree = "<group>"; };
 		25B634AB2A3CB47D00AC6AD7 /* FileCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCacheTests.swift; sourceTree = "<group>"; };
-		25F89A9D2A571BA800AB1254 /* RevisionStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevisionStorage.swift; sourceTree = "<group>"; };
 		93BF916D4114A95C3D897311 /* Pods-ToDoList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDoList.debug.xcconfig"; path = "Target Support Files/Pods-ToDoList/Pods-ToDoList.debug.xcconfig"; sourceTree = "<group>"; };
 		9FB4BEC8716D844C2A5CAEEE /* Pods_ToDoList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDoList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C469BD44B9C66EB5115F5A /* Pods-ToDoList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDoList.release.xcconfig"; path = "Target Support Files/Pods-ToDoList/Pods-ToDoList.release.xcconfig"; sourceTree = "<group>"; };
@@ -261,20 +255,10 @@
 			path = PreviewView;
 			sourceTree = "<group>";
 		};
-		25751B862A5D8CE10022230D /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				25AF72392A54497F00BCD954 /* TokenStorage.swift */,
-				25F89A9D2A571BA800AB1254 /* RevisionStorage.swift */,
-				25AF72352A5443B700BCD954 /* DefaultNetworkingService.swift */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
 		25751B882A5D8D010022230D /* SQLite3 */ = {
 			isa = PBXGroup;
 			children = (
-				25751B892A5D8DB50022230D /* DataBaseHelper.swift */,
+				25751B892A5D8DB50022230D /* DataBaseManager.swift */,
 			);
 			path = SQLite3;
 			sourceTree = "<group>";
@@ -381,7 +365,6 @@
 			children = (
 				25751B902A5D91EA0022230D /* Logger.swift */,
 				25751B8B2A5D8F820022230D /* FileCache */,
-				25751B862A5D8CE10022230D /* Networking */,
 				25751B882A5D8D010022230D /* SQLite3 */,
 			);
 			path = Services;
@@ -578,12 +561,11 @@
 				25B634982A3CAE0A00AC6AD7 /* Date+Extension.swift in Sources */,
 				25B634812A3CA0DD00AC6AD7 /* TodoListViewController.swift in Sources */,
 				252B3F5C2A49E7FA006356D4 /* CompletionTasksStackView.swift in Sources */,
-				25751B8A2A5D8DB50022230D /* DataBaseHelper.swift in Sources */,
+				25751B8A2A5D8DB50022230D /* DataBaseManager.swift in Sources */,
 				2501F7382A41B93200919419 /* SeparatorView.swift in Sources */,
 				25348A9F2A4CA6A6002D10CC /* PreviewViewController.swift in Sources */,
 				2501F73A2A41B9A000919419 /* UIColor+Extension.swift in Sources */,
 				2501F7402A41BADB00919419 /* CustomStackView.swift in Sources */,
-				25AF723A2A54497F00BCD954 /* TokenStorage.swift in Sources */,
 				2501F7422A41BAF300919419 /* Constants.swift in Sources */,
 				2501F7652A444CD000919419 /* GradientView.swift in Sources */,
 				2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */,
@@ -604,7 +586,6 @@
 				2501F7492A41D93400919419 /* ObservableWrapper.swift in Sources */,
 				25B6347D2A3CA0DD00AC6AD7 /* AppDelegate.swift in Sources */,
 				25348AB42A4F29E5002D10CC /* UIViewController+Extension.swift in Sources */,
-				25AF72362A5443B700BCD954 /* DefaultNetworkingService.swift in Sources */,
 				25751B912A5D91EA0022230D /* Logger.swift in Sources */,
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
@@ -619,7 +600,6 @@
 				25B634952A3CACA900AC6AD7 /* TodoItem.swift in Sources */,
 				25AF72322A5418E400BCD954 /* URLSession+Extension.swift in Sources */,
 				2501F7582A42446A00919419 /* OpacitySliderColorPicker.swift in Sources */,
-				25F89A9E2A571BA800AB1254 /* RevisionStorage.swift in Sources */,
 				25B6347F2A3CA0DD00AC6AD7 /* SceneDelegate.swift in Sources */,
 				25348AB22A4E1610002D10CC /* TodoListViewDelegate.swift in Sources */,
 			);
