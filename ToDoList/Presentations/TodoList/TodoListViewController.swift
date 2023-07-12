@@ -3,18 +3,7 @@ import UIKit
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
-    private let activityIndicator = UIActivityIndicatorView()
-
-    private var viewModel: TodoListViewModel
-    
-    private var window: UIWindow? {
-        return UIApplication.shared.connectedScenes
-            .filter { $0.activationState == .foregroundActive }
-            .compactMap { $0 as? UIWindowScene }
-            .first?.windows
-            .filter { $0.isKeyWindow }
-            .first
-    }
+    private var viewModel: TodoListViewModelSQLiteProtocol
     
     var selectedCell: TodoTableViewCell?
 
@@ -22,7 +11,7 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(
-        viewModel: TodoListViewModel
+        viewModel: TodoListViewModelSQLiteProtocol
     ) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -44,33 +33,16 @@ class TodoListViewController: UIViewController {
         super.viewDidLoad()
         configureNavBar()
         
-        viewModel.$todoItems.bind { [weak self] _ in
+        viewModel.bindTodoList({ [weak self] _ in
             self?.bindViewModel()
-        }
+        })
+
+        viewModel.bindCompletedTodoListCount({[weak self] _ in
+            self?.delegate?.updateCompletedLabel(
+                count: self?.viewModel.completedListCount ?? 0
+            )
+        })
         
-        viewModel.$completedTasksCount.bind { [weak self] _ in
-            self?.delegate?.updateCompletedLabel(count: self?.viewModel.completedTasksCount ?? 0)
-        }
-        
-        viewModel.$isLoading.bind { [weak self] isLoading in
-            DispatchQueue.main.async {
-                if isLoading {
-                    self?.startLoadingAnimation()
-                } else {
-                    self?.stopLoadingAnimation()
-                }
-            }
-        }
-        
-        viewModel.errorHandler = { [weak self] _ in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.window?.isUserInteractionEnabled = true
-                self.showAttentionAlert()
-            }
-        }
-        
-        delegate?.startLoading()
         bindViewModel()
     }
     
@@ -84,12 +56,8 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Private methods
     private func bindViewModel() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if !self.viewModel.isLoading {
-                self.delegate?.reloadTableView()
-                self.delegate?.finishLoading()
-            }
+        DispatchQueue.main.async {
+            self.delegate?.reloadTableView()
         }
     }
     
@@ -120,8 +88,7 @@ class TodoListViewController: UIViewController {
         let todoItem = viewModel.tasksToShow[indexPath.row]
         let action = UIContextualAction(style: .normal, title: nil) { [weak self] (_, _, completion) in
             guard let self = self else { return }
-            
-            deleteTodoItem(todoItem)
+            viewModel.deleteItem(todoItem)
             completion(true)
         }
         
@@ -130,41 +97,9 @@ class TodoListViewController: UIViewController {
         return action
     }
     
-    private func startLoadingAnimation() {
-        activityIndicator.style = .medium
-        let barButton = UIBarButtonItem(customView: activityIndicator)
-        navigationItem.setRightBarButton(barButton, animated: true)
-        activityIndicator.startAnimating()
-    }
-    
-    private func stopLoadingAnimation() {
-        activityIndicator.stopAnimating()
-        navigationItem.rightBarButtonItem = nil
-    }
-    
     private func changeIsDone(for item: TodoItem) {
-        let updateTodoItem = viewModel.updateIsDone(from: item)
-        editTodoItem(updateTodoItem)
-    }
-    
-    private func editTodoItem(_ item: TodoItem) {
-        Task {
-            do {
-                try await viewModel.editTodoItem(item)
-            } catch {
-                print("Error updated item", error)
-            }
-        }
-    }
-    
-    private func deleteTodoItem(_ item: TodoItem) {
-        Task {
-            do {
-                try await viewModel.deleteTodoItem(item)
-            } catch {
-                print("Error deleted item", error)
-            }
-        }
+        let updateTodoItem = viewModel.updateItemIsDone(from: item)
+        viewModel.updateItem(updateTodoItem)
     }
 }
 
@@ -260,8 +195,7 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Выполнить",
                 image: UIImage(systemName: "checkmark.circle.fill")
             ) { _ in
-                let updateTodoItem = self.viewModel.updateIsDone(from: todoItem)
-                self.editTodoItem(updateTodoItem)
+                self.changeIsDone(for: todoItem)
             }
             
             let editAction = UIAction(
@@ -279,7 +213,7 @@ extension TodoListViewController: UITableViewDelegate {
                 title: "Удалить",
                 image: UIImage(systemName: "trash.fill")
             ) {  _ in
-                self.deleteTodoItem(todoItem)
+                self.viewModel.deleteItem(todoItem)
             }
             
             return UIMenu(children: [
@@ -304,20 +238,12 @@ extension TodoListViewController: TodoListViewControllerDelegate {
     }
     
     func showCompletionItem() {
-        viewModel.toggleShowCompletedTasks()
+        viewModel.toggleShowCompletedList()
         bindViewModel()
     }
     
     func updateCompletedTasksLabel() -> Int {
-        viewModel.completedTasksCount
-    }
-    
-    func startLargeIndicatorAnimation() {
-        delegate?.startLoading()
-    }
-    
-    func finishLargeIndicatorAnimation() {
-        delegate?.finishLoading()
+        viewModel.completedListCount
     }
 }
 
