@@ -15,11 +15,11 @@ protocol FileCacheCsvProtocol {
 
 protocol FileCacheSQLiteProtocol {
     var todoItemsDb: [TodoItem] { get }
-    func insertItemDb(_ item: TodoItem) -> TodoItem?
-    func updateItemDb(_ item: TodoItem) -> TodoItem?
-    func deleteItemDb(with id: String) -> TodoItem?
-    func saveToJsonDb(to file: String) throws
-    func loadFromJsonDb(from file: String) throws
+    func insertItemDb(_ item: TodoItem)
+    func updateItemDb(_ item: TodoItem)
+    func deleteItemDb(todoItem: TodoItem)
+    func saveToDb(items: [TodoItem])
+    func loadFromDb()
 }
 
 enum FileCacheError: Error {
@@ -34,21 +34,14 @@ final class FileCache {
     private(set) var todoItems: [TodoItem] = []
     
     private let logger: LoggerProtocol
+    private let dataBase: DataBaseManagerProtocol
     
-    init(logger: LoggerProtocol = Logger.shared) {
+    init(
+        logger: LoggerProtocol = Logger.shared,
+        dataBase: DataBaseManagerProtocol = DataBaseManager()
+    ) {
         self.logger = logger
-    }
-    
-    func getTodoItems() -> [TodoItem] {
-        return todoItems
-    }
-    
-    func setTodoItems(_ items: [TodoItem]) {
-        self.todoItems = items
-    }
-    
-    func getLogger() -> LoggerProtocol {
-        return logger
+        self.dataBase = dataBase
     }
     
     // MARK: - Methods convert TodoItem
@@ -200,23 +193,55 @@ extension FileCache: FileCacheSQLiteProtocol {
         todoItems
     }
     
-    func insertItemDb(_ item: TodoItem) -> TodoItem? {
-        return TodoItem(text: "", importance: Importance.important, lastUpdatedBy: "")
+    func insertItemDb(_ item: TodoItem) {
+        if let addedItem = addItem(item) {
+            do {
+                try dataBase.insert(todoItem: addedItem)
+                logger.logInfo("Задача успешно добавлена")
+            } catch {
+                logger.logError("Ошибка добавления задачи")
+            }
+        }
     }
     
-    func updateItemDb(_ item: TodoItem) -> TodoItem? {
-        return TodoItem(text: "", importance: Importance.important, lastUpdatedBy: "")
+    func updateItemDb(_ item: TodoItem) {
+        if let index = todoItems.firstIndex(where: { $0.id == item.id }) {
+            todoItems[index] = item
+            do {
+                try dataBase.update(todoItem: item)
+                logger.logInfo("Задача успешно обновлена")
+            } catch {
+                logger.logError("Ошибка обновления задачи")
+            }
+        }
     }
     
-    func deleteItemDb(with id: String) -> TodoItem? {
-        return TodoItem(text: "", importance: Importance.important, lastUpdatedBy: "")
+    func deleteItemDb(todoItem: TodoItem) {
+        if let deletedItem = deleteItem(with: todoItem.id) {
+            do {
+                try dataBase.delete(todoItem: todoItem)
+                logger.logInfo("Задача успешно удалена")
+            } catch {
+                logger.logError("Ошибка удаления задачи")
+            }
+        }
     }
     
-    func saveToJsonDb(to file: String) throws {
-        
+    func saveToDb(items: [TodoItem]) {
+        do {
+            try dataBase.save(todoItems: items)
+            logger.logInfo("Задачи успешно сохранены")
+        } catch {
+            logger.logError("Ошибка сохранения задач")
+        }
     }
     
-    func loadFromJsonDb(from file: String) throws {
-        
+    func loadFromDb() {
+        do {
+            try todoItems = dataBase.loadDb()
+            logger.logInfo("Задачи успешно загружены")
+        } catch {
+            logger.logError("Ошибка загрузки задач")
+        }
     }
 }
