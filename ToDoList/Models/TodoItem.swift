@@ -224,15 +224,15 @@ extension TodoItem {
 // MARK: - Convert TodoItem to SQLite3
 extension TodoItem {
     var sqlReplaceStatement: String {
-        let text = self.text.replacingOccurrences(of: "'", with: "''")
+        let text = self.text.replacingOccurrences(of: ",", with: "|")
         let importanceString = self.importance.rawValue
         let isDoneString = self.isDone ? "1" : "0"
-        let deadlineString = deadline != nil ? "'\(String(describing: self.deadline))'" : "NULL"
-        let createdAtString = "'\(String(describing: self.createdAt))'"
-        let changesAtString = changesAt != nil ? "'\(String(describing: self.changesAt))'" : "NULL"
+        let deadlineString = deadline != nil ? String(deadline?.dateIntValue ?? 0) : "NULL"
+        let createdAtString = String(createdAt.dateIntValue ?? 0)
+        let changesAtString = changesAt != nil ? String(changesAt?.dateIntValue ?? 0) : "NULL"
         
         return """
-        REPLACE INTO TodoItem (id, text, importance, deadline, isDone, createdAt, changesAt, hexColor, lastUpdatedBy)
+        REPLACE INTO TodoItem (id, text, importance, deadline, isDone, createdAt, changeAt, hexColor, lastUpdatedBy)
         VALUES ('\(id)', '\(text)', '\(importanceString)', \(deadlineString), \(isDoneString), \(createdAtString), \(changesAtString), '\(hexColor)', '\(lastUpdatedBy)');
         """
     }
