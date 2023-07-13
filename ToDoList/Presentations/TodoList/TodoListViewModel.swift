@@ -14,8 +14,7 @@ protocol TodoListViewModelProtocol {
     func addItem(_ item: TodoItem)
     func updateItem(_ item: TodoItem)
     func deleteItem(_ item: TodoItem)
-    func loadData()
-    func saveData()
+    func fetchTodoItems()
     func updateItemIsDone(from todoItem: TodoItem) -> TodoItem
     func toggleShowCompletedList()
     func bindTodoList(_ update: @escaping ([TodoItem]) -> Void)
@@ -36,7 +35,7 @@ final class TodoListViewModel: ObservableObject {
     ) {
         self.database = database
         
-        loadData()
+        fetchTodoItems()
     }
 }
 
@@ -60,7 +59,7 @@ extension TodoListViewModel: TodoListViewModelProtocol {
         } catch {
             print(error)
         }
-        loadData()
+        fetchTodoItems()
     }
     
     func updateItem(_ item: TodoItem) {
@@ -69,7 +68,7 @@ extension TodoListViewModel: TodoListViewModelProtocol {
         } catch {
             print(error)
         }
-        loadData()
+        fetchTodoItems()
     }
     
     func deleteItem(_ item: TodoItem) {
@@ -78,10 +77,10 @@ extension TodoListViewModel: TodoListViewModelProtocol {
         } catch {
             print(error)
         }
-        loadData()
+        fetchTodoItems()
     }
     
-    func loadData() {
+    func fetchTodoItems() {
         do {
             try database.loadItems { [weak self] result in
                 guard let self else { return }
@@ -96,11 +95,6 @@ extension TodoListViewModel: TodoListViewModelProtocol {
         } catch {
             print(error)
         }
-    }
-    
-    func saveData() {
-//        fileCache.saveToDb(items: todoItems)
-//        loadData()
     }
     
     func updateItemIsDone(from todoItem: TodoItem) -> TodoItem {
@@ -119,7 +113,7 @@ extension TodoListViewModel: TodoListViewModelProtocol {
     
     func toggleShowCompletedList() {
         self.showCompletedTasks.toggle()
-        loadData()
+        fetchTodoItems()
     }
     
     func bindTodoList(_ update: @escaping ([TodoItem]) -> Void) {
