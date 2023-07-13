@@ -1,5 +1,12 @@
 import Foundation
 
+protocol DatabaseService {
+    func addItem(_ item: TodoItem) throws
+    func updateItem(_ item: TodoItem) throws
+    func deleteItem(_ item: TodoItem) throws
+    func loadItems(_ completion: (Result<[TodoItem], Error>) -> Void) throws
+}
+
 protocol TodoListViewModelSQLiteProtocol {
     var todoList: [TodoItem] { get }
     var tasksToShow: [TodoItem] { get }
@@ -23,10 +30,15 @@ final class TodoListViewModel: ObservableObject {
     @Observable var completedTasksCount: Int = 0
             
     private let fileCache: FileCacheSQLiteProtocol
+    private let database: DatabaseService
             
     // MARK: - Initialization
-    init(fileCache: FileCacheSQLiteProtocol = FileCache()) {
+    init(
+        fileCache: FileCacheSQLiteProtocol = FileCache(),
+        database: DatabaseService = CoreDataService()
+    ) {
         self.fileCache = fileCache
+        self.database = database
         
         loadData()
     }
@@ -47,36 +59,52 @@ extension TodoListViewModel: TodoListViewModelSQLiteProtocol {
     }
     
     func addItem(_ item: TodoItem) {
-        todoItems.append(item)
-        fileCache.insertItemDb(item)
+        do {
+            try database.addItem(item)
+        } catch {
+            print(error)
+        }
         loadData()
     }
     
     func updateItem(_ item: TodoItem) {
-        if let index = todoItems.firstIndex(where: { $0.id == item.id }) {
-            todoItems[index] = item
-            fileCache.updateItemDb(item)
+        do {
+            try database.updateItem(item)
+        } catch {
+            print(error)
         }
         loadData()
     }
     
     func deleteItem(_ item: TodoItem) {
-        if let index = todoItems.firstIndex(where: { $0.id == item.id }) {
-            todoItems.remove(at: index)
-            fileCache.deleteItemDb(todoItem: item)
+        do {
+            try database.deleteItem(item)
+        } catch {
+            print(error)
         }
         loadData()
     }
     
     func loadData() {
-        fileCache.loadFromDb()
-        todoItems = fileCache.todoItemsDb
-        completedTasksCount = todoItems.filter({ $0.isDone }).count
+        do {
+            try database.loadItems { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success(let items):
+                    self.todoItems = items
+                    self.completedTasksCount = todoItems.filter({ $0.isDone }).count
+                case.failure(let error):
+                    print(error)
+                }
+            }
+        } catch {
+            print(error)
+        }
     }
     
     func saveData() {
-        fileCache.saveToDb(items: todoItems)
-        loadData()
+//        fileCache.saveToDb(items: todoItems)
+//        loadData()
     }
     
     func updateItemIsDone(from todoItem: TodoItem) -> TodoItem {

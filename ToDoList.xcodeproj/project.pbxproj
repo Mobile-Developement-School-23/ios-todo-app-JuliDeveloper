@@ -49,6 +49,9 @@
 		25751B8D2A5D905C0022230D /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B8C2A5D905C0022230D /* FileCache.swift */; };
 		25751B912A5D91EA0022230D /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B902A5D91EA0022230D /* Logger.swift */; };
 		25751B932A5D93D50022230D /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25751B922A5D93D50022230D /* CocoaLumberjackSwift */; };
+		25751B9D2A6008CE0022230D /* TodoList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25751B9B2A6008CE0022230D /* TodoList.xcdatamodeld */; };
+		25751B9F2A6009AC0022230D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B9E2A6009AC0022230D /* CoreDataManager.swift */; };
+		25751BA12A600BBE0022230D /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA02A600BBE0022230D /* CoreDataService.swift */; };
 		25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722B2A54148500BCD954 /* CocoaLumberjack */; };
 		25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */; };
 		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
@@ -120,6 +123,9 @@
 		25751B892A5D8DB50022230D /* DataBaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
 		25751B8C2A5D905C0022230D /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		25751B902A5D91EA0022230D /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = FileCache/Logger.swift; sourceTree = "<group>"; };
+		25751B9C2A6008CE0022230D /* TodoItem.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoItem.xcdatamodel; sourceTree = "<group>"; };
+		25751B9E2A6009AC0022230D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		25751BA02A600BBE0022230D /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -271,6 +277,16 @@
 			path = FileCache;
 			sourceTree = "<group>";
 		};
+		25751B9A2A6008AA0022230D /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				25751B9B2A6008CE0022230D /* TodoList.xcdatamodeld */,
+				25751B9E2A6009AC0022230D /* CoreDataManager.swift */,
+				25751BA02A600BBE0022230D /* CoreDataService.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		25B634702A3CA0DD00AC6AD7 = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +382,7 @@
 				25751B902A5D91EA0022230D /* Logger.swift */,
 				25751B8B2A5D8F820022230D /* FileCache */,
 				25751B882A5D8D010022230D /* SQLite3 */,
+				25751B9A2A6008AA0022230D /* CoreData */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -568,9 +585,12 @@
 				2501F7402A41BADB00919419 /* CustomStackView.swift in Sources */,
 				2501F7422A41BAF300919419 /* Constants.swift in Sources */,
 				2501F7652A444CD000919419 /* GradientView.swift in Sources */,
+				25751B9D2A6008CE0022230D /* TodoList.xcdatamodeld in Sources */,
 				2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */,
 				2501F7342A41B87900919419 /* DetailTodoItemView.swift in Sources */,
 				2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */,
+				25751BA12A600BBE0022230D /* CoreDataService.swift in Sources */,
+				25751B9F2A6009AC0022230D /* CoreDataManager.swift in Sources */,
 				25751B8D2A5D905C0022230D /* FileCache.swift in Sources */,
 				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
 				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
@@ -926,6 +946,19 @@
 			productName = CocoaLumberjackSwiftLogBackend;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		25751B9B2A6008CE0022230D /* TodoList.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				25751B9C2A6008CE0022230D /* TodoItem.xcdatamodel */,
+			);
+			currentVersion = 25751B9C2A6008CE0022230D /* TodoItem.xcdatamodel */;
+			path = TodoList.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 25B634712A3CA0DD00AC6AD7 /* Project object */;
 }
