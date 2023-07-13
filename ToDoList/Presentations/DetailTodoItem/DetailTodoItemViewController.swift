@@ -193,7 +193,7 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
             guard let self = self else { return }
             if self.todoItem != nil {
                 guard let item = todoItem else { return }
-                print(item)
+                viewModel.deleteItem(item)
 
             }
             dismiss(animated: true)
