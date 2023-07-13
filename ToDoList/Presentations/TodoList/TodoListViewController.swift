@@ -1,8 +1,13 @@
 import UIKit
 
+protocol SelectDatabaseViewControllerDelegate: AnyObject {
+    func didUpdateDatabaseService(_ controller: SelectDataBaseViewController, service: DatabaseService)
+}
+
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
+    private let storageManager: StorageManager
     private var viewModel: TodoListViewModelProtocol
     
     var selectedCell: TodoTableViewCell?
@@ -11,8 +16,10 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(
+        storageManager: StorageManager = StorageManager.shared,
         viewModel: TodoListViewModelProtocol
     ) {
+        self.storageManager = storageManager
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,6 +39,8 @@ class TodoListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
+        
+        checDatabase()
         
         viewModel.bindTodoList({ [weak self] _ in
             self?.bindViewModel()
@@ -54,6 +63,13 @@ class TodoListViewController: UIViewController {
         )
     }
     
+    @objc private func selectDataBase() {
+        let selectDatabase = SelectDataBaseViewController(viewModel: viewModel)
+        selectDatabase.delegate = self
+        let navVC = UINavigationController(rootViewController: selectDatabase)
+        present(navVC, animated: true)
+    }
+    
     // MARK: - Private methods
     private func bindViewModel() {
         DispatchQueue.main.async {
@@ -67,6 +83,21 @@ class TodoListViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.layoutMargins.left = 32
         navigationController?.navigationBar.layoutMargins.right = 32
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "filter"),
+            style: .done,
+            target: self,
+            action: #selector(selectDataBase)
+        )
+    }
+    
+    private func checDatabase() {
+        if storageManager.useCoreData {
+            viewModel = TodoListViewModel(database: CoreDataService())
+        } else {
+            viewModel = TodoListViewModel(database: SQLiteService())
+        }
     }
     
     private func createIsDoneAction(tableView: UITableView, at indexPath: IndexPath) -> UIContextualAction {
@@ -277,5 +308,12 @@ extension TodoListViewController: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         CustomTransition()
+    }
+}
+
+extension TodoListViewController: SelectDatabaseViewControllerDelegate {
+    func didUpdateDatabaseService(_ controller: SelectDataBaseViewController, service: DatabaseService) {
+        viewModel.updateDatabaseService(service: service)
+        viewModel.fetchTodoItems()
     }
 }

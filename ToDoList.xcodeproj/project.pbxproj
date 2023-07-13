@@ -52,6 +52,10 @@
 		25751B9D2A6008CE0022230D /* TodoList.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 25751B9B2A6008CE0022230D /* TodoList.xcdatamodeld */; };
 		25751B9F2A6009AC0022230D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751B9E2A6009AC0022230D /* CoreDataManager.swift */; };
 		25751BA12A600BBE0022230D /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA02A600BBE0022230D /* CoreDataService.swift */; };
+		25751BA32A60390E0022230D /* SelectDataBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA22A60390E0022230D /* SelectDataBaseViewController.swift */; };
+		25751BA72A603FDA0022230D /* SelectDatabaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA62A603FDA0022230D /* SelectDatabaseView.swift */; };
+		25751BA92A6041350022230D /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA82A6041350022230D /* StorageManager.swift */; };
+		25751BAB2A6043000022230D /* DatabaseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BAA2A6043000022230D /* DatabaseStackView.swift */; };
 		25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722B2A54148500BCD954 /* CocoaLumberjack */; };
 		25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */; };
 		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
@@ -126,6 +130,10 @@
 		25751B9C2A6008CE0022230D /* TodoItem.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoItem.xcdatamodel; sourceTree = "<group>"; };
 		25751B9E2A6009AC0022230D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		25751BA02A600BBE0022230D /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
+		25751BA22A60390E0022230D /* SelectDataBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDataBaseViewController.swift; sourceTree = "<group>"; };
+		25751BA62A603FDA0022230D /* SelectDatabaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatabaseView.swift; sourceTree = "<group>"; };
+		25751BA82A6041350022230D /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		25751BAA2A6043000022230D /* DatabaseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStackView.swift; sourceTree = "<group>"; };
 		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,6 +204,7 @@
 				252B3F532A49B6C8006356D4 /* RadioButton.swift */,
 				252B3F592A49E54E006356D4 /* TodoStackView.swift */,
 				252B3F5B2A49E7FA006356D4 /* CompletionTasksStackView.swift */,
+				25751BAA2A6043000022230D /* DatabaseStackView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -287,6 +296,15 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		25751BA52A6039320022230D /* SelectDatabase */ = {
+			isa = PBXGroup;
+			children = (
+				25751BA22A60390E0022230D /* SelectDataBaseViewController.swift */,
+				25751BA62A603FDA0022230D /* SelectDatabaseView.swift */,
+			);
+			path = SelectDatabase;
+			sourceTree = "<group>";
+		};
 		25B634702A3CA0DD00AC6AD7 = {
 			isa = PBXGroup;
 			children = (
@@ -349,6 +367,7 @@
 				2501F7352A41B8D500919419 /* DetailTodoItem */,
 				2501F7592A424E9700919419 /* CustomColorPicker */,
 				25348AA22A4CB913002D10CC /* PreviewView */,
+				25751BA52A6039320022230D /* SelectDatabase */,
 				2501F7462A41D8FB00919419 /* LaunchScreen */,
 			);
 			path = Presentations;
@@ -379,6 +398,7 @@
 		25B6349B2A3CAF2900AC6AD7 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				25751BA82A6041350022230D /* StorageManager.swift */,
 				25751B902A5D91EA0022230D /* Logger.swift */,
 				25751B8B2A5D8F820022230D /* FileCache */,
 				25751B882A5D8D010022230D /* SQLite3 */,
@@ -582,17 +602,20 @@
 				2501F7382A41B93200919419 /* SeparatorView.swift in Sources */,
 				25348A9F2A4CA6A6002D10CC /* PreviewViewController.swift in Sources */,
 				2501F73A2A41B9A000919419 /* UIColor+Extension.swift in Sources */,
+				25751BAB2A6043000022230D /* DatabaseStackView.swift in Sources */,
 				2501F7402A41BADB00919419 /* CustomStackView.swift in Sources */,
 				2501F7422A41BAF300919419 /* Constants.swift in Sources */,
 				2501F7652A444CD000919419 /* GradientView.swift in Sources */,
 				25751B9D2A6008CE0022230D /* TodoList.xcdatamodeld in Sources */,
 				2501F7502A41E6FD00919419 /* DetailTodoItemViewControllerDelegate.swift in Sources */,
 				2501F7342A41B87900919419 /* DetailTodoItemView.swift in Sources */,
+				25751BA32A60390E0022230D /* SelectDataBaseViewController.swift in Sources */,
 				2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */,
 				25751BA12A600BBE0022230D /* CoreDataService.swift in Sources */,
 				25751B9F2A6009AC0022230D /* CoreDataManager.swift in Sources */,
 				25751B8D2A5D905C0022230D /* FileCache.swift in Sources */,
 				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
+				25751BA72A603FDA0022230D /* SelectDatabaseView.swift in Sources */,
 				2501F76F2A4471B700919419 /* ImportanceStackViewDelegate.swift in Sources */,
 				2501F7522A42150C00919419 /* SelectColorStackView.swift in Sources */,
 				252B3F562A49BD52006356D4 /* TodoListView.swift in Sources */,
@@ -610,6 +633,7 @@
 				2501F7322A41B7CD00919419 /* DetailTodoItemViewController.swift in Sources */,
 				2501F75B2A4251BC00919419 /* CAGradientLayer+Extension.swift in Sources */,
 				2501F7692A44647100919419 /* DateStackViewDelegate.swift in Sources */,
+				25751BA92A6041350022230D /* StorageManager.swift in Sources */,
 				252B3F542A49B6C8006356D4 /* RadioButton.swift in Sources */,
 				25348AA82A4DC681002D10CC /* CustomTransition.swift in Sources */,
 				2501F73E2A41BAC900919419 /* CustomLable.swift in Sources */,
@@ -797,7 +821,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -829,7 +853,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

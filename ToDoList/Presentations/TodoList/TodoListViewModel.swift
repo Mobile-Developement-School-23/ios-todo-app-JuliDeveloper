@@ -19,6 +19,7 @@ protocol TodoListViewModelProtocol {
     func toggleShowCompletedList()
     func bindTodoList(_ update: @escaping ([TodoItem]) -> Void)
     func bindCompletedTodoListCount(_ update: @escaping (Int) -> Void)
+    func updateDatabaseService(service: DatabaseService)
 }
 
 final class TodoListViewModel: ObservableObject {
@@ -28,11 +29,10 @@ final class TodoListViewModel: ObservableObject {
     @Observable var showCompletedTasks: Bool = false
     @Observable var completedTasksCount: Int = 0
             
-    private let database: DatabaseService
+    private var database: DatabaseService
             
     // MARK: - Initialization
-    init(database: DatabaseService = CoreDataService()
-    ) {
+    init(database: DatabaseService) {
         self.database = database
         
         fetchTodoItems()
@@ -122,5 +122,9 @@ extension TodoListViewModel: TodoListViewModelProtocol {
     
     func bindCompletedTodoListCount(_ update: @escaping (Int) -> Void) {
         $completedTasksCount.bind(action: update)
+    }
+    
+    func updateDatabaseService(service: DatabaseService) {
+        database = service
     }
 }
