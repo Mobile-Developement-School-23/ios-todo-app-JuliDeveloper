@@ -10,7 +10,7 @@ final class DetailTodoItemViewController: UIViewController {
     private var currentDeadline: Date? = nil
     private var currentColor: UIColor = .tdLabelPrimaryColor
     
-    private var viewModel: TodoListViewModelSQLiteProtocol
+    private var viewModel: TodoListViewModelProtocol
     
     var todoItem: TodoItem?
     
@@ -19,7 +19,7 @@ final class DetailTodoItemViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(
-        viewModel: TodoListViewModelSQLiteProtocol,
+        viewModel: TodoListViewModelProtocol,
         uiColorMarshallings: ColorMarshallingsProtocol = UIColorMarshallings()
     ) {
         self.viewModel = viewModel

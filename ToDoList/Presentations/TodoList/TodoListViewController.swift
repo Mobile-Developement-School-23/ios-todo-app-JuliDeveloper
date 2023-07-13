@@ -3,7 +3,7 @@ import UIKit
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
-    private var viewModel: TodoListViewModelSQLiteProtocol
+    private var viewModel: TodoListViewModelProtocol
     
     var selectedCell: TodoTableViewCell?
 
@@ -11,7 +11,7 @@ class TodoListViewController: UIViewController {
     
     // MARK: - Lifecycle
     init(
-        viewModel: TodoListViewModelSQLiteProtocol
+        viewModel: TodoListViewModelProtocol
     ) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)

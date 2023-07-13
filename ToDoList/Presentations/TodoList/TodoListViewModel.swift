@@ -7,7 +7,7 @@ protocol DatabaseService {
     func loadItems(_ completion: (Result<[TodoItem], Error>) -> Void) throws
 }
 
-protocol TodoListViewModelSQLiteProtocol {
+protocol TodoListViewModelProtocol {
     var todoList: [TodoItem] { get }
     var tasksToShow: [TodoItem] { get }
     var completedListCount: Int { get }
@@ -29,15 +29,11 @@ final class TodoListViewModel: ObservableObject {
     @Observable var showCompletedTasks: Bool = false
     @Observable var completedTasksCount: Int = 0
             
-    private let fileCache: FileCacheSQLiteProtocol
     private let database: DatabaseService
             
     // MARK: - Initialization
-    init(
-        fileCache: FileCacheSQLiteProtocol = FileCache(),
-        database: DatabaseService = CoreDataService()
+    init(database: DatabaseService = CoreDataService()
     ) {
-        self.fileCache = fileCache
         self.database = database
         
         loadData()
@@ -45,7 +41,7 @@ final class TodoListViewModel: ObservableObject {
 }
 
 // Methods for work with SQLite3
-extension TodoListViewModel: TodoListViewModelSQLiteProtocol {
+extension TodoListViewModel: TodoListViewModelProtocol {
     var todoList: [TodoItem] {
         todoItems
     }
