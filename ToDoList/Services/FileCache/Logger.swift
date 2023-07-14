@@ -1,11 +1,11 @@
-import CocoaLumberjackSwift
+import CocoaLumberjack
 
-public protocol LoggerProtocol {
+protocol LoggerProtocol {
     func logInfo(_ message: String)
     func logError(_ message: String)
 }
 
-public class Logger {
+class Logger {
     static let shared = Logger()
     
     let ddlog = DDLog()
@@ -19,11 +19,11 @@ public class Logger {
 }
 
 extension Logger: LoggerProtocol {
-    public func logInfo(_ message: String) {
+    func logInfo(_ message: String) {
         ddlog.log(asynchronous: true, message: DDLogMessage(message: message, level: .info, flag: .info, context: 0, file: #file, function: #function, line: #line, tag: nil, options: [.copyFile, .copyFunction], timestamp: nil))
     }
     
-    public func logError(_ message: String) {
+    func logError(_ message: String) {
         ddlog.log(asynchronous: true, message: DDLogMessage(message: message, level: .error, flag: .error, context: 0, file: #file, function: #function, line: #line, tag: nil, options: [.copyFile, .copyFunction], timestamp: nil))
     }
 }

@@ -1,6 +1,5 @@
 import Foundation
-import UIKit
-import FileCachePackage
+import SQLite3
 
 private let idKey = "id"
 private let textKey = "text"
@@ -18,7 +17,7 @@ enum Importance: String {
     case important = "important"
 }
 
-struct TodoItem: IdentifiableType {
+struct TodoItem {
     let id: String
     let text: String
     let importance: Importance
@@ -53,7 +52,7 @@ struct TodoItem: IdentifiableType {
 }
 
 // MARK: - Convert TodoItem to/from JSON
-extension TodoItem: JSONConvertible {
+extension TodoItem {
     var json: [String: Any] {
         var result: [String: Any] = [:]
 
@@ -141,7 +140,7 @@ extension TodoItem: JSONConvertible {
 }
 
 // MARK: - Convert TodoItem to/from CSV
-extension TodoItem: CSVConvertible {
+extension TodoItem {
     var csv: String {
         let textCsv = text.replacingOccurrences(of: ",", with: "|")
         let importanceString = importance != .normal ? importance.rawValue : ""
@@ -219,5 +218,22 @@ extension TodoItem: CSVConvertible {
             hexColor: hexColor,
             lastUpdatedBy: ""
         )
+    }
+}
+
+// MARK: - Convert TodoItem to SQLite3
+extension TodoItem {
+    var sqlReplaceStatement: String {
+        let text = self.text.replacingOccurrences(of: ",", with: "|")
+        let importanceString = self.importance.rawValue
+        let isDoneString = self.isDone ? "1" : "0"
+        let deadlineString = deadline != nil ? String(deadline?.dateIntValue ?? 0) : "NULL"
+        let createdAtString = String(createdAt.dateIntValue ?? 0)
+        let changesAtString = changesAt != nil ? String(changesAt?.dateIntValue ?? 0) : "NULL"
+        
+        return """
+        REPLACE INTO TodoItem (id, text, importance, deadline, isDone, createdAt, changeAt, hexColor, lastUpdatedBy)
+        VALUES ('\(id)', '\(text)', '\(importanceString)', \(deadlineString), \(isDoneString), \(createdAtString), \(changesAtString), '\(hexColor)', '\(lastUpdatedBy)');
+        """
     }
 }
