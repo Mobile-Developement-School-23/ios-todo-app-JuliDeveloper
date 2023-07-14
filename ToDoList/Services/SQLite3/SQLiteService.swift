@@ -21,6 +21,10 @@ final class SQLiteService {
         try? createTable()
     }
     
+    deinit {
+        sqlite3_close(dataBase)
+    }
+    
     func openDataBase() throws -> OpaquePointer? {
         var dataBase: OpaquePointer?
         
@@ -139,7 +143,7 @@ extension SQLiteService: DatabaseService {
     }
     
     func deleteItem(_ item: TodoItem) throws {
-        let deleteStatementString = "DELETE FROM TodoItem WHERE id = ?;"
+        let deleteStatementString = "DELETE FROM TodoItem WHERE id = '\(item.id)';"
         var deleteStatement: OpaquePointer? = nil
         
         if sqlite3_prepare_v2(dataBase, deleteStatementString, -1, &deleteStatement, nil) == SQLITE_OK {
