@@ -7,6 +7,8 @@ protocol SelectDatabaseViewDelegate: AnyObject {
 }
 
 final class SelectDatabaseView: UIView {
+    
+    // MARK: - Properties
     private let mainView: UIView = {
         let view = UIView()
         view.backgroundColor = .tdBackSecondaryColor
@@ -36,6 +38,7 @@ final class SelectDatabaseView: UIView {
     
     weak var delegate: SelectDatabaseViewDelegate?
     
+    // MARK: - Helpers
     func config() {
         backgroundColor = .tdBackPrimaryColor
         
@@ -45,10 +48,12 @@ final class SelectDatabaseView: UIView {
         setupConstraints()
     }
     
+    // MARK: - Actions
     @objc private func save() {
         delegate?.closeViewController()
     }
     
+    // MARK: - Private methods
     private func addElements() {
         [
             mainView,
@@ -76,6 +81,7 @@ final class SelectDatabaseView: UIView {
     }
 }
 
+// MARK: - DatabaseStackViewDelegate
 extension SelectDatabaseView: DatabaseStackViewDelegate {
     func sqliteSwitchDidChange(_ sender: UISwitch) {
         delegate?.sqliteSwitchDidChange(sender)

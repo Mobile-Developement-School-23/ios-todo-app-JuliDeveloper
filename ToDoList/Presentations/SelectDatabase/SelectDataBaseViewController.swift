@@ -2,11 +2,13 @@ import UIKit
 
 final class SelectDataBaseViewController: UIViewController {
     
+    // MARK: - Properties
     private let storageManager: StorageManager
     private var viewModel: TodoListViewModelProtocol
     
     weak var delegate: SelectDatabaseViewControllerDelegate?
     
+    // MARK: - Lifecycle
     init(
         storageManager: StorageManager = StorageManager.shared,
         viewModel: TodoListViewModelProtocol
@@ -41,10 +43,12 @@ final class SelectDataBaseViewController: UIViewController {
         )
     }
     
+    // MARK: - Actions
     @objc private func handleDatabaseChange(_ notification: Notification) {
         updateViewModel()
     }
     
+    // MARK: - Private methods
     private func updateViewModel() {
         let databaseService: DatabaseService
         if StorageManager.shared.useCoreData {
@@ -57,6 +61,7 @@ final class SelectDataBaseViewController: UIViewController {
     }
 }
 
+// MARK: - SelectDatabaseViewDelegate
 extension SelectDataBaseViewController: SelectDatabaseViewDelegate {
     func sqliteSwitchDidChange(_ sender: UISwitch) {
         storageManager.useCoreData = !sender.isOn

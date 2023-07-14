@@ -7,6 +7,7 @@ protocol DatabaseStackViewDelegate: AnyObject {
 
 final class DatabaseStackView: UIStackView {
     
+    // MARK: - Properties
     private let separator = SeparatorView()
     
     private let sqliteStackView: UIStackView = {
@@ -46,6 +47,7 @@ final class DatabaseStackView: UIStackView {
 
     weak var delegate: DatabaseStackViewDelegate?
     
+    // MARK: - Lifecycle
     init(storageManager: StorageManager = StorageManager.shared) {
         self.storageManager = storageManager
         super.init(frame: .zero)
@@ -80,6 +82,8 @@ final class DatabaseStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Actions
     @objc private func selectSqlite() {
         switchCoreData.isOn = false
         
@@ -100,6 +104,7 @@ final class DatabaseStackView: UIStackView {
         delegate?.coreDataSwitchDidChange(switchCoreData)
     }
     
+    // MARK: - Private methods
     private func addElements() {        
         [
             sqliteStackView,

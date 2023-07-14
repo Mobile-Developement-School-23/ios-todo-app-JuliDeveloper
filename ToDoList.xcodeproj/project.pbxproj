@@ -56,6 +56,7 @@
 		25751BA72A603FDA0022230D /* SelectDatabaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA62A603FDA0022230D /* SelectDatabaseView.swift */; };
 		25751BA92A6041350022230D /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BA82A6041350022230D /* StorageManager.swift */; };
 		25751BAB2A6043000022230D /* DatabaseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BAA2A6043000022230D /* DatabaseStackView.swift */; };
+		25751BAD2A614BC80022230D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751BAC2A614BC80022230D /* DatabaseService.swift */; };
 		25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722B2A54148500BCD954 /* CocoaLumberjack */; };
 		25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */; };
 		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
@@ -134,6 +135,7 @@
 		25751BA62A603FDA0022230D /* SelectDatabaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatabaseView.swift; sourceTree = "<group>"; };
 		25751BA82A6041350022230D /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		25751BAA2A6043000022230D /* DatabaseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStackView.swift; sourceTree = "<group>"; };
+		25751BAC2A614BC80022230D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -249,6 +251,7 @@
 				2501F7722A45F1E500919419 /* ColorMarshallingsProtocol.swift */,
 				25348AAF2A4E15F6002D10CC /* TodoListViewControllerDelegate.swift */,
 				25348AB12A4E1610002D10CC /* TodoListViewDelegate.swift */,
+				25751BAC2A614BC80022230D /* DatabaseService.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -613,6 +616,7 @@
 				2501F74E2A41DF5F00919419 /* DetailTodoItemViewDelegate.swift in Sources */,
 				25751BA12A600BBE0022230D /* CoreDataService.swift in Sources */,
 				25751B9F2A6009AC0022230D /* CoreDataManager.swift in Sources */,
+				25751BAD2A614BC80022230D /* DatabaseService.swift in Sources */,
 				25751B8D2A5D905C0022230D /* FileCache.swift in Sources */,
 				2501F7732A45F1E500919419 /* ColorMarshallingsProtocol.swift in Sources */,
 				25751BA72A603FDA0022230D /* SelectDatabaseView.swift in Sources */,

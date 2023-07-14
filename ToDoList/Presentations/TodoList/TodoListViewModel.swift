@@ -1,12 +1,5 @@
 import Foundation
 
-protocol DatabaseService {
-    func addItem(_ item: TodoItem) throws
-    func updateItem(_ item: TodoItem) throws
-    func deleteItem(_ item: TodoItem) throws
-    func loadItems(_ completion: (Result<[TodoItem], Error>) -> Void) throws
-}
-
 protocol TodoListViewModelProtocol {
     var todoList: [TodoItem] { get }
     var tasksToShow: [TodoItem] { get }
@@ -39,7 +32,7 @@ final class TodoListViewModel: ObservableObject {
     }
 }
 
-// Methods for work with SQLite3
+// MARK: - TodoListViewModelProtocol
 extension TodoListViewModel: TodoListViewModelProtocol {
     var todoList: [TodoItem] {
         todoItems

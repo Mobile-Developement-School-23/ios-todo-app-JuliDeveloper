@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 
 final class CoreDataService: NSObject {
+    
     private let context: NSManagedObjectContext
     
     convenience override init() {
