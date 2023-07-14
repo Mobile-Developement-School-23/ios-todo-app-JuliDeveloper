@@ -56,7 +56,7 @@ final class SelectDataBaseViewController: UIViewController {
         } else {
             databaseService = SQLiteService()
         }
-        viewModel = TodoListViewModel(database: databaseService)
+        viewModel = TodoListViewModel(fileCache: FileCache(database: databaseService))
         delegate?.didUpdateDatabaseService(self, service: databaseService)
     }
 }

@@ -40,7 +40,7 @@ class TodoListViewController: UIViewController {
         super.viewDidLoad()
         configureNavBar()
         
-        checDatabase()
+        checkDatabase()
         
         viewModel.bindTodoList({ [weak self] _ in
             self?.bindViewModel()
@@ -92,11 +92,11 @@ class TodoListViewController: UIViewController {
         )
     }
     
-    private func checDatabase() {
+    private func checkDatabase() {
         if storageManager.useCoreData {
-            viewModel = TodoListViewModel(database: CoreDataService())
+            viewModel = TodoListViewModel(fileCache: FileCache(database: CoreDataService()))
         } else {
-            viewModel = TodoListViewModel(database: SQLiteService())
+            viewModel = TodoListViewModel(fileCache: FileCache(database: SQLiteService()))
         }
     }
     

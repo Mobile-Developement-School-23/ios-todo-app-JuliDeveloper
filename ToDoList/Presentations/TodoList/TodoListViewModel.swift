@@ -22,11 +22,11 @@ final class TodoListViewModel: ObservableObject {
     @Observable var showCompletedTasks: Bool = false
     @Observable var completedTasksCount: Int = 0
             
-    private var database: DatabaseService
+    private var fileCache: FileCacheDatabaseProtocol
             
     // MARK: - Initialization
-    init(database: DatabaseService) {
-        self.database = database
+    init(fileCache: FileCacheDatabaseProtocol) {
+        self.fileCache = fileCache
         
         fetchTodoItems()
     }
@@ -47,47 +47,24 @@ extension TodoListViewModel: TodoListViewModelProtocol {
     }
     
     func addItem(_ item: TodoItem) {
-        do {
-            try database.addItem(item)
-        } catch {
-            print(error)
-        }
+        fileCache.addItemDB(item)
         fetchTodoItems()
     }
     
     func updateItem(_ item: TodoItem) {
-        do {
-            try database.updateItem(item)
-        } catch {
-            print(error)
-        }
+        fileCache.updateItemDB(item)
         fetchTodoItems()
     }
     
     func deleteItem(_ item: TodoItem) {
-        do {
-            try database.deleteItem(item)
-        } catch {
-            print(error)
-        }
+        fileCache.deleteItemDB(item)
         fetchTodoItems()
     }
     
     func fetchTodoItems() {
-        do {
-            try database.loadItems { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .success(let items):
-                    self.todoItems = items
-                    self.completedTasksCount = todoItems.filter({ $0.isDone }).count
-                case.failure(let error):
-                    print(error)
-                }
-            }
-        } catch {
-            print(error)
-        }
+        fileCache.fetchTodoItemsDB()
+        todoItems = fileCache.todoListDB
+        completedTasksCount = todoItems.filter({ $0.isDone }).count
     }
     
     func updateItemIsDone(from todoItem: TodoItem) -> TodoItem {
@@ -118,6 +95,6 @@ extension TodoListViewModel: TodoListViewModelProtocol {
     }
     
     func updateDatabaseService(service: DatabaseService) {
-        database = service
+        fileCache.updateDatabaseService(service: service)
     }
 }
