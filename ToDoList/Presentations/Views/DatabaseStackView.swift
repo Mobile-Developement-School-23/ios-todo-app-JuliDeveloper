@@ -82,7 +82,6 @@ final class DatabaseStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - Actions
     @objc private func selectSqlite() {
         switchCoreData.isOn = false

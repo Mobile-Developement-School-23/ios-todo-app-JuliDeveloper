@@ -110,4 +110,37 @@ extension CoreDataService: DatabaseService {
             completion(.failure(error))
         }
     }
+    
+    // Не использую этот метод
+    func saveItems(_ items: [TodoItem]) throws {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "TodoItemCoreData")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(deleteRequest)
+        } catch {
+            throw DataBaseManagerError.errorDeleteRow
+        }
+        
+        for item in items {
+            let todoItemCoreData = TodoItemCoreData(context: context)
+            
+            todoItemCoreData.itemId = UUID(uuidString: item.id)
+            todoItemCoreData.text = item.text
+            todoItemCoreData.importance = item.importance.rawValue
+            todoItemCoreData.deadline = item.deadline
+            todoItemCoreData.done = item.isDone
+            todoItemCoreData.createdAt = item.createdAt
+            todoItemCoreData.changesAt = item.changesAt
+            todoItemCoreData.hexColor = item.hexColor
+            todoItemCoreData.lastUpdatedBy = item.lastUpdatedBy
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            throw DataBaseManagerError.errorUpdateRow
+        }
+    }
+    
 }

@@ -213,6 +213,36 @@ extension SQLiteService: DatabaseService {
         }
         
         sqlite3_finalize(queryStatement)
+    }
+    
+    // Не использую этот метод
+    func saveItems(_ items: [TodoItem]) throws {
+        let deleteStatementString = "DELETE FROM TodoItem;"
+        var deleteStatement: OpaquePointer? = nil
         
+        if sqlite3_prepare_v2(dataBase, deleteStatementString, -1, &deleteStatement, nil) == SQLITE_OK {
+            if sqlite3_step(deleteStatement) != SQLITE_DONE {
+                throw DataBaseManagerError.errorDeleteRow
+            }
+        } else {
+            throw DataBaseManagerError.errorDeleteRow
+        }
+        
+        sqlite3_finalize(deleteStatement)
+        
+        var saveStatement: OpaquePointer? = nil
+        
+        for item in items {
+            let saveStatementString = item.sqlReplaceStatement
+            
+            if sqlite3_prepare_v2(dataBase, saveStatementString, -1, &saveStatement, nil) == SQLITE_OK {
+                if sqlite3_step(saveStatement) != SQLITE_DONE {
+                    throw DataBaseManagerError.errorInsertRow
+                }
+            } else {
+                throw DataBaseManagerError.errorInsertRow
+            }
+            sqlite3_reset(saveStatement)
+        }
     }
 }
