@@ -1,28 +1,20 @@
-import UIKit
+import SwiftUI
 
 final class DataManager {
     static let shared = DataManager()
     
-    let ids = [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+    let mockTodoItems = [
+        TodoItem(id: UUID(), text: "Полить цветы", importance: .important, deadline: Date(), isDone: false),
+        TodoItem(id: UUID(), text: "Выгулять собаку", importance: .normal, deadline: Date().addingTimeInterval(86400), isDone: false),
+        TodoItem(id: UUID(), text: "Купить молоко", importance: .unimportant, deadline: nil, isDone: false),
+        TodoItem(id: UUID(), text: "Прочитать книгу", importance: .important, deadline: Date().addingTimeInterval(3*86400), isDone: false),
+        TodoItem(id: UUID(), text: "Позвонить другу", importance: .unimportant, deadline: nil, isDone: true),
+        TodoItem(id: UUID(), text: "Заказать пиццу", importance: .normal, deadline: Date(), isDone: false),
+        TodoItem(id: UUID(), text: "Подготовить отчет", importance: .important, deadline: Date().addingTimeInterval(2*86400), isDone: false),
+        TodoItem(id: UUID(), text: "Сходить в зал", importance: .normal, deadline: nil, isDone: true),
+        TodoItem(id: UUID(), text: "Заплатить за интернет", importance: .unimportant, deadline: Date().addingTimeInterval(5*86400), isDone: false),
+        TodoItem(id: UUID(), text: "Посетить врача", importance: .important, deadline: Date().addingTimeInterval(4*86400), isDone: false)
     ]
-    
-    let texts = [
-        "Поливать цветы", "Заказать продукты онлайн", "Записаться на тренировку",
-        "Закончить отчет", "Позвонить другу", "Проверить электронную почту",
-        "Сходить в аптеку", "Прочитать книгу", "Посетить врача", "Сделать уборку"
-    ]
-    
-    let colors: [UIColor] = [
-        UIColor.systemRed, UIColor.systemBlue, UIColor.systemCyan,
-        UIColor.systemMint, UIColor.systemPink, UIColor.systemBrown,
-        UIColor.systemIndigo, UIColor.systemOrange, UIColor.systemPurple,
-        UIColor.systemYellow
-    ]
-    
-    let importance: [Importance] = [.important, .normal, .unimportant]
-    
-    let isDone = [false, true]
     
     private init() {}
 }
