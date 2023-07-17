@@ -11,7 +11,7 @@ struct TodoItem: Identifiable, Equatable {
     let text: String
     let importance: Importance
     let deadline: Date?
-    let isDone: Bool
+    var isDone: Bool
     
     static func getList() -> [TodoItem] {
         var list = [TodoItem]()
