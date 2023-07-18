@@ -7,7 +7,6 @@ struct ListTodoItems: View {
     @State private var isPresented = false
 
     var body: some View {
-        
         ZStack {
             ScrollView {
                 createTitle()
@@ -23,6 +22,8 @@ struct ListTodoItems: View {
 }
 
 extension ListTodoItems {
+    
+    // Заголовок для кнопки показа нужного массива
     private var completedButtonTitle: String {
         if todoList.isShowCompletedItems {
             return "Скрыть"
@@ -64,40 +65,39 @@ extension ListTodoItems {
         VStack {
             VStack(alignment: .leading) {
                 ForEach(todoList.showItems) { observableTodoItem in
-                        TodoItemRow(todoItem: observableTodoItem)
-                            .contextMenu {
-                                Button {
-                                    observableTodoItem.item.isDone.toggle()
-                                } label: {
-                                    Label("Выполнить", systemImage: "checkmark.circle.fill")
-                                }
-                                
-                                Button {
-                                    todoList.selectedItem = observableTodoItem
-                                } label: {
-                                    Label("Редактировать", systemImage: "pencil")
-                                }
-                                .sheet(item: $todoList.selectedItem) { selectedItem in
-                                    DetailTodoItem(todoItem: selectedItem)
-                                }
-                                
-                                Button {
-                                    if let index = todoList.items.firstIndex(where: { $0.item.id == observableTodoItem.item.id }) {
-                                        todoList.items.remove(at: index)
-                                    }
-                                } label: {
-                                    Label("Удалить", systemImage: "trash.fill")
-                                }
+                    TodoItemRow(todoItem: observableTodoItem)
+                        .contextMenu {
+                            Button {
+                                observableTodoItem.item.isDone.toggle()
+                            } label: {
+                                Label("Выполнить", systemImage: "checkmark.circle.fill")
                             }
-                            .onTapGesture {
+                            
+                            Button {
                                 todoList.selectedItem = observableTodoItem
+                            } label: {
+                                Label("Редактировать", systemImage: "pencil")
                             }
-                   
-                        if observableTodoItem != todoList.showItems.last {
-                            Divider()
-                                .padding(.leading, 52)
+                            .sheet(item: $todoList.selectedItem) { selectedItem in
+                                DetailTodoItem(todoItem: selectedItem)
+                            }
+                            
+                            Button {
+                                if let index = todoList.items.firstIndex(where: { $0.item.id == observableTodoItem.item.id }) {
+                                    todoList.items.remove(at: index)
+                                }
+                            } label: {
+                                Label("Удалить", systemImage: "trash.fill")
+                            }
                         }
-                    }
+                        .onTapGesture {
+                            todoList.selectedItem = observableTodoItem
+                        }
+                    
+                    Divider()
+                        .padding(.leading, 52)
+                }
+                createAddRow()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.vertical, 16)
@@ -107,6 +107,29 @@ extension ListTodoItems {
         .padding(.horizontal, 16)
         .sheet(item: $todoList.selectedItem) { selectedItem in
             DetailTodoItem(todoItem: selectedItem)
+        }
+    }
+    
+    // Ячейка для добавления новой задачи
+    private func createAddRow() -> some View {
+        HStack {
+            Image("addItem")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+                .padding(.leading, 16)
+                .padding(.trailing, 12)
+            Text("Новое")
+                .font(.tdBody)
+                .foregroundColor(Color.tdBlueColor)
+            Spacer()
+        }
+        .padding(.top, 12)
+        .onTapGesture {
+            isPresented = true
+        }
+        .sheet(isPresented: $isPresented) {
+            DetailTodoItem(todoItem: nil)
         }
     }
     
