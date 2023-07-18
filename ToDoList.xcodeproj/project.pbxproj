@@ -71,7 +71,6 @@
 		25751C292A65B92F0022230D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25751C282A65B92F0022230D /* Assets.xcassets */; };
 		25751C2B2A668CB80022230D /* ObservableTodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751C2A2A668CB80022230D /* ObservableTodoItem.swift */; };
 		25751C2D2A668CD60022230D /* TodoItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751C2C2A668CD60022230D /* TodoItemList.swift */; };
-		25751C2F2A668EBC0022230D /* ListItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25751C2E2A668EBC0022230D /* ListItems.swift */; };
 		25AF722C2A54148500BCD954 /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722B2A54148500BCD954 /* CocoaLumberjack */; };
 		25AF722E2A54148500BCD954 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722D2A54148500BCD954 /* CocoaLumberjackSwift */; };
 		25AF72302A54148500BCD954 /* CocoaLumberjackSwiftLogBackend in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF722F2A54148500BCD954 /* CocoaLumberjackSwiftLogBackend */; };
@@ -166,7 +165,6 @@
 		25751C282A65B92F0022230D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		25751C2A2A668CB80022230D /* ObservableTodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTodoItem.swift; sourceTree = "<group>"; };
 		25751C2C2A668CD60022230D /* TodoItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemList.swift; sourceTree = "<group>"; };
-		25751C2E2A668EBC0022230D /* ListItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItems.swift; sourceTree = "<group>"; };
 		25AF72312A5418E400BCD954 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
 		25AF72332A5418F900BCD954 /* URLSessionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionsTests.swift; sourceTree = "<group>"; };
 		25B634792A3CA0DD00AC6AD7 /* ToDoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,7 +370,6 @@
 			children = (
 				25751C192A658B630022230D /* ContentView.swift */,
 				25751C082A6573260022230D /* ListTodoItems.swift */,
-				25751C2E2A668EBC0022230D /* ListItems.swift */,
 				25751C1D2A658CF90022230D /* TodoItemRow.swift */,
 				25751C1B2A658C660022230D /* DetailTodoItem.swift */,
 			);
@@ -733,7 +730,6 @@
 				25751C1A2A658B630022230D /* ContentView.swift in Sources */,
 				25751C1E2A658CF90022230D /* TodoItemRow.swift in Sources */,
 				25751C132A6576120022230D /* DataManager.swift in Sources */,
-				25751C2F2A668EBC0022230D /* ListItems.swift in Sources */,
 				25751C172A65769F0022230D /* TodoItem.swift in Sources */,
 				25751C262A65B2A10022230D /* Font+Extension.swift in Sources */,
 				25751C202A658F150022230D /* Date+Extension.swift in Sources */,
