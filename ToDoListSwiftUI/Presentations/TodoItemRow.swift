@@ -15,9 +15,12 @@ struct TodoItemRow: View {
                     createDeadlineContent(deadline)
                 }
             }
+            Spacer()
+            Image("navArrow")
+                .padding(.trailing, 12)
+                .aspectRatio(contentMode: .fit)
         }
         .padding(.vertical, 12)
-        .padding(.trailing, 38.95)
     }
 }
 
