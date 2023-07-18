@@ -7,17 +7,33 @@ struct DetailTodoItem: View {
     @State var showingDeadline = false
     @State var showingCalendar = false
     @State var selectDate = Date()
-    @State private var buttonActive = false
+    
+    @Environment(\.dismiss) var dismiss
+
+    init(todoItem: ObservableTodoItem) {
+        self._todoItem = StateObject(wrappedValue: todoItem)
         
+        if todoItem.item.deadline != nil {
+            self._showingDeadline = State(initialValue: true)
+            self._selectDate = State(initialValue: todoItem.item.deadline ?? Date())
+        } else {
+            self._showingDeadline = State(initialValue: false)
+            self._selectDate = State(initialValue: Date())
+        }
+        
+        self._showingCalendar = State(initialValue: false)
+    }
+    
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(spacing: 0) {
                 createNavBar()
                 createTextView()
                 createStackForEdit()
                 createDeleteButton()
             }
-            .padding(.all, 16)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
         }
         .background(Color.tdBackPrimaryColor)
     }
@@ -27,7 +43,7 @@ extension DetailTodoItem {
     private func createNavBar() -> some View {
         HStack {
             Button(action: {
-                print("cancel")
+                dismiss()
             }) {
                 Text("Отменить")
                     .font(.tdBody)
@@ -38,28 +54,23 @@ extension DetailTodoItem {
                 .font(.tdHeadline)
             Spacer()
             Button(action: {
-                print("save")
+                dismiss()
             }) {
                 Text("Сохранить")
                     .font(.tdBodyBold)
                     .foregroundColor(Color.tdBlueColor)
             }
         }
+        .padding(.top, 16)
         .padding(.bottom, 33)
     }
     
     private func createTextView() -> some View {
-        ZStack {
             TextEditor(text: $todoItem.item.text)
                 .background(Color.tdWhiteColor)
-                .cornerRadius(16)
                 .frame(minHeight: 120)
-            Text(todoItem.item.text)
-                .opacity(0)
-                .padding(.all, 16)
-                .foregroundColor(Color.tdLabelPrimaryColor)
-                .font(.tdBody)
-        }
+                .cornerRadius(16)
+                .padding(.bottom, 16)
     }
     
     private func createStackForEdit() -> some View {
@@ -76,6 +87,7 @@ extension DetailTodoItem {
         }
         .background(Color.tdBackSecondaryColor)
         .cornerRadius(16)
+        .padding(.bottom, 16)
     }
     
     private func createImportanceStack() -> some View {
@@ -130,6 +142,7 @@ extension DetailTodoItem {
                 .onChange(of: showingDeadline) { newValue in
                     if !newValue {
                         showingCalendar = false
+                        todoItem.item.deadline = nil
                     }
                 }
         }
@@ -139,10 +152,14 @@ extension DetailTodoItem {
     
     private func setTitleDeadlineButton() -> Date? {
         let calendar = Calendar.current
-        let selectedDate = Date()
-        if let nextDay = calendar.date(byAdding: .day, value: 1, to: selectedDate) {
+        let selectedDate = selectDate
+        
+        if todoItem.item.deadline != nil {
+            return todoItem.item.deadline
+        } else if let nextDay = calendar.date(byAdding: .day, value: 1, to: selectedDate) {
             return nextDay
         }
+        
         return nil
     }
     
@@ -150,22 +167,26 @@ extension DetailTodoItem {
         HStack {
             DatePicker("Select date", selection: $selectDate, displayedComponents: [.date])
                 .datePickerStyle(.graphical)
+                .environment(\.locale, .init(identifier: "ru"))
+                .onChange(of: selectDate) { newValue in
+                    todoItem.item.deadline = newValue
+                }
         }
         .padding(.all, 16)
     }
     
     private func createDeleteButton() -> some View {
         Button(action: {
-            
+           
         }) {
             Text("Удалить")
                 .font(.tdBody)
-                .foregroundColor(buttonActive ? Color.tdRedColor : Color.tdLabelTertiaryColor)
+                .foregroundColor(!todoItem.item.text.isEmpty ? Color.tdRedColor : Color.tdLabelTertiaryColor)
         }
         .frame(maxWidth: .infinity, idealHeight: 56)
         .background(Color.tdBackSecondaryColor)
         .cornerRadius(16)
-        .disabled(!buttonActive)
+        .disabled(todoItem.item.text.isEmpty)
     }
 }
 

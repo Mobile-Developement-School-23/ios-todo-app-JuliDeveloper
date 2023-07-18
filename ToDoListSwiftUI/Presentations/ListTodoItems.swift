@@ -66,6 +66,7 @@ extension ListTodoItems {
             VStack(alignment: .leading) {
                 ForEach(todoList.showItems) { observableTodoItem in
                     TodoItemRow(todoItem: observableTodoItem)
+                        .contentShape(Rectangle())
                         .contextMenu {
                             Button {
                                 observableTodoItem.item.isDone.toggle()
@@ -97,6 +98,7 @@ extension ListTodoItems {
                     Divider()
                         .padding(.leading, 52)
                 }
+                
                 createAddRow()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -124,6 +126,7 @@ extension ListTodoItems {
                 .foregroundColor(Color.tdBlueColor)
             Spacer()
         }
+        .contentShape(Rectangle())
         .padding(.top, 12)
         .onTapGesture {
             isPresented = true
