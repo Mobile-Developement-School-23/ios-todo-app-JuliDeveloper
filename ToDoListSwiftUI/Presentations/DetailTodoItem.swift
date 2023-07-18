@@ -9,9 +9,12 @@ struct DetailTodoItem: View {
     @State var selectDate = Date()
     
     @Environment(\.dismiss) var dismiss
+    
+    var onDismiss: ((ObservableTodoItem) -> Void)?
 
-    init(todoItem: ObservableTodoItem) {
+    init(todoItem: ObservableTodoItem, onDismiss: @escaping ((ObservableTodoItem) -> Void)) {
         self._todoItem = StateObject(wrappedValue: todoItem)
+        self.onDismiss = onDismiss
         
         if todoItem.item.deadline != nil {
             self._showingDeadline = State(initialValue: true)
@@ -54,6 +57,7 @@ extension DetailTodoItem {
                 .font(.tdHeadline)
             Spacer()
             Button(action: {
+                onDismiss?(todoItem)
                 dismiss()
             }) {
                 Text("Сохранить")
@@ -143,6 +147,8 @@ extension DetailTodoItem {
                     if !newValue {
                         showingCalendar = false
                         todoItem.item.deadline = nil
+                    } else {
+                        todoItem.item.deadline = selectDate
                     }
                 }
         }
@@ -192,6 +198,6 @@ extension DetailTodoItem {
 
 struct DetailTodoItem_Previews: PreviewProvider {
     static var previews: some View {
-        DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Заплатить за интернет", importance: .unimportant, deadline: Date().addingTimeInterval(5*86400), isDone: true)))
+        DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Заплатить за интернет", importance: .unimportant, deadline: Date().addingTimeInterval(5*86400), isDone: true)), onDismiss: { _ in })
     }
 }

@@ -80,7 +80,7 @@ extension ListTodoItems {
                                 Label("Редактировать", systemImage: "pencil")
                             }
                             .sheet(item: $todoList.selectedItem) { selectedItem in
-                                DetailTodoItem(todoItem: selectedItem)
+                                DetailTodoItem(todoItem: selectedItem, onDismiss: {_ in })
                             }
                             
                             Button {
@@ -108,7 +108,7 @@ extension ListTodoItems {
         }
         .padding(.horizontal, 16)
         .sheet(item: $todoList.selectedItem) { selectedItem in
-            DetailTodoItem(todoItem: selectedItem)
+            DetailTodoItem(todoItem: selectedItem, onDismiss: { _ in })
         }
     }
     
@@ -132,7 +132,11 @@ extension ListTodoItems {
             isPresented = true
         }
         .sheet(isPresented: $isPresented) {
-            DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)))
+            DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)), onDismiss: { newItem in
+                if todoList.items.contains(where: { $0.item.id != newItem.item.id }) {
+                    todoList.items.append(newItem)
+                }
+            })
 
         }
     }
@@ -150,7 +154,11 @@ extension ListTodoItems {
             }
             .position(x: geometry.size.width / 2, y: geometry.size.height - 54)
             .sheet(isPresented: $isPresented) {
-                DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)))
+                DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)), onDismiss: { newItem in
+                    if todoList.items.contains(where: { $0.item.id != newItem.item.id }) {
+                        todoList.items.append(newItem)
+                    }
+                })
 
             }
         }
