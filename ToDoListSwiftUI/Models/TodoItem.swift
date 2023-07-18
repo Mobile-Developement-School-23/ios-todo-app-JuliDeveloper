@@ -1,16 +1,18 @@
 import SwiftUI
 
-enum Importance: String {
+enum Importance: String, CaseIterable, Identifiable {
     case unimportant = "low"
     case normal = "basic"
     case important = "important"
+    
+    var id: Importance { self }
 }
 
 struct TodoItem: Identifiable, Equatable {
     let id: UUID
-    let text: String
-    let importance: Importance
-    let deadline: Date?
+    var text: String
+    var importance: Importance
+    var deadline: Date?
     var isDone: Bool
     
     static func getList() -> [TodoItem] {

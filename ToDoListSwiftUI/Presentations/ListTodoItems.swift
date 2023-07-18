@@ -129,7 +129,8 @@ extension ListTodoItems {
             isPresented = true
         }
         .sheet(isPresented: $isPresented) {
-            DetailTodoItem(todoItem: nil)
+            DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)))
+
         }
     }
     
@@ -146,7 +147,8 @@ extension ListTodoItems {
             }
             .position(x: geometry.size.width / 2, y: geometry.size.height - 54)
             .sheet(isPresented: $isPresented) {
-                DetailTodoItem(todoItem: nil)
+                DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)))
+
             }
         }
     }
