@@ -10,11 +10,17 @@ struct DetailTodoItem: View {
     
     @Environment(\.dismiss) var dismiss
     
-    var onDismiss: ((ObservableTodoItem) -> Void)?
+    var onSave: ((ObservableTodoItem) -> Void)?
+    var onDelete: ((ObservableTodoItem) -> Void)?
 
-    init(todoItem: ObservableTodoItem, onDismiss: @escaping ((ObservableTodoItem) -> Void)) {
+    init(
+        todoItem: ObservableTodoItem,
+        onSave: @escaping ((ObservableTodoItem) -> Void),
+        onDelete: @escaping ((ObservableTodoItem) -> Void)
+    ) {
         self._todoItem = StateObject(wrappedValue: todoItem)
-        self.onDismiss = onDismiss
+        self.onSave = onSave
+        self.onDelete = onDelete
         
         if todoItem.item.deadline != nil {
             self._showingDeadline = State(initialValue: true)
@@ -57,13 +63,14 @@ extension DetailTodoItem {
                 .font(.tdHeadline)
             Spacer()
             Button(action: {
-                onDismiss?(todoItem)
+                onSave?(todoItem)
                 dismiss()
             }) {
                 Text("Сохранить")
                     .font(.tdBodyBold)
-                    .foregroundColor(Color.tdBlueColor)
+                    .foregroundColor(!todoItem.item.text.isEmpty ? Color.tdBlueColor : Color.tdLabelTertiaryColor)
             }
+            .disabled(todoItem.item.text.isEmpty)
         }
         .padding(.top, 16)
         .padding(.bottom, 33)
@@ -183,7 +190,8 @@ extension DetailTodoItem {
     
     private func createDeleteButton() -> some View {
         Button(action: {
-           
+            onDelete?(todoItem)
+            dismiss()
         }) {
             Text("Удалить")
                 .font(.tdBody)
@@ -198,6 +206,6 @@ extension DetailTodoItem {
 
 struct DetailTodoItem_Previews: PreviewProvider {
     static var previews: some View {
-        DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Заплатить за интернет", importance: .unimportant, deadline: Date().addingTimeInterval(5*86400), isDone: true)), onDismiss: { _ in })
+        DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Заплатить за интернет", importance: .unimportant, deadline: Date().addingTimeInterval(5*86400), isDone: true)), onSave: { _ in }, onDelete: { _ in })
     }
 }

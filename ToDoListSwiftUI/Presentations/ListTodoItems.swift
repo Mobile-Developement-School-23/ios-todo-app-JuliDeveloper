@@ -80,7 +80,13 @@ extension ListTodoItems {
                                 Label("Редактировать", systemImage: "pencil")
                             }
                             .sheet(item: $todoList.selectedItem) { selectedItem in
-                                DetailTodoItem(todoItem: selectedItem, onDismiss: {_ in })
+                                DetailTodoItem(
+                                    todoItem: selectedItem,
+                                    onSave: { _ in },
+                                    onDelete: { deletedItem in
+                                        deleteItem(deletedItem.item)
+                                    }
+                                )
                             }
                             
                             Button {
@@ -108,7 +114,13 @@ extension ListTodoItems {
         }
         .padding(.horizontal, 16)
         .sheet(item: $todoList.selectedItem) { selectedItem in
-            DetailTodoItem(todoItem: selectedItem, onDismiss: { _ in })
+            DetailTodoItem(
+                todoItem: selectedItem,
+                onSave: { _ in },
+                onDelete: { deletedItem in
+                    deleteItem(deletedItem.item)
+                }
+            )
         }
     }
     
@@ -132,12 +144,13 @@ extension ListTodoItems {
             isPresented = true
         }
         .sheet(isPresented: $isPresented) {
-            DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)), onDismiss: { newItem in
-                if todoList.items.contains(where: { $0.item.id != newItem.item.id }) {
-                    todoList.items.append(newItem)
-                }
-            })
-
+            DetailTodoItem(
+                todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)),
+                onSave: { newItem in
+                    addNewItem(newItem.item)
+                },
+                onDelete: { _ in }
+            )
         }
     }
     
@@ -154,13 +167,26 @@ extension ListTodoItems {
             }
             .position(x: geometry.size.width / 2, y: geometry.size.height - 54)
             .sheet(isPresented: $isPresented) {
-                DetailTodoItem(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)), onDismiss: { newItem in
-                    if todoList.items.contains(where: { $0.item.id != newItem.item.id }) {
-                        todoList.items.append(newItem)
-                    }
-                })
-
+                DetailTodoItem(
+                    todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)),
+                    onSave: { newItem in
+                        addNewItem(newItem.item)
+                    },
+                    onDelete: { _ in }
+                )
             }
+        }
+    }
+    
+    private func addNewItem(_ item: TodoItem) {
+        if todoList.items.contains(where: { $0.item.id != item.id }) {
+            todoList.items.append(ObservableTodoItem(item: item))
+        }
+    }
+    
+    private func deleteItem(_ item: TodoItem) {
+        if let index = todoList.items.firstIndex(where: { $0.item.id == item.id }) {
+            todoList.items.remove(at: index)
         }
     }
 }
