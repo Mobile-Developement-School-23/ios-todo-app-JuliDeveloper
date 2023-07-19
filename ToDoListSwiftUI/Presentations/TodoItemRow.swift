@@ -8,7 +8,7 @@ struct TodoItemRow: View {
         HStack {
             createIconButton()
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 0) {
                 createTextContent(todoItem.item.importance)
                 
                 if let deadline = todoItem.item.deadline {
@@ -20,7 +20,8 @@ struct TodoItemRow: View {
                 .padding(.trailing, 12)
                 .aspectRatio(contentMode: .fit)
         }
-        .padding(.vertical, 12)
+        .background(Color.tdBackSecondaryColor)
+        .listRowInsets(EdgeInsets(top: 17, leading: 16, bottom: 17, trailing: 16))
     }
 }
 
@@ -55,13 +56,13 @@ extension TodoItemRow {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
         }
-        .padding(.leading, 16)
         .padding(.trailing, 12)
     }
 
     private func createDeadlineContent(_ deadline: Date) -> some View {
-        HStack(spacing: 2) {
+        HStack(spacing: 5) {
             Image(systemName: "calendar")
+                .frame(width: 12)
                 .foregroundColor(Color.gray)
             Text(deadline.dateForLabelWithoutYear)
                 .foregroundColor(Color.tdLabelTertiaryColor)
@@ -72,9 +73,10 @@ extension TodoItemRow {
     private func createTextContent(_ importance: Importance) -> some View {
         Group {
             if importance == .important || importance == .unimportant {
-                HStack {
+                HStack(spacing: 0) {
+                    Text("")
                     Image(importantImageName)
-                        .padding(.trailing, 0)
+                        .padding(.trailing, 5)
                     Text(todoItem.item.text)
                         .lineLimit(3)
                         .foregroundColor(!todoItem.item.isDone ? Color.tdLabelPrimaryColor : Color.tdLabelTertiaryColor)
@@ -94,7 +96,7 @@ extension TodoItemRow {
 
 struct TodoItemRow_Previews: PreviewProvider {
     static var previews: some View {
-        TodoItemRow(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Поливать цветы", importance: .normal, deadline: Date(), isDone: false)))
+        TodoItemRow(todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "Поливать цветы", importance: .important, deadline: Date(), isDone: false)))
         
     }
 }

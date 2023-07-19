@@ -77,11 +77,16 @@ extension DetailTodoItem {
     }
     
     private func createTextView() -> some View {
+        VStack {
             TextEditor(text: $todoItem.item.text)
                 .background(Color.tdWhiteColor)
-                .frame(minHeight: 120)
-                .cornerRadius(16)
-                .padding(.bottom, 16)
+                .frame(minHeight: 88)
+                .padding(.all, 16)
+        }
+        .frame(minHeight: 120)
+        .background(Color.tdWhiteColor)
+        .cornerRadius(16)
+        .padding(.bottom, 16)
     }
     
     private func createStackForEdit() -> some View {
