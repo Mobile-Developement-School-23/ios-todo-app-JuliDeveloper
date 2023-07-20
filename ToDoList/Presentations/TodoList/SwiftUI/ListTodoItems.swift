@@ -8,17 +8,15 @@ struct ListTodoItems: View {
     @State private var selectedItem: TodoItem?
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    createListItems()
-                        .padding(.horizontal, -4)
-                }
-                .navigationTitle("ᅠ  Мои дела")
-                .background(Color.tdBackPrimaryColor)
-                .navigationBarTitleDisplayMode(.large)
-                createAddButton()
+        ZStack {
+            NavigationView {
+                createListItems()
+                    .padding(.horizontal, -4)
+                    .background(Color.tdBackPrimaryColor)
+                    .navigationTitle("ᅠ   Мои дела")
+                    .navigationBarTitleDisplayMode(.large)
             }
+            createAddButton()
         }
     }
 }
@@ -27,9 +25,9 @@ extension ListTodoItems {
     // Заголовок для кнопки показа нужного массива
     private var completedButtonTitle: String {
         if viewModel.showCompletedTasks {
-            return "Скрыть"
+            return "Скрыть "
         } else {
-            return "Показать"
+            return "Показать "
         }
     }
     
@@ -70,7 +68,7 @@ extension ListTodoItems {
                 createAddRow()
             } header: {
                 HStack {
-                    Text("Выполнено — \(viewModel.completedListCount)")
+                    Text(" Выполнено — \(viewModel.completedListCount)")
                         .font(.system(.body))
                         .foregroundColor(Color.tdLabelTertiaryColor)
                     Spacer()
@@ -82,8 +80,9 @@ extension ListTodoItems {
                             .font(.system(.headline))
                     }
                 }
+                .textCase(.none)
+                .padding(.bottom, 10)
             }
-            .headerProminence(.increased)
         }
         .scrollIndicators(.never)
         .scrollContentBackground(.hidden)
