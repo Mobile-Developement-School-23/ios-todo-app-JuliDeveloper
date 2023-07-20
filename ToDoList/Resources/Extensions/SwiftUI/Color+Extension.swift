@@ -21,3 +21,34 @@ extension Color {
     static var tdBackSecondaryColor: Color { Color("tdBackSecondaryColor") }
     static var tdShadowColor: Color { Color("tdShadowColor") }
 }
+
+extension Color {
+    init(hex: String) {
+        let r, g, b, a: Double
+        let start = hex.index(hex.startIndex, offsetBy: hex.hasPrefix("#") ? 1 : 0)
+        let hexColor = String(hex[start...])
+        
+        let scanner = Scanner(string: hexColor)
+        var hexNumber: UInt64 = 0
+        
+        if scanner.scanHexInt64(&hexNumber) {
+            r = Double((hexNumber & 0xFF000000) >> 24) / 255
+            g = Double((hexNumber & 0x00FF0000) >> 16) / 255
+            b = Double((hexNumber & 0x0000FF00) >> 8) / 255
+            a = Double(hexNumber & 0x000000FF) / 255
+            
+        } else {
+            r = 0
+            g = 0
+            b = 0
+            a = 1
+        }
+
+        self.init(
+            UIColor(red: CGFloat(r),
+                    green: CGFloat(g),
+                    blue: CGFloat(b),
+                    alpha: CGFloat(a))
+        )
+    }
+}

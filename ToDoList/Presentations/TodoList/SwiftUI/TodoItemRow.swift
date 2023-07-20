@@ -75,14 +75,14 @@ extension TodoItemRow {
                         .padding(.trailing, 5)
                     Text(todoItem.text)
                         .lineLimit(3)
-                        .foregroundColor(!todoItem.isDone ? Color.tdLabelPrimaryColor : Color.tdLabelTertiaryColor)
+                        .foregroundColor(!todoItem.isDone ? Color(hex: todoItem.hexColor) : Color.tdLabelTertiaryColor)
                         .font(.system(size: 17))
                         .strikethrough(todoItem.isDone, color: Color.tdLabelTertiaryColor)
                 }
             } else {
                 Text(todoItem.text)
                     .lineLimit(3)
-                    .foregroundColor(!todoItem.isDone ? Color.tdLabelPrimaryColor : Color.tdLabelTertiaryColor)
+                    .foregroundColor(!todoItem.isDone ? Color(hex: todoItem.hexColor) : Color.tdLabelTertiaryColor)
                     .font(.system(size: 17))
                     .strikethrough(todoItem.isDone, color: Color.tdLabelTertiaryColor)
             }
