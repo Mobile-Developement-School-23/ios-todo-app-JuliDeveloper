@@ -11,10 +11,6 @@ struct ListTodoItems: View {
         ZStack {
             NavigationView {
                 createListItems()
-                    .padding(.horizontal, -4)
-                    .background(Color.tdBackPrimaryColor)
-                    .navigationTitle("ᅠ   Мои дела")
-                    .navigationBarTitleDisplayMode(.large)
             }
             createAddButton()
         }
@@ -86,6 +82,10 @@ extension ListTodoItems {
         }
         .scrollIndicators(.never)
         .scrollContentBackground(.hidden)
+        .padding(.horizontal, -4)
+        .background(Color.tdBackPrimaryColor)
+        .navigationTitle("ᅠ   Мои дела")
+        .navigationBarTitleDisplayMode(.large)
     }
     
     // Ячейка для добавления новой задачи
@@ -123,6 +123,7 @@ extension ListTodoItems {
                     .frame(width: 44, height: 44)
             }
             .position(x: geometry.size.width / 2, y: geometry.size.height - 54)
+            .shadow(color: Color.tdShadowColor.opacity(0.6), radius: 20, x: 0, y: 8)
             .sheet(isPresented: $isPresented) {
                 DetailViewControllerWrapper(viewModel: viewModel, item: nil)
             }
