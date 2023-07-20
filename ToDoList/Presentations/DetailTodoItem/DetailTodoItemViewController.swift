@@ -166,6 +166,7 @@ extension DetailTodoItemViewController: UITextViewDelegate {
         navigationItem.rightBarButtonItem?.isEnabled = !isOnlySpaces
                 
         delegate?.setupStateDeleteButton(from: !isOnlySpaces)
+        delegate?.setupStateSaveButton(from: !isOnlySpaces)
     }
 }
 

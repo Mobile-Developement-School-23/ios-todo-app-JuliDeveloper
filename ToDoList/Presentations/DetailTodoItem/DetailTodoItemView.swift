@@ -20,9 +20,10 @@ final class DetailTodoItemView: UIView {
     private lazy var saveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Сохранить", for: .normal)
-        button.titleLabel?.font = UIFont.tdBody
-        button.setTitleColor(.tdBlueColor, for: .normal)
+        button.titleLabel?.font = UIFont.tdHeadline
+        button.setTitleColor(.tdLabelTertiaryColor, for: .normal)
         button.addTarget(self, action: #selector(save), for: .touchUpInside)
+        button.isEnabled = false
         return button
     }()
     
@@ -241,10 +242,18 @@ extension DetailTodoItemView {
         detailViewTopConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
-            navBarStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            navBarStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            navBarStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            navBarStack.heightAnchor.constraint(equalToConstant: 56),
+            navBarStack.topAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.topAnchor
+            ),
+            navBarStack.leadingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16
+            ),
+            navBarStack.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16
+            ),
+            navBarStack.heightAnchor.constraint(
+                equalToConstant: 56
+            ),
             
             scrollView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor
@@ -339,6 +348,7 @@ extension DetailTodoItemView {
             titleTextView.text = item?.text
             titleTextView.textColor = uiColorMarshallings.fromHexString(hex: item?.hexColor ?? "")
             mainStackView.setUiIfItemNotNil(from: item)
+            saveButton.isEnabled = true
             deleteButton.isEnabled = true
         } else {
             titleTextView.text = "Что надо сделать?"
@@ -374,6 +384,11 @@ extension DetailTodoItemView {
 extension DetailTodoItemView: DetailTodoItemViewControllerDelegate {
     func setupStateDeleteButton(from state: Bool) {
         deleteButton.isEnabled = state
+    }
+    
+    func setupStateSaveButton(from state: Bool) {
+        saveButton.isEnabled = state
+        saveButton.setTitleColor(state ? .tdBlueColor : .tdLabelTertiaryColor, for: .normal)
     }
     
     func setupColor(_ color: UIColor) {
