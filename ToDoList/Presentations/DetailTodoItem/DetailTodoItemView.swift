@@ -9,6 +9,40 @@ final class DetailTodoItemView: UIView {
         return view
     }()
     
+    private let navBarStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .equalSpacing
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    private lazy var saveButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Сохранить", for: .normal)
+        button.titleLabel?.font = UIFont.tdBody
+        button.setTitleColor(.tdBlueColor, for: .normal)
+        button.addTarget(self, action: #selector(save), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Отменить", for: .normal)
+        button.titleLabel?.font = UIFont.tdBody
+        button.setTitleColor(.tdBlueColor, for: .normal)
+        button.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        return button
+    }()
+    
+    private let titleNavBar: UILabel = {
+        let label = UILabel()
+        label.text = "Дело"
+        label.font = UIFont.tdHeadline
+        label.textColor = .tdLabelPrimaryColor
+        return label
+    }()
+    
     private let titleTextView: UITextView = {
         let textView = UITextView()
         textView.text = "Что надо сделать?"
@@ -159,12 +193,27 @@ extension DetailTodoItemView {
     @objc private func handleTapOnScrollView() {
         scrollView.endEditing(true)
     }
+    
+    @objc private func cancel() {
+        delegate?.closeViewController()
+    }
+    
+    @objc private func save() {
+        delegate?.saveItem()
+    }
 }
 
 // MARK: - Private methods
 extension DetailTodoItemView {
     private func addElements() {
+        addSubview(navBarStack)
         addSubview(scrollView)
+        
+        [
+            cancelButton,
+            titleNavBar,
+            saveButton
+        ].forEach { navBarStack.addArrangedSubview($0) }
         
         scrollView.addSubview(containerView)
         
@@ -192,11 +241,16 @@ extension DetailTodoItemView {
         detailViewTopConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
+            navBarStack.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            navBarStack.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            navBarStack.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            navBarStack.heightAnchor.constraint(equalToConstant: 56),
+            
             scrollView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor
             ),
             scrollView.topAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.topAnchor
+                equalTo: navBarStack.bottomAnchor
             ),
             scrollView.trailingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.trailingAnchor

@@ -18,9 +18,9 @@ protocol TodoListViewModelProtocol {
 final class TodoListViewModel: ObservableObject {
     
     // MARK: - Properties
-    @Observable var todoItems: [TodoItem] = []
-    @Observable var showCompletedTasks: Bool = false
-    @Observable var completedTasksCount: Int = 0
+    @Published var todoItems: [TodoItem] = []
+    @Published var showCompletedTasks: Bool = false
+    @Published var completedTasksCount: Int = 0
             
     private var fileCache: FileCacheDatabaseProtocol
             
@@ -86,12 +86,13 @@ extension TodoListViewModel: TodoListViewModelProtocol {
         fetchTodoItems()
     }
     
+    // Оставила эти методы для UIKit
     func bindTodoList(_ update: @escaping ([TodoItem]) -> Void) {
-        $todoItems.bind(action: update)
+        // $todoItems.bind(action: update)
     }
-    
+
     func bindCompletedTodoListCount(_ update: @escaping (Int) -> Void) {
-        $completedTasksCount.bind(action: update)
+        // $completedTasksCount.bind(action: update)
     }
     
     func updateDatabaseService(service: DatabaseService) {

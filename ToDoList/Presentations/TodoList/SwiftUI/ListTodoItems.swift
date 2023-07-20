@@ -2,9 +2,10 @@ import SwiftUI
 
 struct ListTodoItems: View {
     
-    @ObservedObject var todoList: TodoItemList
+    @ObservedObject var viewModel: TodoListViewModel
     
     @State private var isPresented = false
+    @State private var selectedItem: TodoItem?
     
     var body: some View {
         NavigationView {
@@ -13,8 +14,8 @@ struct ListTodoItems: View {
                     createListItems()
                         .padding(.horizontal, -4)
                 }
+                .navigationTitle("ᅠ  Мои дела")
                 .background(Color.tdBackPrimaryColor)
-                .navigationTitle("Мои дела")
                 .navigationBarTitleDisplayMode(.large)
                 createAddButton()
             }
@@ -23,10 +24,9 @@ struct ListTodoItems: View {
 }
 
 extension ListTodoItems {
-    
     // Заголовок для кнопки показа нужного массива
     private var completedButtonTitle: String {
-        if todoList.isShowCompletedItems {
+        if viewModel.showCompletedTasks {
             return "Скрыть"
         } else {
             return "Показать"
@@ -37,12 +37,13 @@ extension ListTodoItems {
     private func createListItems() -> some View {
         List {
             Section {
-                ForEach(todoList.showItems) { observableTodoItem in
-                    TodoItemRow(todoItem: observableTodoItem)
+                ForEach(viewModel.tasksToShow) { todoItem in
+                    TodoItemRow(todoItem: todoItem)
                         .contentShape(Rectangle())
                         .swipeActions(edge: .leading, content: {
                             Button {
-                                observableTodoItem.item.isDone.toggle()
+                                let updateItem = viewModel.updateItemIsDone(from: todoItem)
+                                viewModel.updateItem(updateItem)
                             } label: {
                                 Label("", systemImage: "checkmark.circle.fill")
                             }
@@ -52,40 +53,29 @@ extension ListTodoItems {
                     
                         .swipeActions(edge: .trailing, content: {
                             Button {
-                                if let index = todoList.items.firstIndex(where: { $0.item.id == observableTodoItem.item.id }) {
-                                    todoList.items.remove(at: index)
-                                }
+                                viewModel.deleteItem(todoItem)
                             } label: {
                                 Label("", systemImage: "trash.fill")
                             }
                             .tint(.tdRedColor)
                         })
                         .onTapGesture {
-                            todoList.selectedItem = observableTodoItem
+                            selectedItem = todoItem
                         }
-                        .sheet(item: $todoList.selectedItem) { selectedItem in
-                            DetailTodoItem(
-                                todoItem: selectedItem,
-                                onSave: { _ in },
-                                onDelete: { deletedItem in
-                                    deleteItem(deletedItem.item)
-                                }
-                            )
+                        .sheet(item: $selectedItem) { item in
+                            DetailViewControllerWrapper(viewModel: viewModel, item: item)
                         }
                 }
                 
                 createAddRow()
-                    .padding(.bottom, 12)
-                
-            }
-        header: {
+            } header: {
                 HStack {
-                    Text("Выполнено — \(todoList.completedItemsCount)")
+                    Text("Выполнено — \(viewModel.completedListCount)")
                         .font(.system(.body))
                         .foregroundColor(Color.tdLabelTertiaryColor)
                     Spacer()
                     Button(action: {
-                        todoList.isShowCompletedItems.toggle()
+                        viewModel.toggleShowCompletedList()
                     }) {
                         Text(completedButtonTitle)
                             .foregroundColor(Color.tdBlueColor)
@@ -106,7 +96,6 @@ extension ListTodoItems {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
-                .padding(.leading, 16)
                 .padding(.trailing, 12)
             Text("Новое")
                 .font(.tdBody)
@@ -114,18 +103,12 @@ extension ListTodoItems {
             Spacer()
         }
         .contentShape(Rectangle())
-        .padding(.top, 12)
+        .padding(.vertical, 10)
         .onTapGesture {
             isPresented = true
         }
         .sheet(isPresented: $isPresented) {
-            DetailTodoItem(
-                todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)),
-                onSave: { newItem in
-                    addNewItem(newItem.item)
-                },
-                onDelete: { _ in }
-            )
+            DetailViewControllerWrapper(viewModel: viewModel, item: nil)
         }
     }
     
@@ -142,32 +125,14 @@ extension ListTodoItems {
             }
             .position(x: geometry.size.width / 2, y: geometry.size.height - 54)
             .sheet(isPresented: $isPresented) {
-                DetailTodoItem(
-                    todoItem: ObservableTodoItem(item: TodoItem(id: UUID(), text: "", importance: .normal, deadline: nil, isDone: false)),
-                    onSave: { newItem in
-                        addNewItem(newItem.item)
-                    },
-                    onDelete: { _ in }
-                )
+                DetailViewControllerWrapper(viewModel: viewModel, item: nil)
             }
-        }
-    }
-    
-    private func addNewItem(_ item: TodoItem) {
-        if todoList.items.contains(where: { $0.item.id != item.id }) {
-            todoList.items.append(ObservableTodoItem(item: item))
-        }
-    }
-    
-    private func deleteItem(_ item: TodoItem) {
-        if let index = todoList.items.firstIndex(where: { $0.item.id == item.id }) {
-            todoList.items.remove(at: index)
         }
     }
 }
 
 struct ListTodoItems_Previews: PreviewProvider {
     static var previews: some View {
-        ListTodoItems(todoList: TodoItemList(items: TodoItem.getList().map { ObservableTodoItem(item: $0) }))
+        ListTodoItems(viewModel: TodoListViewModel(fileCache: FileCache(database: CoreDataService())))
     }
 }
