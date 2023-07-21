@@ -126,8 +126,10 @@ extension DetailTodoItemViewController {
             currentColor = uiColorMarshallings.fromHexString(
                 hex: todoItem?.hexColor ?? ""
             )
+            delegate?.setupStateSaveButton(from: true)
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
+            delegate?.setupStateSaveButton(from: false)
         }
     }
 }
