@@ -7,17 +7,11 @@ struct ListTodoItems: View {
     @State private var isPresented = false
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    createListItems()
-                        .padding(.horizontal, -4)
-                }
-                .background(Color.tdBackPrimaryColor)
-                .navigationTitle("Мои дела")
-                .navigationBarTitleDisplayMode(.large)
-                createAddButton()
+        ZStack {
+            NavigationView {
+                createListItems()
             }
+            createAddButton()
         }
     }
 }
@@ -27,9 +21,9 @@ extension ListTodoItems {
     // Заголовок для кнопки показа нужного массива
     private var completedButtonTitle: String {
         if todoList.isShowCompletedItems {
-            return "Скрыть"
+            return "Скрыть "
         } else {
-            return "Показать"
+            return "Показать "
         }
     }
     
@@ -80,7 +74,7 @@ extension ListTodoItems {
             }
         header: {
                 HStack {
-                    Text("Выполнено — \(todoList.completedItemsCount)")
+                    Text(" Выполнено — \(todoList.completedItemsCount)")
                         .font(.system(.body))
                         .foregroundColor(Color.tdLabelTertiaryColor)
                     Spacer()
@@ -97,6 +91,10 @@ extension ListTodoItems {
         }
         .scrollIndicators(.never)
         .scrollContentBackground(.hidden)
+        .padding(.horizontal, -4)
+        .background(Color.tdBackPrimaryColor)
+        .navigationTitle("ᅠ   Мои дела")
+        .navigationBarTitleDisplayMode(.large)
     }
     
     // Ячейка для добавления новой задачи

@@ -21,7 +21,7 @@ struct TodoItemRow: View {
                 .aspectRatio(contentMode: .fit)
         }
         .background(Color.tdBackSecondaryColor)
-        .listRowInsets(EdgeInsets(top: 17, leading: 16, bottom: 17, trailing: 16))
+        .padding(.vertical, 10)
     }
 }
 
