@@ -104,7 +104,6 @@ extension ListTodoItems {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
-                .padding(.leading, 16)
                 .padding(.trailing, 12)
             Text("Новое")
                 .font(.tdBody)
