@@ -126,8 +126,10 @@ extension DetailTodoItemViewController {
             currentColor = uiColorMarshallings.fromHexString(
                 hex: todoItem?.hexColor ?? ""
             )
+            delegate?.setupStateSaveButton(from: true)
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
+            delegate?.setupStateSaveButton(from: false)
         }
     }
 }
@@ -166,6 +168,7 @@ extension DetailTodoItemViewController: UITextViewDelegate {
         navigationItem.rightBarButtonItem?.isEnabled = !isOnlySpaces
                 
         delegate?.setupStateDeleteButton(from: !isOnlySpaces)
+        delegate?.setupStateSaveButton(from: !isOnlySpaces)
     }
 }
 
@@ -198,5 +201,39 @@ extension DetailTodoItemViewController: DetailTodoItemViewDelegate {
             }
             dismiss(animated: true)
         }
+    }
+    
+    func saveItem() {
+        view.endEditing(true)
+        
+        let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        
+        if todoItem != nil {
+            let oldItem = TodoItem(
+                id: todoItem?.id ?? "",
+                text: currentText,
+                importance: currentImportance,
+                deadline: currentDeadline,
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
+            )
+            viewModel.updateItem(oldItem)
+        } else {
+            let newItem = TodoItem(
+                text: currentText,
+                importance: currentImportance,
+                deadline: currentDeadline,
+                isDone: false,
+                hexColor: uiColorMarshallings.toHexString(color: currentColor),
+                lastUpdatedBy: deviceId
+            )
+            viewModel.addItem(newItem)
+        }
+        
+        dismiss(animated: true)
+    }
+    
+    func closeViewController() {
+        dismiss(animated: true)
     }
 }

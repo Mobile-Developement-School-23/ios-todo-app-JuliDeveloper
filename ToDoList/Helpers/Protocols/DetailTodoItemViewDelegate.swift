@@ -7,4 +7,6 @@ protocol DetailTodoItemViewDelegate: AnyObject {
     func didUpdateDeadline(_ deadline: Date?)
     func didUpdateColor(_ color: UIColor)
     func deleteItem()
+    func saveItem()
+    func closeViewController()
 }
